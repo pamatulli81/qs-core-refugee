@@ -1,0 +1,160 @@
+export const defFieldList = {
+  qInfo: {
+    qId: "",
+    qType: "FieldList"
+  },
+  qFieldListDef: {
+    qShowSystem: true,
+    qShowHidden: true,
+    qShowSemantic: true,
+    qShowSrcTables: true
+  }
+};
+
+export const defKpiList = {
+  qInfo: {
+    qType: "MyStringExpressions"
+  },
+  refugeeExpression: [
+    {
+      qStringExpression: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`
+    },
+    { qValueExpression: `Count(distinct [Asylum Country])` },
+    { qValueExpression: `Count(distinct [Origin Country])` }
+  ]
+};
+
+export const defBarChart = {
+  qInfo: {
+    qType: "BarChart"
+  },
+  qHyperCubeDef: {
+    qDimensions: [
+      {
+        qDef: {
+          qFieldDefs: ["[Year]"]
+        },
+        qNullSuppression: true
+      }
+    ],
+    qMeasures: [
+      {
+        qSortBy: {
+          qSortByState: 0,
+          qSortByFrequency: 0,
+          qSortByNumeric: 0,
+          qSortByAscii: 0,
+          qSortByLoadOrder: 0,
+          qSortByExpression: -1,
+          qExpression: {
+            qv: ""
+          }
+        },
+        qDef: {
+          qDef: `Sum({<Year={">=$(=Max(Year)-6)<=$(=Max(Year))"}>}[PersonCount])`,
+          qLabel: "Person"
+        }
+      }
+    ],
+    qEffectiveInterColumnSortOrder: [1, 0],
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 2, qHeight: 5000 }]
+  }
+};
+
+export const defRefugeeTable = {
+  qInfo: {
+    qType: "RefugeesTable"
+  },
+  qHyperCubeDef: {
+	qInterColumnSortOrder: [
+		1,
+		2,
+		0
+	  ],
+    qDimensions: [
+      {
+        qDef: {
+          qFieldDefs: ["[Origin Country]"]
+        },
+        qNullSuppression: true
+      }
+    ],
+    qMeasures: [
+      {       
+        qDef: {
+          qDef: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`,
+		  qLabel: "Sales",
+		  autoSort: false
+		},
+		qSortBy: {
+			qSortByNumeric: -1
+		}
+      },
+      {
+        qDef: {
+          qDef: `num(Sum([PersonCount])/Sum(TOTAL [PersonCount])*100,'#,##0.##' , '.' , ',')`,
+          qLabel: "#Orders"
+        }
+      }
+    ],
+    qEffectiveInterColumnSortOrder: [1, 2, 0],
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 3, qHeight: 3333 }]
+  }
+};
+
+export const defCurrentSelection = {
+  qInfo: {
+    qType: "MySelection"
+  },
+  qSelectionObjectDef: {}
+};
+
+export const defYearList = {
+  qInfo: {
+    qType: "ListYear"
+  },
+  qListObjectDef: {
+    qDef: {
+      qFieldDefs: ["Year"],
+      autoSort: false,
+      qSortCriterias: [
+        {
+          qSortByNumeric: -1
+        }
+      ]
+    },
+
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 1, qHeight: 100 }]
+  }
+};
+
+export const defPersonList = {
+  qInfo: {
+    qType: "ListPerson"
+  },
+  qListObjectDef: {
+    qDef: { qFieldDefs: ["PersonType"] },
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 1, qHeight: 100 }]
+  }
+};
+
+export const defCountryList = {
+  qInfo: {
+    qType: "ListCountry"
+  },
+  qListObjectDef: {
+    qDef: {
+      qFieldDefs: ["[Origin Country]"],
+      autoSort: false,
+      qSortCriterias: [
+        {
+          qSortByNumeric: -1
+        }
+      ]
+    },
+
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 1, qHeight: 100 }]
+  }
+};
+
+  

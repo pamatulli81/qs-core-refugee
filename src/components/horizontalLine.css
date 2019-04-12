@@ -1,0 +1,21 @@
+.info-box-line {
+  color: #6d7988;
+  display: block;
+  font-family: "Gotham XNarrow SSm A", "Gotham XNarrow SSm B",
+    "GothamXNarrow-Book", sans-serif;
+  font-size: 13px;
+  margin-bottom: 1em;
+  margin-top: 10px;
+  position: relative;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.info-box-line:after {
+  content: "";
+  bottom: 0;
+  height: 1px;
+  background-color: #6d7988;
+  left: 0;
+  right: 0;
+  position: absolute;
+}

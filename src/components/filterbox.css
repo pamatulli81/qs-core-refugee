@@ -1,0 +1,82 @@
+.filterbox {
+  width: 100%;
+  height: 70%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: large;
+  padding-bottom: 5px;
+}
+
+.list {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  flex: 1 1 auto;
+  margin-bottom: 8px;
+  padding: 5px 0;
+  overflow-y: auto;
+}
+
+.list div {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 15px;
+  cursor: pointer;
+  height: 23px;
+}
+
+.list div:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.list div:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.listText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.listIcon {
+  padding-left: 5px;
+}
+
+.clearSelection {
+  display: flex;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: large;
+  cursor: pointer;
+}
+
+.clearSelection:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.clearSelection:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media only screen and (max-width: 1300px) {
+  .list div {
+    padding: 1px 5px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .list {
+    font-size: small;
+  }
+
+  .clearSelection {
+    font-size: small;
+  }
+}

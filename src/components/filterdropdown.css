@@ -1,0 +1,40 @@
+.listIcon {
+  padding-left: 5px;
+}
+
+.listText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select-reset {
+  font-family: inherit;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  font-size: 100%;
+}
+
+.select-wrap {
+    font-family: "Gotham XNarrow SSm A", "Gotham XNarrow SSm B", "GothamXNarrow-Book", sans-serif;
+    display: inline-block;
+    line-height: 1.2em;
+    margin-bottom: -6px;
+    position: relative;
+    transition: color 0.2s; }
+    .select-wrap select {
+      padding-left: 0;
+      padding-right: 15px; }
+    .select-wrap .icon--dropdown {
+      pointer-events: none;
+      position: absolute;
+      right: 3px;
+      top: calc(50% - 5px); }
+    @media screen and (min-width: 768px) {
+      .select-wrap {
+        margin-bottom: -7px; } }
