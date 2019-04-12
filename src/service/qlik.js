@@ -1,5 +1,12 @@
 export default class QlikService {
 
+    static async clearAll(app, softLock=true){
+        return new Promise((resolve) => {
+           const r = app.clearAll(softLock);
+           resolve(r);
+        });   
+    }
+
     static async clearField (app, field) {
         return new Promise((resolve) => {
             app.getField(field).then(f => {
@@ -8,7 +15,7 @@ export default class QlikService {
                 });
             });
         });
-    };
+    }
 
     static async singleSelectValue (app, field, value) {
         return new Promise((resolve) => {

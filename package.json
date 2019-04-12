@@ -18,6 +18,8 @@
     "lint-fix": "eslint --ext .js,.jsx --fix ."
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "dotenv-webpack": "1.7.0",
     "echarts.js": "^3.0.0-beta3",
     "enigma.js": "2.4.0",

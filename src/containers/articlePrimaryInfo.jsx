@@ -6,6 +6,7 @@ import Filterbox from "../components/filterbox";
 import Filterdropdown from "../components/filterdropdown";
 import InfoBoxStats from "../components/primaryInfoBoxStats";
 import HorizontalLine from "../components/horizontalLine";
+import ClearButton from "../components/buttonClearSelection"
 
 
 class ArticlePrimaryInfo extends React.Component {
@@ -154,9 +155,10 @@ class ArticlePrimaryInfo extends React.Component {
             name="Country"
             selectedValueCallback={countryText => this.selectCountry(countryText)}
             alwaysOneSelectedValue={false}
-            defaultValueIndex={0}
             app={app}
+            field="[Origin Country]"
           />
+          <ClearButton app={app} title="Clear All" />
         </div>
       </article>
     );

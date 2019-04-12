@@ -3,6 +3,7 @@ const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   module: {
+    
     rules: [
       {
         test: /\.(js|jsx)$/,

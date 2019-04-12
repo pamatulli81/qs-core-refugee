@@ -47,30 +47,13 @@ class Filterbox extends React.Component {
     this.setState(selected);
   };
 
-  clearSelectionsClickHandler = () => {
+  clearFilterClickHandler = () => {
     const {
       app,
-      model,
-      selectedValueCallback,
-      alwaysOneSelectedValue,
-      defaultValueIndex
+      field    
     } = this.props;
 
-    //await QlikService.clearField(app, "[Origin Country]")
-
-    if (alwaysOneSelectedValue) {
-      model.selectListObjectValues(
-        "/qListObjectDef",
-        [defaultValueIndex],
-        false
-      );
-    } else {
-      model.clearSelections("/qListObjectDef");
-      this.setState({ selected: [] });
-      if (selectedValueCallback) {
-        selectedValueCallback("");
-      }
-    }
+    QlikService.clearField(app, field);
   };
 
   async updateLayout() {
@@ -142,7 +125,7 @@ class Filterbox extends React.Component {
         <div className="title">
           <span style={styleLeftClearX}>{name}</span>
           <span
-            onClick={this.clearSelectionsClickHandler}
+            onClick={this.clearFilterClickHandler}
             style={styleRightClearX}
             role="presentation"
           >
@@ -150,14 +133,6 @@ class Filterbox extends React.Component {
           </span>
         </div>
         <div className="list">{dimensions}</div>
-        <div
-          className="clearSelection"
-          role="presentation"
-          onClick={this.clearSelectionsClickHandler}
-        >
-          <span>Clear selections</span>
-          <span>✖</span>
-        </div>
       </div>
     );
   }
@@ -167,7 +142,7 @@ class Filterbox extends React.Component {
 Filterbox.propTypes = {
   model: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,
-  defaultValueIndex: PropTypes.number.isRequired,
+  field: PropTypes.string.isRequired,
   name: PropTypes.string,
   alwaysOneSelectedValue: PropTypes.bool,
   selectedValueCallback: PropTypes.func,
