@@ -45,6 +45,12 @@ export default class QlikService {
         });
     }
 
+    static async registerModelOnChangeListener (model, callback){
+        model.on("changed", () => {
+            return callback;
+        });
+    }
+
     static async toggleSelectValue (app, field, value) {
         return new Promise((resolve) => {
             app.getField(field).then(f => {

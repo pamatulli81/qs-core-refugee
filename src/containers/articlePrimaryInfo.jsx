@@ -43,10 +43,11 @@ class ArticlePrimaryInfo extends React.Component {
   };
 
   async createModel() {
+    
     const { app, initialYear } = this.props;
 
     try {
-      // create the models
+   
       const year = await QlikService.createSessionObject(app, defYearList);
       const selectedYearElemNumber = QlikUtil.getElemNumberFromText(year.layout, initialYear);
 
@@ -123,7 +124,7 @@ class ArticlePrimaryInfo extends React.Component {
       <article id="primaryInfo">
         <div className="info-box stats">
           <ToggleButton toggleValueCallback={this.toggleButton} toggle />
-          <aside className="info-box-label" />
+          <HorizontalLine />
           <div className="info-box__form">
             <Filterdropdown
               model={yearModel}
