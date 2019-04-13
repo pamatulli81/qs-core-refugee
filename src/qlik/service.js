@@ -17,6 +17,24 @@ export default class QlikService {
         });
     }
 
+    static async createSessionObject (app, def){
+
+        const model = await app.createSessionObject(def);
+        const layout = await model.getLayout();
+
+        // eslint-disable-next-line object-shorthand
+        return {model: model, layout: layout }
+
+    }
+
+    static async selectFromList (model, elemNumber, toggle=false){
+        return model.selectListObjectValues(
+            "/qListObjectDef",
+            [elemNumber],
+            toggle
+          );
+    }
+
     static async singleSelectValue (app, field, value) {
         return new Promise((resolve) => {
             app.getField(field).then(f => {

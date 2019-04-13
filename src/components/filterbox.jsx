@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./filterbox.css";
-import QlikService from "../service/qlik";
+import QlikService from "../qlik/service";
 
 class Filterbox extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class Filterbox extends React.Component {
     const { model, selectedValueCallback, alwaysOneSelectedValue } = this.props;
 
     if (alwaysOneSelectedValue) {
-      model.selectListObjectValues("/qListObjectDef", [dim.qElemNumber], false);
+      QlikService.selectFromList(model, dim.qElemNumber, false);
       selected.length = 0;
       selected.push(dim.qElemNumber);
     } else {
@@ -31,7 +31,7 @@ class Filterbox extends React.Component {
       } else {
         selected.splice(selected.indexOf(dim.qElemNumber), 1);
       }
-      model.selectListObjectValues("/qListObjectDef", [dim.qElemNumber], true);
+      QlikService.selectFromList(model, dim.qElemNumber, true);
     }
 
     if (selectedValueCallback) {

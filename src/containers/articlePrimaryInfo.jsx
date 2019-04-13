@@ -7,6 +7,8 @@ import Filterdropdown from "../components/filterdropdown";
 import InfoBoxStats from "../components/primaryInfoBoxStats";
 import HorizontalLine from "../components/horizontalLine";
 import ClearButton from "../components/buttonClearSelection"
+import QlikService from "../qlik/service";
+import QlikUtil from "../qlik/util";
 
 
 class ArticlePrimaryInfo extends React.Component {
@@ -35,49 +37,44 @@ class ArticlePrimaryInfo extends React.Component {
     console.log(selectedPerson);
   };
 
+  clearAll = r => {
+    console.log(r);
+
+  };
+
   async createModel() {
     const { app, initialYear } = this.props;
+
     try {
       // create the models
-      const yearModel = await app.createSessionObject(defYearList);
-      const yearLayout = await yearModel.getLayout();
-      const selectedYearElemNumber = yearLayout.qListObject.qDataPages[0].qMatrix.find(
-        item => item[0].qText === initialYear
-      )[0].qElemNumber;
-      await yearModel.selectListObjectValues(
-        "/qListObjectDef",
-        [selectedYearElemNumber],
-        false
-      );
-      yearModel.on("changed", () => this.updateFilterboxYear());    
+      const year = await QlikService.createSessionObject(app, defYearList);
+      const selectedYearElemNumber = QlikUtil.getElemNumberFromText(year.layout, initialYear);
 
-      const personModel = await app.createSessionObject(defPersonList);
-      const personLayout = await personModel.getLayout();
+      await QlikService.selectFromList(year.model, selectedYearElemNumber, false);
+      year.model.on("changed", () => this.updateFilterboxYear());    
 
-      const countryModel = await app.createSessionObject(defCountryList);
-      const countryLayout = await countryModel.getLayout();
-
-      const kpiModel = await app.createSessionObject(defKpiList);
-      kpiModel.on("changed", () => this.updateInfoBoxStatsKpi());
-      const kpiLayout = await kpiModel.getLayout();
-
+      const person = await QlikService.createSessionObject(app, defPersonList);
+      const country = await QlikService.createSessionObject(app, defCountryList);
+    
+      const kpi = await QlikService.createSessionObject(app, defKpiList);
+      kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
+      
       this.setState({
-        yearLayout,
-        yearModel,
-        personLayout,
-        personModel,
-        countryLayout,
-        countryModel,
-        kpiModel,
+        yearLayout: year.layout,
+        yearModel: year.model,
+        personLayout: person.layout,
+        personModel: person.model,
+        countryLayout: country.layout,
+        countryModel: country.model,
+        kpiModel: kpi.model,
         kpiInfo: {
-          nbrOfPerson: kpiLayout.refugeeExpression[0],
-          nbrOfCountry: kpiLayout.refugeeExpression[1],
-          nbrOfAsylumCountry: kpiLayout.refugeeExpression[2]
+          nbrOfPerson: kpi.layout.refugeeExpression[0],
+          nbrOfCountry: kpi.layout.refugeeExpression[1],
+          nbrOfAsylumCountry: kpi.layout.refugeeExpression[2]
         },
         loaded: true
       });
 
-      kpiModel.on("changed", () => this.updateInfoBoxStatsKpi());
     } catch (error) {
       // console.log(error);
     }
@@ -158,7 +155,7 @@ class ArticlePrimaryInfo extends React.Component {
             app={app}
             field="[Origin Country]"
           />
-          <ClearButton app={app} title="Clear All" />
+          <ClearButton app={app} title="Clear All" clearAllCallback={r => this.clearAll(r)} />
         </div>
       </article>
     );

@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./filterdropdown.css";
+import QlikService from "../qlik/service";
+import QlikUtil from "../qlik/util";
 
 class FilterDropDown extends React.Component {
   constructor(props) {
@@ -19,13 +21,12 @@ class FilterDropDown extends React.Component {
     const { model, layout, selectedValueCallback } = this.props;
     const { value } = e.target;
     // eslint-disable-next-line radix
-    model.selectListObjectValues("/qListObjectDef", [parseInt(value)], false);
+    QlikService.selectFromList(model, parseInt(value), false);
 
     if (selectedValueCallback) {
-      const textYear = layout.qListObject.qDataPages[0].qMatrix.find(
-        // eslint-disable-next-line radix
-        item => item[0].qElemNumber === parseInt(value)
-      )[0].qText;
+      // eslint-disable-next-line radix
+      const elemNumber = parseInt(value);
+      const textYear = QlikUtil.getTextFromElemNumber(layout, elemNumber);
       selectedValueCallback(textYear);
     }
   };
