@@ -32,6 +32,9 @@ export const defKpiMain = {
     { qStringExpression: `num(Sum([Population, total]), '#,##0' , '.' , ',')` },
     {
       qStringExpression: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`
+    },
+    {
+      qStringExpression: `Concat(distinct PersonType, ', ')`
     }
   ]
 };
