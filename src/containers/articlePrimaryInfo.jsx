@@ -1,14 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { defYearList, defPersonList, defKpiList, defCountryList } from "../definitions";
+import { defYearList, defPersonList, defKpiStats, defNewsFeed } from "../definitions";
 import ToggleButton from "../components/toggleButton";
-import Filterbox from "../components/filterbox";
+// import Filterbox from "../components/filterbox";
 import Filterdropdown from "../components/filterdropdown";
 import InfoBoxStats from "../components/primaryInfoBoxStats";
 import HorizontalLine from "../components/horizontalLine";
-import ClearButton from "../components/buttonClearSelection"
+// import ClearButton from "../components/buttonClearSelection"
+import PrimaryInfoBoxNewsSlider from "../components/primaryInfoBoxNewsSlider";
+import PrimaryInfoBoxStories from "../components/primaryInfoBoxStories";
+import PrimaryInfoBoxAbout from "../components/primaryInfoBoxAbout";
 import QlikService from "../qlik/service";
-import QlikUtil from "../qlik/util";
+import "./articlePrimaryInfo.css";
 
 
 class ArticlePrimaryInfo extends React.Component {
@@ -16,10 +19,12 @@ class ArticlePrimaryInfo extends React.Component {
     super(...args);
     this.state = { loaded: false};
   }
+  
 
   componentDidMount() {
     this.createModel();
   }
+
 
   toggleButton = checked => {
     console.log(checked);
@@ -44,20 +49,20 @@ class ArticlePrimaryInfo extends React.Component {
 
   async createModel() {
     
-    const { app, initialYear } = this.props;
+    const { app } = this.props;
 
     try {
    
       const year = await QlikService.createSessionObject(app, defYearList);
-      const selectedYearElemNumber = QlikUtil.getElemNumberFromText(year.layout, initialYear);
-
-      await QlikService.selectFromList(year.model, selectedYearElemNumber, false);
       year.model.on("changed", () => this.updateFilterboxYear());    
 
       const person = await QlikService.createSessionObject(app, defPersonList);
-      const country = await QlikService.createSessionObject(app, defCountryList);
+      // const country = await QlikService.createSessionObject(app, defCountryList);
+
+      const newsFeed = await QlikService.createSessionObject(app, defNewsFeed);
+      newsFeed.model.on("changed", () => this.updateNewsFeed());
     
-      const kpi = await QlikService.createSessionObject(app, defKpiList);
+      const kpi = await QlikService.createSessionObject(app, defKpiStats);
       kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
       
       this.setState({
@@ -65,14 +70,12 @@ class ArticlePrimaryInfo extends React.Component {
         yearModel: year.model,
         personLayout: person.layout,
         personModel: person.model,
-        countryLayout: country.layout,
-        countryModel: country.model,
+        // countryLayout: country.layout,
+        // countryModel: country.model,
+        kpiLayout: kpi.layout,
         kpiModel: kpi.model,
-        kpiInfo: {
-          nbrOfPerson: kpi.layout.refugeeExpression[0],
-          nbrOfCountry: kpi.layout.refugeeExpression[1],
-          nbrOfAsylumCountry: kpi.layout.refugeeExpression[2]
-        },
+        newsFeedModel: newsFeed.model,
+        newsFeedLayout: newsFeed.layout,
         loaded: true
       });
 
@@ -85,11 +88,7 @@ class ArticlePrimaryInfo extends React.Component {
     const { kpiModel } = this.state;
     const kpiLayout = await kpiModel.getLayout();
     this.setState({
-      kpiInfo: {
-        nbrOfPerson: kpiLayout.refugeeExpression[0],
-        nbrOfCountry: kpiLayout.refugeeExpression[1],
-        nbrOfAsylumCountry: kpiLayout.refugeeExpression[2]
-      }
+      kpiLayout
     });
   }
 
@@ -102,19 +101,29 @@ class ArticlePrimaryInfo extends React.Component {
     });
   }
 
+  async updateNewsFeed() {
+    const { newsFeedModel } = this.state;
+    const newsFeedLayout = await newsFeedModel.getLayout();
+    this.setState({
+      newsFeedModel,
+      newsFeedLayout
+    });
+  }
+
   render() {
     const {
-      kpiInfo,
+      kpiLayout,
       personModel,
       personLayout,
       yearModel,
       yearLayout,
-      countryModel,
-      countryLayout,
+      // countryModel,
+      // countryLayout,
+      newsFeedLayout,
       loaded
     } = this.state;
 
-    const {app} = this.props
+    // const {app} = this.props
 
     if (!loaded) {
       return null;
@@ -140,13 +149,14 @@ class ArticlePrimaryInfo extends React.Component {
               }
             />
             <HorizontalLine />
-            <InfoBoxStats
-              nbrOfPerson={kpiInfo.nbrOfPerson}
-              nbrOfCountry={kpiInfo.nbrOfCountry}
-              nbrOfAsylumCountry={kpiInfo.nbrOfAsylumCountry}
-            />
+            <InfoBoxStats layout={kpiLayout} />
           </div>
           <HorizontalLine />
+          <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
+          <PrimaryInfoBoxStories layout={newsFeedLayout} />
+          <PrimaryInfoBoxAbout />
+          
+          {/* <HorizontalLine />
           <Filterbox
             model={countryModel}
             layout={countryLayout}
@@ -156,7 +166,7 @@ class ArticlePrimaryInfo extends React.Component {
             app={app}
             field="[Origin Country]"
           />
-          <ClearButton app={app} title="Clear All" clearAllCallback={r => this.clearAll(r)} />
+          <ClearButton app={app} title="Clear All" clearAllCallback={r => this.clearAll(r)} /> */}
         </div>
       </article>
     );
@@ -164,8 +174,7 @@ class ArticlePrimaryInfo extends React.Component {
 }
 
 ArticlePrimaryInfo.propTypes = {
-  app: PropTypes.object.isRequired,
-  initialYear: PropTypes.string.isRequired
+  app: PropTypes.object.isRequired
 };
 
 export default ArticlePrimaryInfo;

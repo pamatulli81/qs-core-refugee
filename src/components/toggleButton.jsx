@@ -14,7 +14,7 @@ class ToggleButton extends React.Component {
 
   /* PAM: Definiton of Event Handler */
   selectToggleChangeHandler = e => {
-    const { checked, name, value, type } = e.target;
+    const { checked, value, type } = e.target;
     const { toggleValueCallback } = this.props;
     const {checkboxState} = this.state;
     this.setState({

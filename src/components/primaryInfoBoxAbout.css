@@ -1,0 +1,37 @@
+.info-about {
+    position: relative;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+    transition: transform 0.3s, -webkit-transform 0.3s;
+}
+.info-about-bg, .info-about {
+    background-color: rgba(50, 62, 83, 0.25);
+}
+.info-about {
+    margin: 1em;
+    padding: 1em;
+}
+
+.info-about-label {
+    color: #6D7988;
+    display: block;
+    font-family: "Gotham XNarrow SSm A", "Gotham XNarrow SSm B", "GothamXNarrow-Book", sans-serif;
+    font-size: 13px;
+    margin-bottom: 1em;
+    margin-top: 10px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.info-about-label:after {
+    content: '';
+    bottom: 0;
+    height: 1px;
+    background-color: #6D7988;
+    left: 0;
+    right: 0;
+    position: absolute;
+}

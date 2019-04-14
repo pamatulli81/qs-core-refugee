@@ -11,16 +11,28 @@ export const defFieldList = {
   }
 };
 
-export const defKpiList = {
+export const defKpiStats = {
   qInfo: {
-    qType: "MyStringExpressions"
+    qType: "KpiStatsExpression"
   },
-  refugeeExpression: [
+  statsExpression: [
     {
       qStringExpression: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`
     },
     { qValueExpression: `Count(distinct [Asylum Country])` },
     { qValueExpression: `Count(distinct [Origin Country])` }
+  ]
+};
+
+export const defKpiMain = {
+  qInfo: {
+    qType: "KpiMainExpression"
+  },
+  mainExpression: [
+    { qStringExpression: `num(Sum([Population, total]), '#,##0' , '.' , ',')` },
+    {
+      qStringExpression: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`
+    }
   ]
 };
 
@@ -66,11 +78,7 @@ export const defRefugeeTable = {
     qType: "RefugeesTable"
   },
   qHyperCubeDef: {
-	qInterColumnSortOrder: [
-		1,
-		2,
-		0
-	  ],
+    qInterColumnSortOrder: [1, 2, 0],
     qDimensions: [
       {
         qDef: {
@@ -80,15 +88,15 @@ export const defRefugeeTable = {
       }
     ],
     qMeasures: [
-      {       
+      {
         qDef: {
           qDef: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`,
-		  qLabel: "Sales",
-		  autoSort: false
-		},
-		qSortBy: {
-			qSortByNumeric: -1
-		}
+          qLabel: "Sales",
+          autoSort: false
+        },
+        qSortBy: {
+          qSortByNumeric: -1
+        }
       },
       {
         qDef: {
@@ -157,4 +165,63 @@ export const defCountryList = {
   }
 };
 
-  
+export const defNewsFeed = {
+  qInfo: {
+    qType: "NewsFeed"
+  },
+  qHyperCubeDef: {
+    qDimensions: [
+      {
+        qDef: {
+          qFieldDefs: ["[pubYear]"]
+        }
+      },
+      {
+        qDef: {
+          qFieldDefs: ["[pubDateFriendly]"]
+        }
+      },
+      {
+        qDef: {
+          qFieldDefs: ["[title]"]
+        }
+      },
+      {
+        qDef: {
+          qFieldDefs: ["[description]"]
+        }
+      },
+      {
+        qDef: {
+          qFieldDefs: ["[link]"]
+        }
+      },
+      {
+        qDef: {
+          qFieldDefs: ["[image]"]
+        }
+      }
+    ],
+    qMeasures: [
+      {
+        qSortBy: {
+          qSortByState: 0,
+          qSortByFrequency: 0,
+          qSortByNumeric: 0,
+          qSortByAscii: 0,
+          qSortByLoadOrder: 0,
+          qSortByExpression: -1,
+          qExpression: {
+            qv: ""
+          }
+        },
+        qDef: {
+          qDef: `Only({1}pubDate)`,
+          qLabel: "Published Date"
+        }
+      }
+    ],
+    qEffectiveInterColumnSortOrder: [0, 1],
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 7, qHeight: 1200 }]
+  }
+};

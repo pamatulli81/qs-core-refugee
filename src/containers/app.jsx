@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import enigma from "enigma.js";
 import ArticlePrimaryInfo from "./articlePrimaryInfo";
+import ArticleSecondaryInfo from "./articleSecondaryInfo";
 import enigmaConfig from "../enigma-config";
 import Map from "../components/map";
 import "./app.css";
@@ -61,7 +62,8 @@ class App extends Component {
         <Map />
         <div className="info-grid">
           <div className="slide-in">
-            <ArticlePrimaryInfo app={app} initialYear={initialYear} />
+            <ArticlePrimaryInfo app={app}/>
+            <ArticleSecondaryInfo app={app} />
           </div>
         </div>
       </main>
