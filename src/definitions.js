@@ -228,3 +228,64 @@ export const defNewsFeed = {
     qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 7, qHeight: 1200 }]
   }
 };
+
+export const defSankeyChart = {
+	qInfo: {
+	  qType: 'SankeyChart'
+	},
+	qHyperCubeDef: {
+    qDimensions: [{
+      qDef: {
+        qFieldDefs: ["source"],
+        qFieldLabels: ["Origin Country"]
+      }
+    },
+    {
+      qDef: {
+        qFieldDefs: ["target"],
+        qFieldLabels: ["Asylum Country"]
+      }
+    }],
+    qMeasures: [{
+      qDef: "sum(value)",
+      qLabel: "No Of Refugees"
+    }],
+    qSuppressZero: true,
+    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 3, qHeight: 1000 }]
+  }
+}
+
+export const defMapChart = {
+  qInfo: {
+    qType: 'MapChart'
+  },
+  qHyperCubeDef: {
+    qDimensions: [{
+      qDef: {
+        qFieldDefs: ["Origin Country"],
+        qFieldLabels: ["Origin Country"]
+      }
+    },{
+      qDef: {
+        qFieldDefs: ["OriginCountryPoints_Geometry"],
+        qFieldLabels: ["Origin Country GeoPoint"]
+      }
+    },{
+      qDef: {
+        qFieldDefs: ["Asylum Country"],
+        qFieldLabels: ["Asylum Country"]
+      }
+    },{
+      qDef: {
+        qFieldDefs: ["AsylumCountryPoints_Geometry"],
+        qFieldLabels: ["Asylum Country GeoPoint"]
+      }
+    }],
+    qMeasures: [{
+      qDef: "sum(PersonCount)",
+      qLabel: "No Of Refugees"
+    }],
+    qSuppressZero: true,
+    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 5, qHeight: 1000 }]
+  }
+}

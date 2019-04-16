@@ -4,6 +4,7 @@ dist/
 .vscode/
 npm-debug.log
 .DS_Store
+data/RefugeesOld.qvf
 
 # Ignore .orig merge files (BC, KDiff3 etc.)
 *.orig
