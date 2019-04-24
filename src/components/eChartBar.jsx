@@ -71,12 +71,29 @@ class eChartBar extends React.Component {
           borderRadius: 8,
           borderWidth: 1,
           padding: 10, 
+          position(p) {
+            return [p[0] + 10, p[1] - 10];
+          },
           textStyle: {
               color: "#FFF",
               decoration: "none",
               fontFamily: "Verdana, sans-serif",
               fontSize: 12
-          }
+          },
+          formatter(params, ticket, callback) {
+            let res = `Year : ${  params[0].name}`;
+            for (let i = 0, l = params.length; i < l; i++) {
+                res +=
+                    `${"<br/>" +
+                    "# of Person" +
+                    " : "}${ 
+                    parseInt(params[i].value, 10).toLocaleString()}`;
+            }
+            setTimeout(() => {
+                callback(ticket, res);
+            }, 200);
+            return "...loading";
+          } 
       },
       xAxis: {
           type: "category",
