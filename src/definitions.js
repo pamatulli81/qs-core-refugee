@@ -238,19 +238,22 @@ export const defSankeyChart = {
       qDef: {
         qFieldDefs: ["source"],
         qFieldLabels: ["Origin Country"]
-      }
+      },
+      qNullSuppression: true
     },
     {
       qDef: {
         qFieldDefs: ["target"],
         qFieldLabels: ["Asylum Country"]
-      }
+      },
+      qNullSuppression: true
     }],
     qMeasures: [{
-      qDef: "sum(value)",
-      qLabel: "No Of Refugees"
+      qDef: {
+        qDef: "sum(value)",
+        qLabel: "No Of Refugees"
+      }
     }],
-    qSuppressZero: true,
     qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 3, qHeight: 1000 }]
   }
 }
@@ -262,30 +265,31 @@ export const defMapChart = {
   qHyperCubeDef: {
     qDimensions: [{
       qDef: {
-        qFieldDefs: ["Origin Country"],
+        qFieldDefs: ["[Origin Country]"],
         qFieldLabels: ["Origin Country"]
       }
     },{
       qDef: {
-        qFieldDefs: ["OriginCountryPoints_Geometry"],
+        qFieldDefs: ["[OriginCountryPoints_Geometry]"],
         qFieldLabels: ["Origin Country GeoPoint"]
       }
     },{
       qDef: {
-        qFieldDefs: ["Asylum Country"],
+        qFieldDefs: ["[Asylum Country]"],
         qFieldLabels: ["Asylum Country"]
       }
     },{
       qDef: {
-        qFieldDefs: ["AsylumCountryPoints_Geometry"],
+        qFieldDefs: ["[AsylumCountryPoints_Geometry]"],
         qFieldLabels: ["Asylum Country GeoPoint"]
       }
     }],
     qMeasures: [{
-      qDef: "sum(PersonCount)",
-      qLabel: "No Of Refugees"
+      qDef: {
+        qDef: "sum(PersonCount)",
+        qLabel: "No Of Refugees"
+      }
     }],
-    qSuppressZero: true,
     qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 5, qHeight: 1000 }]
   }
 }

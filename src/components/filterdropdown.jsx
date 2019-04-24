@@ -75,7 +75,7 @@ class FilterDropDown extends React.Component {
       return (
         <option
           value={dim[0].qElemNumber}
-          selected={listItemStyles.selected}
+          // selected={listItemStyles.selected} // Generates error, should be placed on the select using react option "value" or "default"
           key={dim[0].qElemNumber}
         >
           {dim[0].qText}

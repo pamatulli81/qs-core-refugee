@@ -1,8 +1,11 @@
+/* eslint-disable no-console */
 import React from "react";
 import PropTypes from "prop-types";
-import { defKpiMain, defRefugeeTable } from "../definitions";
+import { defKpiMain, defRefugeeTable, defMapChart, defSankeyChart } from "../definitions"; // defSankeyChart
 import SecondaryInfoBoxMain from "../components/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/secondaryInfoBoxTable";
+import EChartMap from '../components/eChartMap';
+import EChartSankey from '../components/eChartSankey';
 import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
 
@@ -12,7 +15,7 @@ class ArticleSecondaryInfo extends React.Component {
     this.state = { loaded: false };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.createModel();
   }
 
@@ -26,18 +29,29 @@ class ArticleSecondaryInfo extends React.Component {
       const table = await QlikService.createSessionObject(app, defRefugeeTable);
       table.model.on("changed", () => this.updateTable());
 
+      // const mapObj = await QlikService.createSessionObject(app, defMapChart);
+
+      const eChartMap = await QlikService.createSessionObject(app, defMapChart);
+      const eChartSankey = await QlikService.createSessionObject(app, defSankeyChart);
+      
+
       this.setState({
         tableModel: table.model,
         tableLayout: table.layout,
         kpiModel: kpi.model,
         kpiLayout: kpi.layout,
+        mapModel: eChartMap.model,
+        mapLayout: eChartMap.layout,
+        sankeyModel: eChartSankey.model,
+        sankeyLayout: eChartSankey.layout,
         loaded: true
       });
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
 
+  
   async updateInfoBoxMainsKpi() {
     const { kpiModel } = this.state;
     const kpiLayout = await kpiModel.getLayout();
@@ -55,8 +69,8 @@ class ArticleSecondaryInfo extends React.Component {
   }
 
   render() {
-    const { kpiLayout, tableLayout, loaded } = this.state;
-
+    const { kpiLayout, tableLayout, mapLayout, mapModel, sankeyLayout, sankeyModel, loaded } = this.state;
+    
     const style = {
       section: {
         transformOrigin: "center 50% 0px",
@@ -75,6 +89,8 @@ class ArticleSecondaryInfo extends React.Component {
     return (
       <article id="secondaryInfo">
         <section className="explore-data in" style={style.section}>
+          <EChartSankey model={sankeyModel} layout={sankeyLayout} />
+          <EChartMap model={mapModel} layout={mapLayout} />
           <SecondaryInfoBoxMain layout={kpiLayout} />
           <SecondaryInfoBoxTable layout={tableLayout} />
         </section>

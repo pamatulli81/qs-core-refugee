@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import React from "react";
 import PropTypes from "prop-types";
-import { defYearList, defPersonList, defKpiStats, defNewsFeed } from "../definitions";
+import { defYearList, defPersonList, defKpiStats, defNewsFeed, defBarChart } from "../definitions";
 import ToggleButton from "../components/toggleButton";
 // import Filterbox from "../components/filterbox";
 import Filterdropdown from "../components/filterdropdown";
@@ -10,6 +11,7 @@ import HorizontalLine from "../components/horizontalLine";
 import PrimaryInfoBoxNewsSlider from "../components/primaryInfoBoxNewsSlider";
 import PrimaryInfoBoxStories from "../components/primaryInfoBoxStories";
 import PrimaryInfoBoxAbout from "../components/primaryInfoBoxAbout";
+import EChartBar from "../components/eChartBar";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
 
@@ -64,6 +66,8 @@ class ArticlePrimaryInfo extends React.Component {
     
       const kpi = await QlikService.createSessionObject(app, defKpiStats);
       kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
+
+      const eChartBar = await QlikService.createSessionObject(app, defBarChart);
       
       this.setState({
         yearLayout: year.layout,
@@ -76,11 +80,13 @@ class ArticlePrimaryInfo extends React.Component {
         kpiModel: kpi.model,
         newsFeedModel: newsFeed.model,
         newsFeedLayout: newsFeed.layout,
+        barLayout: eChartBar.layout,
+        barModel: eChartBar.model,
         loaded: true
       });
 
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
 
@@ -117,6 +123,8 @@ class ArticlePrimaryInfo extends React.Component {
       personLayout,
       yearModel,
       yearLayout,
+      barModel,
+      barLayout,
       // countryModel,
       // countryLayout,
       newsFeedLayout,
@@ -150,6 +158,7 @@ class ArticlePrimaryInfo extends React.Component {
             />
             <HorizontalLine />
             <InfoBoxStats layout={kpiLayout} />
+            <EChartBar layout={barLayout} model={barModel} />
           </div>
           <HorizontalLine />
           <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
