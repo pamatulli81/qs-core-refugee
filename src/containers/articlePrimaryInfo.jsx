@@ -1,6 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { defYearList, defPersonList, defKpiStats, defNewsFeed } from "../definitions";
+import {
+  defYearList,
+  defPersonList,
+  defKpiStats,
+  defNewsFeed
+} from "../definitions";
 import ToggleButton from "../components/toggleButton";
 // import Filterbox from "../components/filterbox";
 import Filterdropdown from "../components/filterdropdown";
@@ -13,18 +19,19 @@ import PrimaryInfoBoxAbout from "../components/primaryInfoBoxAbout";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
 
-
 class ArticlePrimaryInfo extends React.Component {
+  state = {
+    toggle: true
+  };
+
   constructor(...args) {
     super(...args);
-    this.state = { loaded: false};
+    this.state = { loaded: false };
   }
-  
 
   componentDidMount() {
     this.createModel();
   }
-
 
   toggleButton = checked => {
     console.log(checked);
@@ -44,27 +51,24 @@ class ArticlePrimaryInfo extends React.Component {
 
   clearAll = r => {
     console.log(r);
-
   };
 
   async createModel() {
-    
     const { app } = this.props;
 
     try {
-   
       const year = await QlikService.createSessionObject(app, defYearList);
-      year.model.on("changed", () => this.updateFilterboxYear());    
+      year.model.on("changed", () => this.updateFilterboxYear());
 
       const person = await QlikService.createSessionObject(app, defPersonList);
       // const country = await QlikService.createSessionObject(app, defCountryList);
 
       const newsFeed = await QlikService.createSessionObject(app, defNewsFeed);
       newsFeed.model.on("changed", () => this.updateNewsFeed());
-    
+
       const kpi = await QlikService.createSessionObject(app, defKpiStats);
       kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
-      
+
       this.setState({
         yearLayout: year.layout,
         yearModel: year.model,
@@ -78,7 +82,6 @@ class ArticlePrimaryInfo extends React.Component {
         newsFeedLayout: newsFeed.layout,
         loaded: true
       });
-
     } catch (error) {
       // console.log(error);
     }
@@ -111,6 +114,8 @@ class ArticlePrimaryInfo extends React.Component {
   }
 
   render() {
+    // eslint-disable-next-line react/prop-types
+    // eslint-disable-next-line react/destructuring-assignment
     const {
       kpiLayout,
       personModel,
@@ -132,7 +137,10 @@ class ArticlePrimaryInfo extends React.Component {
     return (
       <article id="primaryInfo">
         <div className="info-box stats">
-          <ToggleButton toggleValueCallback={this.toggleButton} toggle />
+          <ToggleButton
+            toggleValueCallback={this.props.onToggleCountry}
+            toggle={this.props.tgl}
+          />
           <HorizontalLine />
           <div className="info-box__form">
             <Filterdropdown
@@ -155,7 +163,7 @@ class ArticlePrimaryInfo extends React.Component {
           <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
           <PrimaryInfoBoxStories layout={newsFeedLayout} />
           <PrimaryInfoBoxAbout />
-          
+
           {/* <HorizontalLine />
           <Filterbox
             model={countryModel}
@@ -174,7 +182,27 @@ class ArticlePrimaryInfo extends React.Component {
 }
 
 ArticlePrimaryInfo.propTypes = {
-  app: PropTypes.object.isRequired
+  app: PropTypes.object.isRequired,
+  toggle: PropTypes.bool,
+  tgl: PropTypes.bool.isRequired
 };
 
-export default ArticlePrimaryInfo;
+ArticlePrimaryInfo.defaultProps = {
+  toggle: true
+};
+
+const mapStateToProps = state => {
+  return {
+    tgl: state.toggle
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onToggleCountry: () => dispatch({ type: "TOGGLE" })
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ArticlePrimaryInfo);

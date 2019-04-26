@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { defKpiMain, defRefugeeTable } from "../definitions";
+import store from '../index';
 import SecondaryInfoBoxMain from "../components/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/secondaryInfoBoxTable";
 import QlikService from "../qlik/service";
@@ -10,10 +11,32 @@ class ArticleSecondaryInfo extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = { loaded: false };
+    this.unsubscribe = null;
   }
 
   componentWillMount() {
     this.createModel();
+  }
+
+  componentDidMount(){
+    this.unsubscribe = store.subscribe(() => {
+      const { tableModel } = this.state;
+      if(tableModel!==undefined){
+        const checked = store.getState().toggle;
+        const dimCountry = checked ? '[Asylum Country]' : '[Origin Country]';
+        console.log(dimCountry);
+        QlikService.applyPatches(
+          tableModel,
+          "replace",
+          "/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0",
+          dimCountry
+        );
+      }  
+    });
+  }
+
+  componentWillUnmount(){
+    this.unsubscribe();
   }
 
   async createModel() {
@@ -53,10 +76,10 @@ class ArticleSecondaryInfo extends React.Component {
       tableLayout
     });
   }
-
+  
   render() {
     const { kpiLayout, tableLayout, loaded } = this.state;
-
+   
     const style = {
       section: {
         transformOrigin: "center 50% 0px",

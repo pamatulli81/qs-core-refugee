@@ -62,7 +62,7 @@ class App extends Component {
         <Map />
         <div className="info-grid">
           <div className="slide-in">
-            <ArticlePrimaryInfo app={app}/>
+            <ArticlePrimaryInfo app={app} />
             <ArticleSecondaryInfo app={app} />
           </div>
         </div>

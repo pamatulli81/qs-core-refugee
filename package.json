@@ -34,11 +34,13 @@
     "react-flickity-component": "^3.2.0",
     "react-motion": "0.5.2",
     "react-rangeslider": "2.2.0",
+    "react-redux": "^7.0.2",
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
     "react-scrollable-anchor": "0.6.1",
     "react-svg-text": "0.1.2",
-    "react-view-pager": "0.6.0"
+    "react-view-pager": "0.6.0",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@babel/cli": "7.4.3",
