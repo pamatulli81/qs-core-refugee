@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import App from './containers/app';
-import reducer from './store/reducer'
+import store from './store/store';
 
-const store = createStore(reducer);
+const appStore = store;
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('index'));
+ReactDOM.render(<Provider store={appStore}><App /></Provider>, document.getElementById('index'));
 
-export default store;
+export default appStore;
