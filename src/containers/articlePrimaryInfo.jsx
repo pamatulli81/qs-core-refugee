@@ -5,28 +5,26 @@ import {
   defYearList,
   defPersonList,
   defKpiStats,
-  defNewsFeed
+  defNewsFeed,
+  defBarChart,
+  defCountryList
 } from "../definitions";
 import ToggleButton from "../components/toggleButton";
-// import Filterbox from "../components/filterbox";
+import Filterbox from "../components/filterbox";
 import Filterdropdown from "../components/filterdropdown";
 import InfoBoxStats from "../components/primaryInfoBoxStats";
 import HorizontalLine from "../components/horizontalLine";
-// import ClearButton from "../components/buttonClearSelection"
 import PrimaryInfoBoxNewsSlider from "../components/primaryInfoBoxNewsSlider";
 import PrimaryInfoBoxStories from "../components/primaryInfoBoxStories";
 import PrimaryInfoBoxAbout from "../components/primaryInfoBoxAbout";
+import EChartBar from "../components/eChartBar";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
 
 class ArticlePrimaryInfo extends React.Component {
-  state = {
-    toggle: true
-  };
-
   constructor(...args) {
     super(...args);
-    this.state = { loaded: false };
+    this.state = { loaded: false, toggle: false };
   }
 
   componentDidMount() {
@@ -57,29 +55,43 @@ class ArticlePrimaryInfo extends React.Component {
     const { app } = this.props;
 
     try {
-      const year = await QlikService.createSessionObject(app, defYearList);
-      year.model.on("changed", () => this.updateFilterboxYear());
+      const qlikYear = await QlikService.createSessionObject(app, defYearList);
+      qlikYear.model.on("changed", () => this.updateFilterboxYear());
 
-      const person = await QlikService.createSessionObject(app, defPersonList);
-      // const country = await QlikService.createSessionObject(app, defCountryList);
+      const qlikPerson = await QlikService.createSessionObject(
+        app,
+        defPersonList
+      );
+      const qlikCountry = await QlikService.createSessionObject(
+        app,
+        defCountryList
+      );
 
-      const newsFeed = await QlikService.createSessionObject(app, defNewsFeed);
-      newsFeed.model.on("changed", () => this.updateNewsFeed());
+      const qlikNewsFeed = await QlikService.createSessionObject(
+        app,
+        defNewsFeed
+      );
+      qlikNewsFeed.model.on("changed", () => this.updateNewsFeed());
 
-      const kpi = await QlikService.createSessionObject(app, defKpiStats);
-      kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
+      const qlikKpi = await QlikService.createSessionObject(app, defKpiStats);
+      qlikKpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
+
+      const qlikTrend = await QlikService.createSessionObject(app, defBarChart);
+      qlikTrend.model.on("changed", () => this.updateEbarChart());
 
       this.setState({
-        yearLayout: year.layout,
-        yearModel: year.model,
-        personLayout: person.layout,
-        personModel: person.model,
-        // countryLayout: country.layout,
-        // countryModel: country.model,
-        kpiLayout: kpi.layout,
-        kpiModel: kpi.model,
-        newsFeedModel: newsFeed.model,
-        newsFeedLayout: newsFeed.layout,
+        yearLayout: qlikYear.layout,
+        yearModel: qlikYear.model,
+        personLayout: qlikPerson.layout,
+        personModel: qlikPerson.model,
+        trendModel: qlikTrend.model,
+        trendLayout: qlikTrend.layout,
+        countryLayout: qlikCountry.layout,
+        countryModel: qlikCountry.model,
+        kpiLayout: qlikKpi.layout,
+        kpiModel: qlikKpi.model,
+        newsFeedModel: qlikNewsFeed.model,
+        newsFeedLayout: qlikNewsFeed.layout,
         loaded: true
       });
     } catch (error) {
@@ -113,6 +125,15 @@ class ArticlePrimaryInfo extends React.Component {
     });
   }
 
+  async updateEbarChart() {
+    const { trendModel } = this.state;
+    const trendLayout = await trendModel.getLayout();
+    this.setState({
+      trendModel,
+      trendLayout
+    });
+  }
+
   render() {
     // eslint-disable-next-line react/prop-types
     // eslint-disable-next-line react/destructuring-assignment
@@ -122,13 +143,16 @@ class ArticlePrimaryInfo extends React.Component {
       personLayout,
       yearModel,
       yearLayout,
-      // countryModel,
-      // countryLayout,
+      trendModel,
+      trendLayout,
+      countryModel,
+      countryLayout,
       newsFeedLayout,
-      loaded
+      loaded,
+      toggle
     } = this.state;
 
-    // const {app} = this.props
+    const {app} = this.props
 
     if (!loaded) {
       return null;
@@ -139,7 +163,7 @@ class ArticlePrimaryInfo extends React.Component {
         <div className="info-box stats">
           <ToggleButton
             toggleValueCallback={this.props.onToggleCountry}
-            toggle={this.props.tgl}
+            toggle={this.props.tgl !== undefined ? this.props.tgl : toggle}
           />
           <HorizontalLine />
           <div className="info-box__form">
@@ -158,23 +182,25 @@ class ArticlePrimaryInfo extends React.Component {
             />
             <HorizontalLine />
             <InfoBoxStats layout={kpiLayout} />
+            <EChartBar layout={trendLayout} model={trendModel} />
           </div>
           <HorizontalLine />
-          <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
-          <PrimaryInfoBoxStories layout={newsFeedLayout} />
-          <PrimaryInfoBoxAbout />
-
-          {/* <HorizontalLine />
           <Filterbox
             model={countryModel}
             layout={countryLayout}
             name="Country"
-            selectedValueCallback={countryText => this.selectCountry(countryText)}
+            selectedValueCallback={countryText =>
+              this.selectCountry(countryText)
+            }
             alwaysOneSelectedValue={false}
             app={app}
-            field="[Origin Country]"
+            field="[Asylum Country]"
           />
-          <ClearButton app={app} title="Clear All" clearAllCallback={r => this.clearAll(r)} /> */}
+          <HorizontalLine />
+          <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
+          <PrimaryInfoBoxStories layout={newsFeedLayout} />
+          <PrimaryInfoBoxAbout />
+          <HorizontalLine />
         </div>
       </article>
     );
@@ -183,12 +209,7 @@ class ArticlePrimaryInfo extends React.Component {
 
 ArticlePrimaryInfo.propTypes = {
   app: PropTypes.object.isRequired,
-  toggle: PropTypes.bool,
   tgl: PropTypes.bool.isRequired
-};
-
-ArticlePrimaryInfo.defaultProps = {
-  toggle: true
 };
 
 const mapStateToProps = state => {

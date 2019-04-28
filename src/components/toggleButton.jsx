@@ -37,6 +37,7 @@ class ToggleButton extends React.Component {
         className="countryswitch-checkbox"
         type="checkbox"
         onClick={this.selectToggleChangeHandler}
+        defaultChecked={!this.state.checkboxState}
       />
     );
 

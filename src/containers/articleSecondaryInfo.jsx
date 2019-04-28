@@ -8,7 +8,7 @@ import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
 
 class ArticleSecondaryInfo extends React.Component {
-  
+
   constructor(...args) {
     super(...args);
     this.state = { loaded: false };
@@ -21,17 +21,22 @@ class ArticleSecondaryInfo extends React.Component {
 
   componentDidMount(){
     this.unsubscribe = store.subscribe(() => {
+      
       const { tableModel } = this.state;
+
       if(tableModel!==undefined){
+      
         const checked = store.getState().toggle;
         const dimCountry = checked ? '[Asylum Country]' : '[Origin Country]';
-        console.log(dimCountry);
+      
         QlikService.applyPatches(
           tableModel,
           "replace",
           "/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0",
           dimCountry
         );
+
+
       }  
     });
   }
@@ -44,17 +49,17 @@ class ArticleSecondaryInfo extends React.Component {
     const { app } = this.props;
 
     try {
-      const kpi = await QlikService.createSessionObject(app, defKpiMain);
-      kpi.model.on("changed", () => this.updateInfoBoxMainsKpi());
+      const qlikKpi = await QlikService.createSessionObject(app, defKpiMain);
+      qlikKpi.model.on("changed", () => this.updateInfoBoxMainsKpi());
 
-      const table = await QlikService.createSessionObject(app, defRefugeeTable);
-      table.model.on("changed", () => this.updateTable());
+      const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable);
+      qlikTable.model.on("changed", () => this.updateTable());
 
       this.setState({
-        tableModel: table.model,
-        tableLayout: table.layout,
-        kpiModel: kpi.model,
-        kpiLayout: kpi.layout,
+        tableModel: qlikTable.model,
+        tableLayout: qlikTable.layout,
+        kpiModel: qlikKpi.model,
+        kpiLayout: qlikKpi.layout,
         loaded: true
       });
     } catch (error) {
@@ -80,6 +85,7 @@ class ArticleSecondaryInfo extends React.Component {
   
   render() {
     const { kpiLayout, tableLayout, loaded } = this.state;
+    const { app } = this.props;
    
     const style = {
       section: {
@@ -100,7 +106,7 @@ class ArticleSecondaryInfo extends React.Component {
       <article id="secondaryInfo">
         <section className="explore-data in" style={style.section}>
           <SecondaryInfoBoxMain layout={kpiLayout} />
-          <SecondaryInfoBoxTable layout={tableLayout} />
+          <SecondaryInfoBoxTable app={app} layout={tableLayout} />
         </section>
       </article>
     );
