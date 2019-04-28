@@ -14,8 +14,8 @@ import "./chartDialog.css";
 
 const styles = {
   dialogPaper: {
-    minHeight: "60vh",
-    maxHeight: "60vh",
+    minHeight: "70vh",
+    maxHeight: "70vh",
     minWidth: "80vw",
     maxWidth: "80vw",
     padding: "0 !important",

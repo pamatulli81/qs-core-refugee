@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import echarts from "echarts/lib/echarts";
 import "echarts/lib/chart/line";
 import "echarts/lib/component/tooltip";
+import "echarts/lib/component/toolbox";
+import "echarts/lib/component/dataZoom";
 import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "./eChartLine.css";
@@ -69,10 +71,10 @@ class EchartLine extends React.Component {
 
     const option = {
       grid: {
-        top: "20",
+        top: "50",
         right: "50",
-        bottom: "17",
-        left: "100"
+        bottom: "75",
+        left: "75"
       },
       tooltip: {
         trigger: "axis",
@@ -85,13 +87,12 @@ class EchartLine extends React.Component {
       },
       toolbox: {
         show : true,
+        showTitle: false,
         orient: 'horizontal',
         feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-            magicType: {show: true, type: ['line', 'bar']},
-            restore : {show: true},
-            saveAsImage : {show: true}
+            mark : {show: true, showTitle: false},
+            magicType: {show: true, type: ['line', 'bar'],showTitle: false},
+            saveAsImage : {show: true,showTitle: false}
         }
     },
     calculable : true,
@@ -106,6 +107,9 @@ class EchartLine extends React.Component {
         {
             type: 'slider',
             show: true,
+            start:60,
+            end: 100,
+            pos:6          
             
         }
       ],
