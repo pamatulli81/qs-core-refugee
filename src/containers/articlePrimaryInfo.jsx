@@ -19,7 +19,7 @@ import "./articlePrimaryInfo.css";
 class ArticlePrimaryInfo extends React.Component {
   constructor(...args) {
     super(...args);
-    this.state = { loaded: false};
+    this.state = { loaded: false };
   }
   
 
@@ -68,6 +68,7 @@ class ArticlePrimaryInfo extends React.Component {
       kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
 
       const eChartBar = await QlikService.createSessionObject(app, defBarChart);
+      eChartBar.model.on("changed", () => this.updateBar());
       
       this.setState({
         yearLayout: year.layout,
@@ -116,6 +117,15 @@ class ArticlePrimaryInfo extends React.Component {
     });
   }
 
+  async updateBar() {
+    const { barModel } = this.state;
+    const barLayout = await barModel.getLayout();
+    this.setState({
+      barModel,
+      barLayout
+    });
+  }
+
   render() {
     const {
       kpiLayout,
@@ -125,8 +135,6 @@ class ArticlePrimaryInfo extends React.Component {
       yearLayout,
       barModel,
       barLayout,
-      // countryModel,
-      // countryLayout,
       newsFeedLayout,
       loaded
     } = this.state;

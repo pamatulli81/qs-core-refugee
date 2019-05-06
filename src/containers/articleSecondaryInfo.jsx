@@ -32,7 +32,10 @@ class ArticleSecondaryInfo extends React.Component {
       // const mapObj = await QlikService.createSessionObject(app, defMapChart);
 
       const eChartMap = await QlikService.createSessionObject(app, defMapChart);
+      eChartMap.model.on("changed", () => this.updateMap());
+
       const eChartSankey = await QlikService.createSessionObject(app, defSankeyChart);
+      eChartSankey.model.on("changed", () => this.updateSankey());
       
 
       this.setState({
@@ -68,8 +71,24 @@ class ArticleSecondaryInfo extends React.Component {
     });
   }
 
+  async updateMap() {
+    const { mapModel } = this.state;
+    const mapLayout = await mapModel.getLayout();
+    this.setState({
+      mapLayout
+    });
+  }
+
+  async updateSankey() {
+    const { sankeyModel } = this.state;
+    const sankeyLayout = await sankeyModel.getLayout();
+    this.setState({
+      sankeyLayout
+    });
+  }
+
   render() {
-    const { kpiLayout, tableLayout, mapLayout, mapModel, sankeyLayout, sankeyModel, loaded } = this.state;
+    const { kpiLayout, tableLayout, mapLayout, sankeyLayout, loaded } = this.state;
     
     const style = {
       section: {
@@ -89,8 +108,8 @@ class ArticleSecondaryInfo extends React.Component {
     return (
       <article id="secondaryInfo">
         <section className="explore-data in" style={style.section}>
-          <EChartSankey model={sankeyModel} layout={sankeyLayout} />
-          <EChartMap model={mapModel} layout={mapLayout} />
+          <EChartSankey layout={sankeyLayout} />
+          <EChartMap layout={mapLayout} />
           <SecondaryInfoBoxMain layout={kpiLayout} />
           <SecondaryInfoBoxTable layout={tableLayout} />
         </section>

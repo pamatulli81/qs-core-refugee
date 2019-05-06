@@ -9,44 +9,21 @@ import 'echarts-stat';
 import 'echarts/extension/dataTool';
 import 'echarts/map/js/world';
 
-
 class EChartMap extends React.Component {
-
-  static eCleanArray(item) {
-    let data = item;
-    data = data.qText.replace('[','');
-    data = data.replace(']','');
-    data = data.split(',');
-    data = [parseFloat(data[0]), parseFloat(data[1])];
-
-    return data;
-  }
-
-  static eCreateData(items) {
-    const routes = [];
-    const values = [];
-    const markPoint = {
-        from: [],
-        to: []
-    };
-
-    items.forEach(item => {
-        const from = EChartMap.eCleanArray(item[1]);
-        const to = EChartMap.eCleanArray(item[3]);
-        
-        routes.push([from, to]);
-        markPoint.from.push(from);
-        markPoint.to.push(to);
-        values.push(item[4].qNum);
-    })
-
-    return {routes, values, markPoint};
-  }
 
   constructor(props) {
     super(props);
     this.state = {
       layout: props.layout
+    };
+
+    this.routes = null;
+    this.values = null;
+    this.markPoint = null;
+    this.obj = {
+      routes: null,
+      values: null,
+      markPoint: null
     };
   }
 
@@ -54,11 +31,47 @@ class EChartMap extends React.Component {
     this.renderEChartMap();
   }
 
+  eCleanArray(item) {
+    this.data = item;
+    this.data = this.data.qText.replace('[','');
+    this.data = this.data.replace(']','');
+    this.data = this.data.split(',');
+    this.data = [parseFloat(this.data[0]), parseFloat(this.data[1])];
+
+    return this.data;
+  }
+
+  eCreateData(items) {
+    this.routes = [];
+    this.values = [];
+    this.markPoint = {
+        from: [],
+        to: []
+    };
+
+    items.forEach(item => {
+      this.from = this.eCleanArray(item[1]);
+      this.to = this.eCleanArray(item[3]);
+        
+      this.routes.push([this.from, this.to]);
+      this.markPoint.from.push(this.from);
+      this.markPoint.to.push(this.to);
+      this.values.push(item[4].qNum);
+    })
+
+    this.obj.routes = this.routes;
+    this.obj.values = this.values; 
+    this.obj.markPoint = this.markPoint;
+
+    return this.obj;
+  }
+
   renderEChartMap() {
     const { layout } = this.state;
     const element = this.container;
+    // console.log(element);
 
-    const data = EChartMap.eCreateData(layout.qHyperCube.qDataPages[0].qMatrix);
+    const data = this.eCreateData(layout.qHyperCube.qDataPages[0].qMatrix);
     const myChart = echarts.init(element);
     const option = {
       title: {
@@ -176,4 +189,5 @@ class EChartMap extends React.Component {
 EChartMap.propTypes = {
   layout: PropTypes.object.isRequired
 };
+
 export default EChartMap;

@@ -58,10 +58,10 @@ class eChartSankey extends React.Component {
   }
 
   componentDidMount() {
-    this.renderEChartMap();
+    this.renderEChartSankey();
   }
 
-  renderEChartMap() {
+  renderEChartSankey() {
     const { layout } = this.state;
     const element = this.container;
 
@@ -137,7 +137,7 @@ class eChartSankey extends React.Component {
       console.log('eChartSankey options invalid');
     }
 
-  }
+  };
 
   render() {
     return (

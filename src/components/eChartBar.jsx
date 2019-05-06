@@ -10,8 +10,22 @@ import "echarts/lib/component/legend";
 
 class eChartBar extends React.Component {
 
-  static eCreateData(items) {
-    const dims = [];
+  constructor(props) {
+    super(props);
+    this.state = {
+      layout: props.layout
+    };
+  }
+
+  componentDidMount() {
+    this.renderEChartBar()
+  }
+
+  renderEChartBar() {
+    
+    const { layout } = this.state;
+    const items = layout.qHyperCube.qDataPages[0];
+    const dims = []; 
     const values = [];
 
     for (let r = 0; r < items.qMatrix.length; r++) {
@@ -27,30 +41,12 @@ class eChartBar extends React.Component {
       }
     }
 
-    return {
+    const data = {
       dims,
       values
     }
-  
-  }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      layout: props.layout
-    };
-  }
-
-  componentDidMount() {
-    this.renderEChartMap();
-  }
-
-  renderEChartMap() {
-    const { layout } = this.state;
     const element = this.container;
-
-    const data = eChartBar.eCreateData(layout.qHyperCube.qDataPages[0]);
-
     const myChart = echarts.init(element);
 
     const option = {
@@ -127,7 +123,6 @@ class eChartBar extends React.Component {
                   }
               }
           },
-
           data: data.values,
           type: "bar"
       }]
@@ -140,9 +135,14 @@ class eChartBar extends React.Component {
       console.log('eChartBar options invalid');
     }
 
+    // eslint-disable-next-line no-console
+    console.log('data', data);
+    // eslint-disable-next-line no-console
+    console.log('layout', layout);
+
   }
 
-  render() {
+  render() { 
     return (
       <div
         className="echart-bar"
