@@ -8,11 +8,10 @@ import "echarts/lib/component/dataZoom";
 import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "./eChartLine.css";
-import { defLineChart } from "../definitions";
-import QlikService from "../qlik/service";
+import { defLineChart } from "../../definitions";
+import QlikService from "../../qlik/service";
 
 class EchartLine extends React.Component {
-
   componentDidMount() {
     this.createChart();
     window.addEventListener("resize", this.resizeChart.bind(this));
@@ -55,8 +54,7 @@ class EchartLine extends React.Component {
     };
   };
 
-
-  updateChart = (props) => {
+  updateChart = props => {
     if (!props) {
       return null;
     }
@@ -66,7 +64,7 @@ class EchartLine extends React.Component {
   };
 
   makeChartOptions = () => {
-    const {lineChartLayout} = this.state;
+    const { lineChartLayout } = this.state;
     const data = this.eCreateData(lineChartLayout.qHyperCube.qDataPages[0]);
 
     const option = {
@@ -86,16 +84,16 @@ class EchartLine extends React.Component {
         }
       },
       toolbox: {
-        show : true,
+        show: true,
         showTitle: false,
-        orient: 'horizontal',
-        feature : {
-            mark : {show: true, showTitle: false},
-            magicType: {show: true, type: ['line', 'bar'],showTitle: false},
-            saveAsImage : {show: true,showTitle: false}
+        orient: "horizontal",
+        feature: {
+          mark: { show: true, showTitle: false },
+          magicType: { show: true, type: ["line", "bar"], showTitle: false },
+          saveAsImage: { show: true, showTitle: false }
         }
-    },
-    calculable : true,
+      },
+      calculable: true,
       xAxis: {
         type: "category",
         data: data.dims
@@ -105,12 +103,11 @@ class EchartLine extends React.Component {
       },
       dataZoom: [
         {
-            type: 'slider',
-            show: true,
-            start:60,
-            end: 100,
-            pos:6          
-            
+          type: "slider",
+          show: true,
+          start: 60,
+          end: 100,
+          pos: 6
         }
       ],
       series: [
@@ -135,24 +132,24 @@ class EchartLine extends React.Component {
     return option;
   };
 
-  async createChart () {
-    const {app, field, value} = this.props;
+  async createChart() {
+    const { app, field, value } = this.props;
     const element = this.container;
     this.lineChart = echarts.init(element);
-    const qlikObject = await QlikService.createSessionObject(app, defLineChart(field, value));
+    const qlikObject = await QlikService.createSessionObject(
+      app,
+      defLineChart(field, value)
+    );
     this.setState({
       lineChartLayout: qlikObject.layout
-    })
+    });
     this.updateChart(this.props);
-  };
-
-    /**
-   * Calculate & Update state of new dimensions
-   */
-  resizeChart() {
-    if(this.lineChart != null && this.lineChart !== undefined){
-      this.lineChart.resize();
   }
+
+  resizeChart() {
+    if (this.lineChart != null && this.lineChart !== undefined) {
+      this.lineChart.resize();
+    }
   }
 
   render() {
@@ -169,7 +166,7 @@ class EchartLine extends React.Component {
 
 EchartLine.propTypes = {
   app: PropTypes.object.isRequired,
-  field: PropTypes.string,
+  field: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired
 };
 

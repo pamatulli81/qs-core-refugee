@@ -9,13 +9,16 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { withStyles } from "@material-ui/core";
-import EChartLine from "./eChartLine";
+import EChartLine from "../chart/eChartLine";
+import EChartSankey from "../chart/eChartSankey";
+import IconLineChart from "../icon/iconLineChart";
+import IconSankeyChart from "../icon/iconSankeyChart";
 import "./chartDialog.css";
 
 const styles = {
   dialogPaper: {
-    minHeight: "70vh",
-    maxHeight: "70vh",
+    minHeight: "80vh",
+    maxHeight: "80vh",
     minWidth: "80vw",
     maxWidth: "80vw",
     padding: "0 !important",
@@ -49,38 +52,12 @@ class ResponsiveDialog extends React.Component {
     this.setState({ open: false });
   };
 
-  getIcon = iconType => {
-    switch (iconType) {
+  getIcon = type => {
+    switch (type) {
       case "LineChart":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-          >
-            <title>Line Chart</title>
-
-            <path fill="white" opacity=".6" d="M0 0h24v24H0V0z" />
-            <path d="M13.5 13.48l-4-4L2 16.99l1.5 1.5 6-6.01 4 4L22 6.92l-1.41-1.41z" />
-          </svg>
-        );
-      case "ScatterChart":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-          >
-            <title>Scatter Chart</title>
-            <path fill="white" opacity=".6" d="M0 0h24v24H0V0z" />
-            <circle opacity=".3" cx="11" cy="6" r="2" />
-            <circle opacity=".3" cx="16.6" cy="17.6" r="2" />
-            <circle opacity=".3" cx="7" cy="14" r="2" />
-            <path d="M7 10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm8-10c0-2.21-1.79-4-4-4S7 3.79 7 6s1.79 4 4 4 4-1.79 4-4zm-4 2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5.6 5.6c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
-          </svg>
-        );
+        return <IconLineChart />;
+      case "SankeyChart":
+        return <IconSankeyChart />;
 
       default:
         return "";
@@ -88,16 +65,25 @@ class ResponsiveDialog extends React.Component {
   };
 
   render() {
-    const { app, iconType, value, classes } = this.props;
+    const { app, type, value, classes } = this.props;
     const { open, countryField, countryValue } = this.state;
 
-    const icon = this.getIcon(iconType);
-    let lineChart;
+    const icon = this.getIcon(type);
+    let chart;
 
     if (countryValue !== undefined) {
-      lineChart = (
-        <EChartLine app={app} field={countryField} value={countryValue} />
-      );
+      switch (type) {
+        case "LineChart":
+          chart = (
+            <EChartLine app={app} field={countryField} value={countryValue} />
+          );
+          break;
+        case "SankeyChart":
+          chart = <EChartSankey app={app} value={countryValue} />;
+          break;
+        default:
+          return "";
+      }
     }
 
     return (
@@ -117,7 +103,7 @@ class ResponsiveDialog extends React.Component {
             classes={{ paper: classes.dialogPaper }}
           >
             <DialogTitle id="responsive-dialog-title">{value}</DialogTitle>
-            <DialogContent>{lineChart}</DialogContent>
+            <DialogContent>{chart}</DialogContent>
             <DialogActions>
               <Button onClick={this.clickCloseHandler} color="default">
                 Close
@@ -131,7 +117,7 @@ class ResponsiveDialog extends React.Component {
 }
 
 ResponsiveDialog.propTypes = {
-  iconType: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   app: PropTypes.object.isRequired,
   value: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired

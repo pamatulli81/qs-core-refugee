@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./filterdropdown.css";
-import QlikService from "../qlik/service";
-import QlikUtil from "../qlik/util";
+import QlikService from "../../qlik/service";
+import QlikUtil from "../../qlik/util";
 
 class FilterDropDown extends React.Component {
   constructor(props) {
@@ -12,11 +12,9 @@ class FilterDropDown extends React.Component {
       layout: props.layout
     };
 
-    /* PAM: Add listener to the model and re-render the layout in case of any state (props) changes which will lead to a re-rendering of the React component */
-    this.selectValueChangeHandler = this.selectValueChangeHandler.bind(this);
+     this.selectValueChangeHandler = this.selectValueChangeHandler.bind(this);
   }
 
-  /* PAM: Definiton of Event Handler */
   selectValueChangeHandler = e => {
     const { model, layout, selectedValueCallback } = this.props;
     const { value } = e.target;
@@ -31,16 +29,15 @@ class FilterDropDown extends React.Component {
     }
   };
 
-  /* PAM: Render React Component */
   render() {
     const { layout } = this.state;
     const { header } = this.props;
 
-    const sStyle = {
+    const styleSelected  = {
       color: "#ffffff"
     };
 
-    const xStyle = {
+    const styleExcluded = {
       color: "#C8C8C8"
     };
 
@@ -53,10 +50,10 @@ class FilterDropDown extends React.Component {
       let style = {};
       let selected = false;
       if (item.qState === "S") {
-        style = sStyle;
+        style = styleSelected;
         selected = true;
       } else if (item.qState === "X") {
-        style = xStyle;
+        style = styleExcluded;
       }
 
       return { style, selected };
@@ -99,7 +96,6 @@ class FilterDropDown extends React.Component {
   }
 }
 
-/* PAM: Property Types validation using the Prop Types Plugin */
 FilterDropDown.propTypes = {
   model: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,

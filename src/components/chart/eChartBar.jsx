@@ -7,8 +7,7 @@ import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "./eChartBar.css";
 
-class eChartBar extends React.Component {    
-
+class eChartBar extends React.Component {
   componentDidMount() {
     this.createChart();
   }
@@ -24,9 +23,9 @@ class eChartBar extends React.Component {
 
   componentWillUnmount() {
     this.barChart.dispose();
-  } 
+  }
 
-  eCreateData = (items) => {
+  eCreateData = items => {
     const dims = [];
     const values = [];
 
@@ -47,7 +46,7 @@ class eChartBar extends React.Component {
       dims,
       values
     };
-  }
+  };
 
   createChart = () => {
     const element = this.container;
@@ -55,26 +54,27 @@ class eChartBar extends React.Component {
     this.updateChart(this.props);
   };
 
-  updateChart = (props) => {
-   
+  updateChart = props => {
     if (!props) {
       return null;
     }
     const newChartOptions = this.makeChartOptions(props);
     this.barChart.setOption(newChartOptions);
     return this.barChart;
-  }
+  };
 
-  makeChartOptions = (props) => {
-
-    const {layout} = props;
+  makeChartOptions = props => {
+    const { layout } = props;
     const data = this.eCreateData(layout.qHyperCube.qDataPages[0]);
-   
+
     const option = {
+      title: {
+        text: ""
+      },
       grid: {
         left: 5,
         bottom: 0,
-        top: 40,
+        top: 20,
         height: 200,
         containLabel: true
       },
@@ -150,17 +150,25 @@ class eChartBar extends React.Component {
     };
 
     return option;
-  }
+  };
 
   render() {
-   
     return (
-      <div
-        className="echart-bar"
-        ref={elem => {
-          this.container = elem;
-        }}
-      />
+      <div>
+        <a
+          href="https://"
+          className="story-headline-link js-explore"
+        >
+          <span>Last 7 Years Trend</span>
+        </a>
+
+        <div
+          className="echart-bar"
+          ref={elem => {
+            this.container = elem;
+          }}
+        />
+      </div>
     );
   }
 }

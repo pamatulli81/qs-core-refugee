@@ -9,15 +9,15 @@ import {
   defBarChart,
   defCountryList
 } from "../definitions";
-import ToggleButton from "../components/toggleButton";
-import Filterbox from "../components/filterbox";
-import Filterdropdown from "../components/filterdropdown";
-import InfoBoxStats from "../components/primaryInfoBoxStats";
-import HorizontalLine from "../components/horizontalLine";
-import PrimaryInfoBoxNewsSlider from "../components/primaryInfoBoxNewsSlider";
-import PrimaryInfoBoxStories from "../components/primaryInfoBoxStories";
-import PrimaryInfoBoxAbout from "../components/primaryInfoBoxAbout";
-import EChartBar from "../components/eChartBar";
+import ToggleButton from "../components/button/toggleButton";
+import Filterbox from "../components/filter/filterbox";
+import Filterdropdown from "../components/filter/filterdropdown";
+import PrimaryInfoBoxStats from "../components/ui/primaryInfoBoxStats";
+import HorizontalLine from "../components/ui/horizontalLine";
+import PrimaryInfoBoxNewsSlider from "../components/ui/primaryInfoBoxNewsSlider";
+import PrimaryInfoBoxStories from "../components/ui/primaryInfoBoxStories";
+import PrimaryInfoBoxAbout from "../components/ui/primaryInfoBoxAbout";
+import EChartBar from "../components/chart/eChartBar";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
 
@@ -62,6 +62,7 @@ class ArticlePrimaryInfo extends React.Component {
         app,
         defPersonList
       );
+      
       const qlikCountry = await QlikService.createSessionObject(
         app,
         defCountryList
@@ -152,7 +153,7 @@ class ArticlePrimaryInfo extends React.Component {
       toggle
     } = this.state;
 
-    const {app} = this.props
+    const { app, show, onToggleCountry, tgl } = this.props;
 
     if (!loaded) {
       return null;
@@ -162,8 +163,8 @@ class ArticlePrimaryInfo extends React.Component {
       <article id="primaryInfo">
         <div className="info-box stats">
           <ToggleButton
-            toggleValueCallback={this.props.onToggleCountry}
-            toggle={this.props.tgl !== undefined ? this.props.tgl : toggle}
+            toggleValueCallback={onToggleCountry}
+            toggle={tgl !== undefined ? tgl : toggle}
           />
           <HorizontalLine />
           <div className="info-box__form">
@@ -181,26 +182,33 @@ class ArticlePrimaryInfo extends React.Component {
               }
             />
             <HorizontalLine />
-            <InfoBoxStats layout={kpiLayout} />
-            <EChartBar layout={trendLayout} model={trendModel} />
           </div>
-          <HorizontalLine />
-          <Filterbox
-            model={countryModel}
-            layout={countryLayout}
-            name="Country"
-            selectedValueCallback={countryText =>
-              this.selectCountry(countryText)
-            }
-            alwaysOneSelectedValue={false}
-            app={app}
-            field="[Asylum Country]"
-          />
-          <HorizontalLine />
-          <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
-          <PrimaryInfoBoxStories layout={newsFeedLayout} />
-          <PrimaryInfoBoxAbout />
-          <HorizontalLine />
+          {show ? (
+            <div>
+              <PrimaryInfoBoxStats layout={kpiLayout} />
+              <HorizontalLine />
+              <EChartBar layout={trendLayout} model={trendModel} />
+              <HorizontalLine />
+              <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
+              <PrimaryInfoBoxStories layout={newsFeedLayout} />
+              <PrimaryInfoBoxAbout />
+              <HorizontalLine />
+            </div>
+          ) : (
+            <div>
+              <Filterbox
+                model={countryModel}
+                layout={countryLayout}
+                name="Country"
+                selectedValueCallback={countryText =>
+                  this.selectCountry(countryText)
+                }
+                alwaysOneSelectedValue={false}
+                app={app}
+                field="[Asylum Country]"
+              />
+            </div>
+          )}
         </div>
       </article>
     );
@@ -209,7 +217,13 @@ class ArticlePrimaryInfo extends React.Component {
 
 ArticlePrimaryInfo.propTypes = {
   app: PropTypes.object.isRequired,
-  tgl: PropTypes.bool.isRequired
+  show: PropTypes.bool,
+  tgl: PropTypes.bool.isRequired,
+  onToggleCountry: PropTypes.func.isRequired
+};
+
+ArticlePrimaryInfo.defaultProps = {
+  show: false
 };
 
 const mapStateToProps = state => {
@@ -223,6 +237,7 @@ const mapDispatchToProps = dispatch => {
     onToggleCountry: () => dispatch({ type: "TOGGLE" })
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

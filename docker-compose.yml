@@ -2,7 +2,7 @@ version: "2"
 
 services:
   engine:
-    image: qlikcore/engine:12.345.0
+    image: qlikcore/engine:12.368.0
     restart: always
     command: -S AcceptEULA=yes -S DocumentDirectory=/data -S EnableFilePolling=1
     ports:
@@ -10,3 +10,4 @@ services:
       - "19090:9090"
     volumes: 
       - ./data:/data
+      - ./log:/home/nobody/Qlik/Sense/Log

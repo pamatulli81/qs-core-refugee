@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ChartDialog from "./chartDialog";
+import ChartDialog from "../dialog/chartDialog";
 import "./secondaryInfoBoxTable.css";
 
 function SecondaryInfoBoxTable(props) {
   const { app, layout } = props;
 
-  const cellCountry = {
+  const styleCell = {
     size: {
       minWidth: "350px"
     }
   };
-  const span = {
+  const styleSpan = {
     left: {
       float: "left",
       width: "60%"
@@ -41,8 +41,8 @@ function SecondaryInfoBoxTable(props) {
               {r + 1}
             </a>
           </td>
-          <td style={cellCountry.size}>
-            <span style={span.left}>
+          <td style={styleCell.size}>
+            <span style={styleSpan.left}>
               <a
                 data-attribute={`${
                   layout.qHyperCube.qDataPages[0].qMatrix[r][0].qElemNumber
@@ -53,11 +53,11 @@ function SecondaryInfoBoxTable(props) {
                 {layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText}
               </a>
             </span>
-            <span style={span.right}>
-              <ChartDialog app={app} iconType="LineChart" value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
+            <span style={styleSpan.right}>
+              <ChartDialog app={app} type="LineChart" value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
             </span>
-            <span style={span.right}>
-              <ChartDialog app={app} iconType="ScatterChart" value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
+            <span style={styleSpan.right}>
+              <ChartDialog app={app} type="SankeyChart" value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
             </span>
           </td>
           <td className="font-weight--black color-by-typemode">

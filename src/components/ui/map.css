@@ -5,7 +5,8 @@
   margin: 0 auto;
   min-height: 100%;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+ }
 
 .map--desktop {
   display: none;
@@ -13,6 +14,7 @@
   position: fixed;
   width: 100%; 
   visibility: inherit; opacity: 1;
+  overflow-y:scroll
 }
   @media screen and (min-width: 480px) {
     .map--desktop {

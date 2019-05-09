@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./filterbox.css";
-import QlikService from "../qlik/service";
+import QlikService from "../../qlik/service";
 
 class Filterbox extends React.Component {
   constructor(props) {
@@ -12,11 +12,9 @@ class Filterbox extends React.Component {
       selected: []
     };
 
-    /* PAM: Add listener to the model and re-render the layout in case of any state (props) changes which will lead to a re-rendering of the React component */
     props.model.on("changed", () => this.updateLayout());
   }
 
-  /* PAM: Definiton of Event Handler */
   selectValueClickHandler = (dim, i) => {
     const { selected, layout, name } = this.state;
     const { model, selectedValueCallback, alwaysOneSelectedValue } = this.props;
@@ -62,16 +60,15 @@ class Filterbox extends React.Component {
     this.setState({ layout });
   }
 
-  /* PAM: Render React Component */
   render() {
     const { layout } = this.state;
     const { name } = this.props;
 
-    const sStyle = {
+    const styleSelected = {
       color: "#ffffff"
     };
 
-    const xStyle = {
+    const styleExcluded = {
       color: "#C8C8C8"
     };
 
@@ -89,10 +86,10 @@ class Filterbox extends React.Component {
       let style = {};
       let selected = false;
       if (item.qState === "S") {
-        style = sStyle;
+        style = styleSelected;
         selected = true;
       } else if (item.qState === "X") {
-        style = xStyle;
+        style = styleExcluded;
       }
 
       return { style, selected };

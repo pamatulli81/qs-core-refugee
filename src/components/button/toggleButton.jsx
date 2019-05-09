@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./toggleButton.css";
-import qlikCore from "../resources/qlikcore-logo.svg";
+import qlikCore from "../../resources/qlikcore-logo.svg";
 
 class ToggleButton extends React.Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class ToggleButton extends React.Component {
     this.selectToggleChangeHandler = this.selectToggleChangeHandler.bind(this);
   }
 
-  /* PAM: Definiton of Event Handler */
   selectToggleChangeHandler = e => {
     const { checked, value, type } = e.target;
     const { toggleValueCallback } = this.props;
@@ -27,7 +26,6 @@ class ToggleButton extends React.Component {
     }
   };
 
-  /* PAM: Render React Component */
   render() {
     
     const checkbox = (
@@ -60,7 +58,6 @@ class ToggleButton extends React.Component {
   }
 }
 
-/* PAM: Property Types validation using the Prop Types Plugin */
 ToggleButton.propTypes = {
   toggleValueCallback: PropTypes.func,
   toggle: PropTypes.bool.isRequired

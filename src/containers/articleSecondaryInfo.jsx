@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { defKpiMain, defRefugeeTable } from "../definitions";
 import store from '../store/store';
-import SecondaryInfoBoxMain from "../components/secondaryInfoBoxMain";
-import SecondaryInfoBoxTable from "../components/secondaryInfoBoxTable";
+import SecondaryInfoBoxMain from "../components/ui/secondaryInfoBoxMain";
+import SecondaryInfoBoxTable from "../components/ui/secondaryInfoBoxTable";
 import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
 
@@ -94,7 +94,8 @@ class ArticleSecondaryInfo extends React.Component {
         opacity: 1,
         transform: "matrix(1, 0, 0, 1, 0, 0)",
         height: "100vh",
-        filter: "blur(0px)"
+        filter: "blur(0px)",
+        overflowY: "scroll"
       }
     };
 

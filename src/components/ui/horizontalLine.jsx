@@ -1,10 +1,11 @@
 import React from "react";
 import './horizontalLine.css';
 
-export default function horizontalLine() {
+function horizontalLine() {
   
   return (
     <aside className="info-box-line" />
   );
 }
 
+export default horizontalLine;

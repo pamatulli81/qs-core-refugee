@@ -1,6 +1,6 @@
 .filterbox {
   width: 100%;
-  height: 70%;
+  height: 80vh;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -17,7 +17,7 @@
   flex: 1 1 auto;
   margin-bottom: 8px;
   padding: 5px 0;
-  height: 250px; 
+  height: 100vh; 
   overflow-y: auto;
 }
 
