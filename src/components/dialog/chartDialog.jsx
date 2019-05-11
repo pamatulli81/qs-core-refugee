@@ -13,6 +13,7 @@ import EChartLine from "../chart/eChartLine";
 import EChartSankey from "../chart/eChartSankey";
 import IconLineChart from "../icon/iconLineChart";
 import IconSankeyChart from "../icon/iconSankeyChart";
+import {LABEL_BUTTON_CLOSE, TOOLTIP_ICON_LINE, TOOLTIP_ICON_SANKEY} from "../../constants";
 import "./chartDialog.css";
 
 const styles = {
@@ -55,9 +56,9 @@ class ResponsiveDialog extends React.Component {
   getIcon = type => {
     switch (type) {
       case "LineChart":
-        return <IconLineChart />;
+        return <IconLineChart tooltip={TOOLTIP_ICON_LINE} />;
       case "SankeyChart":
-        return <IconSankeyChart />;
+        return <IconSankeyChart tooltip={TOOLTIP_ICON_SANKEY} />;
 
       default:
         return "";
@@ -106,7 +107,7 @@ class ResponsiveDialog extends React.Component {
             <DialogContent>{chart}</DialogContent>
             <DialogActions>
               <Button onClick={this.clickCloseHandler} color="default">
-                Close
+                {LABEL_BUTTON_CLOSE}
               </Button>
             </DialogActions>
           </Dialog>

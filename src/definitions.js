@@ -104,7 +104,7 @@ export const defLineChart = (field = "[Origin Country]", value = "*") => {
             }
           },
           qDef: {
-            qDef: `Sum({<Year=, ${field}={"${value}"}>}[PersonCount])`,
+            qDef: `Sum({<Year={"<=$(=Max(Year))"}, ${field}={"${value}"}>}[PersonCount])`,
             qLabel: "Person"
           }
         }

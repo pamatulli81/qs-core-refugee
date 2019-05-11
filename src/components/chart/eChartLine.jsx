@@ -31,7 +31,7 @@ class EchartLine extends React.Component {
     window.removeEventListener("resize", this.resizeChart.bind(this));
   }
 
-  eCreateData = items => {
+  transformData = items => {
     const dims = [];
     const values = [];
 
@@ -65,7 +65,7 @@ class EchartLine extends React.Component {
 
   makeChartOptions = () => {
     const { lineChartLayout } = this.state;
-    const data = this.eCreateData(lineChartLayout.qHyperCube.qDataPages[0]);
+    const data = this.transformData(lineChartLayout.qHyperCube.qDataPages[0]);
 
     const option = {
       grid: {

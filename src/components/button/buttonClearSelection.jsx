@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React from "react";
-import "./horizontalLine.css";
+import "../ui/horizontalLine.css";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";

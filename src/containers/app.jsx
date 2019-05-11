@@ -7,6 +7,7 @@ import enigmaConfig from "../enigma-config";
 import Map from "../components/ui/map";
 import "./app.css";
 import "./fonts.css";
+import {APP_NAME, ERROR_ENGINE, ERROR_UI_MESSAGE} from "../constants";
 
 class App extends Component {
   constructor(props) {
@@ -23,12 +24,11 @@ class App extends Component {
     const session = enigma.create(enigmaConfig);
     try {
       const global = await session.open();
-      const docs = await global.getDocList();
-
+      
       const app =
         process.env.NODE_ENV === "production"
           ? await global.getActiveDoc()
-          : await global.openDoc("Refugees.qvf");
+          : await global.openDoc(`${APP_NAME}`);
 
       this.setState({
         app
@@ -46,17 +46,17 @@ class App extends Component {
 
   render() {
     const { error, app, show } = this.state;
-    let articlePrimaryInfo;
+    
     let articleSecondaryInfo;
 
     if (error) {
       const msg =
         error instanceof Event
-          ? "Failed to establish a connection to an Engine"
+          ? `${ERROR_ENGINE}`
           : error.message;
       return (
         <div className="errorWrapper">
-          <span className="errorText">Oops, something went wrong.</span>
+          <span className="errorText">{ERROR_UI_MESSAGE}</span>
           <span>{msg}</span>
         </div>
       );

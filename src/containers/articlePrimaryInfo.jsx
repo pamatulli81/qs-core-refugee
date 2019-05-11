@@ -20,6 +20,7 @@ import PrimaryInfoBoxAbout from "../components/ui/primaryInfoBoxAbout";
 import EChartBar from "../components/chart/eChartBar";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
+import {ACTION_TOGGLE, FILTER_COUNTRY_NAME, FIELD_ASYLUM} from "../constants";
 
 class ArticlePrimaryInfo extends React.Component {
   constructor(...args) {
@@ -176,7 +177,6 @@ class ArticlePrimaryInfo extends React.Component {
             <Filterdropdown
               model={personModel}
               layout={personLayout}
-              header="Select a Person"
               selectedValueCallback={personText =>
                 this.selectedPerson(personText)
               }
@@ -199,13 +199,13 @@ class ArticlePrimaryInfo extends React.Component {
               <Filterbox
                 model={countryModel}
                 layout={countryLayout}
-                name="Country"
+                name={FILTER_COUNTRY_NAME}
                 selectedValueCallback={countryText =>
                   this.selectCountry(countryText)
                 }
                 alwaysOneSelectedValue={false}
                 app={app}
-                field="[Asylum Country]"
+                field={FIELD_ASYLUM}
               />
             </div>
           )}
@@ -234,7 +234,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onToggleCountry: () => dispatch({ type: "TOGGLE" })
+    onToggleCountry: () => dispatch({ type: `${ACTION_TOGGLE}` })
   };
 };
 

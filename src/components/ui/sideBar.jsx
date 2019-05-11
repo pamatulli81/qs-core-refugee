@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import IconGear from "../icon/iconGear";
 import "./sideBar.css";
+import {TOOLTIP_MAP} from "../../constants";
 
 class SideBar extends Component {
   constructor() {
@@ -30,7 +31,7 @@ class SideBar extends Component {
       <div className="map-config">
         <div className="spin-icon">
           <span onClick={this.showMapClickHandler}>
-            <IconGear />
+            <IconGear tooltip={TOOLTIP_MAP}/>
           </span>
         </div>
       </div>

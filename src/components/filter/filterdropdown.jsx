@@ -105,7 +105,7 @@ FilterDropDown.propTypes = {
 
 FilterDropDown.defaultProps = {
   selectedValueCallback: null,
-  header: ""
+  header: "Select from List"
 };
 
 export default FilterDropDown;

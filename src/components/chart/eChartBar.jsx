@@ -6,6 +6,7 @@ import "echarts/lib/component/tooltip";
 import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "./eChartBar.css";
+import {LABEL_TREND_YEARS, TOOLTIP_NR_OF, TOOLTIP_YEAR, LABEL_LOADING} from "../../constants";
 
 class eChartBar extends React.Component {
   componentDidMount() {
@@ -25,7 +26,7 @@ class eChartBar extends React.Component {
     this.barChart.dispose();
   }
 
-  eCreateData = items => {
+  transformData = items => {
     const dims = [];
     const values = [];
 
@@ -65,7 +66,7 @@ class eChartBar extends React.Component {
 
   makeChartOptions = props => {
     const { layout } = props;
-    const data = this.eCreateData(layout.qHyperCube.qDataPages[0]);
+    const data = this.transformData(layout.qHyperCube.qDataPages[0]);
 
     const option = {
       title: {
@@ -98,9 +99,9 @@ class eChartBar extends React.Component {
           fontSize: 12
         },
         formatter(params, ticket, callback) {
-          let res = `Year : ${params[0].name}`;
+          let res = `${TOOLTIP_YEAR} : ${params[0].name}`;
           for (let i = 0, l = params.length; i < l; i++) {
-            res += `${"<br/># of Person : "}${parseInt(
+            res += `${`<br/> ${TOOLTIP_NR_OF} : `}${parseInt(
               params[i].value,
               10
             ).toLocaleString()}`;
@@ -108,7 +109,7 @@ class eChartBar extends React.Component {
           setTimeout(() => {
             callback(ticket, res);
           }, 200);
-          return "...loading";
+          return `${LABEL_LOADING}`
         }
       },
       xAxis: {
@@ -159,7 +160,7 @@ class eChartBar extends React.Component {
           href="https://"
           className="story-headline-link js-explore"
         >
-          <span>Last 7 Years Trend</span>
+          <span>{LABEL_TREND_YEARS}</span>
         </a>
 
         <div

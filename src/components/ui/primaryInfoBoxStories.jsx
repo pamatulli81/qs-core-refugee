@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./primaryInfoBoxStories.css";
+import {LABEL_LEARN_WHY, LABEL_READ_MORE} from "../../constants";
 
 function PrimaryInfoBoxStories(props) {
   const { nbrOfStories, layout } = props;
@@ -32,7 +33,7 @@ function PrimaryInfoBoxStories(props) {
               {layout.qHyperCube.qDataPages[0].qMatrix[r][2].qText}
             </h4>
             <p>{layout.qHyperCube.qDataPages[0].qMatrix[r][3].qText}</p>
-            <span className="story-headline-link"> Read more </span>
+            <span className="story-headline-link"> {LABEL_READ_MORE} </span>
           </a>
         </li>
       );
@@ -46,7 +47,7 @@ function PrimaryInfoBoxStories(props) {
       data-3dhover=""
       style={styleContent.transform}
     >
-      <aside className="info-label-slider">Learn Why</aside>
+      <aside className="info-label-slider">{LABEL_LEARN_WHY}</aside>
       <ul id="story-head" className="list-reset">
         {createStoriesItem()}
       </ul>

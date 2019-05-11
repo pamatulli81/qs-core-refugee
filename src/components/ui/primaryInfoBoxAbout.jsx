@@ -1,5 +1,6 @@
 import React from "react";
 import "./primaryInfoBoxAbout.css";
+import {LABEL_ABOUT} from "../../constants";
 
 export default function PrimaryInfoBoxAbout() {
  
@@ -15,7 +16,7 @@ export default function PrimaryInfoBoxAbout() {
       data-3dhover=""
       style={styleContent.transform}
     >
-      <aside className="info-about-label">About</aside>
+      <aside className="info-about-label">{LABEL_ABOUT}</aside>
 
       <div className="info-about-body">
         <p>

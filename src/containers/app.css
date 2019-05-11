@@ -148,78 +148,6 @@ body {
       height: 16px;
       width: 12px; } }
 
-.button--round {
-  border-radius: 50%;
-  height: 35px;
-  transition: opacity 0.2s;
-  width: 35px; }
-  .button--round svg,
-  .button--round img {
-    height: 100%;
-    width: 100%; }
-  .button--round:hover {
-    cursor: pointer;
-    opacity: 0.8; }
-  .button--round.disabled {
-    opacity: 0;
-    pointer-events: none; }
-  @media screen and (min-width: 768px) {
-    .button--round {
-      height: 40px;
-      width: 40px; } }
-
-.button--round--lg {
-  height: 50px;
-  width: 50px; }
-  @media screen and (min-width: 768px) {
-    .button--round--lg {
-      height: 60px;
-      width: 60px; } }
-
-.button--round--sm {
-  height: 30px;
-  width: 30px; }
-  @media screen and (min-width: 768px) {
-    .button--round--sm {
-      height: 32px;
-      width: 32px; } }
-
-.button--link {
-  color: #6D7988;
-  font-size: 0.75em;
-  font-weight: 100;
-  opacity: 1;
-  text-transform: uppercase;
-  transition: opacity 0.2s; }
-  .button--link:hover {
-    opacity: 0.5; }
-  .button--link span {
-    position: relative; }
-    .button--link span:after {
-      background: #6D7988;
-      bottom: 0;
-      content: '';
-      height: 1px;
-      left: 0;
-      position: absolute;
-      right: 0; }
-
-.zoom-buttons {
-  bottom: 1em;
-  display: none;
-  flex-direction: column;
-  position: fixed;
-  right: 1em;
-  transition: opacity 0.2s;
-  opacity: 0; }
-  .zoom-buttons button {
-    margin-bottom: 10px; }
-  .zoom-buttons button:last-child {
-    margin-bottom: 0; }
-  @media screen and (min-width: 480px) {
-    .zoom-buttons {
-      display: flex; } }
-
 #map-page {
   position: absolute;
   top: 0px;
@@ -360,53 +288,6 @@ line.link-hitarea {
   stroke: #8bc34a;
   stroke-opacity: 0; }
 
-.asylum .togglecolor {
-  fill: #00d7ed; }
-
-#tempCountrySelect {
-  display: none; }
-
-[data-country-selected="false"] ~ .info-grid #oppositeCountryCount {
-  display: block; }
-
-[data-country-selected="true"] ~ .info-grid #countryCount {
-  display: block; }
-
-[data-country-selected="true"] ~ .info-grid #oppositeCountryCount {
-  display: none; }
-
-.button-zoom-out {
-  display: block;
-  width: 50px;
-  height: 50px;
-  background-color: transparent;
-  border: 0;
-  opacity: 0;
-  cursor: pointer;
-  position: fixed;
-  top: 3em;
-  right: 3em; }
-  .button-zoom-out svg {
-    height: 100%;
-    width: 100%; }
-    .button-zoom-out svg .togglecolor {
-      fill: #8bc34a; }
-      .asylum .button-zoom-out svg .togglecolor {
-        fill: #00d7ed; }
-
-button.play .pause {
-  display: none; }
-
-button.play .play {
-  display: block; }
-
-button.pause:not(.play) {
-  -webkit-animation: blink 1s infinite alternate;
-          animation: blink 1s infinite alternate; }
-  button.pause:not(.play) .play {
-    display: none; }
-  button.pause:not(.play) .pause {
-    display: block; }
 
 @-webkit-keyframes blink {
   from {

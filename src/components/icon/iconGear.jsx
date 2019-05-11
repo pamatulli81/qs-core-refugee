@@ -1,11 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./iconGear.css";
 
-function iconGear() {
+function iconGear(props) {
   const styleGlobe = {
     backgroundColor: "none"
   }
+  const {tooltip} = props;
+
   return (
+    
     <svg
       width="24px"
       height="24px"
@@ -15,7 +19,7 @@ function iconGear() {
       className="lds-globe"
       style={styleGlobe}
     >
-      <title id="title" lang="en">Change View</title>
+      <title id="title" lang="en">{tooltip}</title>
       <g transform="rotate(-23.5 50 50)">
         <circle
           cx="50"
@@ -86,8 +90,7 @@ function iconGear() {
           <animate
             attributeName="rx"
             calcMode="linear"
-            values="40;0;40"
-           
+            values="40;0;40"           
             dur="1"
             begin="-0.6667s"
             repeatCount="indefinite"
@@ -97,5 +100,13 @@ function iconGear() {
     </svg>
   );
 }
+
+iconGear.propTypes = {
+  tooltip: PropTypes.string
+};
+
+iconGear.defaultProps = {
+  tooltip: ""
+};
 
 export default iconGear;

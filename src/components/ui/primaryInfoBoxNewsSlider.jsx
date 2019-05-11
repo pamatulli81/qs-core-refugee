@@ -2,6 +2,7 @@ import React from "react";
 import Flickity from "react-flickity-component";
 import PropTypes from "prop-types";
 import "./primaryInfoBoxNewsSlider.css";
+import {LABEL_STORIES} from "../../constants";
 
 function PrimaryInfoBoxNewsSlider(props) {
   const { nbrOfNews, layout } = props;
@@ -57,7 +58,7 @@ function PrimaryInfoBoxNewsSlider(props) {
       data-3dhover=""
       style={styleContent.transform}
     >
-      <aside className="info-label-slider">Refugee Stories</aside>
+      <aside className="info-label-slider">{LABEL_STORIES}</aside>
       <div id="feed">
         <Flickity>{createNewsItem()}</Flickity>
       </div>

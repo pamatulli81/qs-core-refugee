@@ -6,6 +6,7 @@ import SecondaryInfoBoxMain from "../components/ui/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/ui/secondaryInfoBoxTable";
 import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
+import {FIELD_ORIGIN, FIELD_ASYLUM} from "../constants";
 
 class ArticleSecondaryInfo extends React.Component {
 
@@ -27,7 +28,7 @@ class ArticleSecondaryInfo extends React.Component {
       if(tableModel!==undefined){
       
         const checked = store.getState().toggle;
-        const dimCountry = checked ? '[Asylum Country]' : '[Origin Country]';
+        const dimCountry = checked ? `${FIELD_ASYLUM}` : `${FIELD_ORIGIN}`;
       
         QlikService.applyPatches(
           tableModel,
