@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import React from "react";
 import PropTypes from "prop-types";
-import { defKpiMain, defRefugeeTable, defMapChart, defSankeyChart } from "../definitions"; // defSankeyChart
+import { defKpiMain, defRefugeeTable, defSankeyChart } from "../definitions"; 
 import store from '../store/store';
 import SecondaryInfoBoxMain from "../components/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/secondaryInfoBoxTable";
-import EChartMap from '../components/eChartMap';
+// import EChartMap from '../components/eChartMap';
 import EChartSankey from '../components/eChartSankey';
 import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
@@ -22,7 +22,7 @@ class ArticleSecondaryInfo extends React.Component {
     this.createModel();
     this.unsubscribe = store.subscribe(() => {
       
-      const { tableModel } = this.state;
+      const { tableModel, sankeyModel } = this.state;
 
       if(tableModel!==undefined){
       
@@ -36,6 +36,27 @@ class ArticleSecondaryInfo extends React.Component {
           dimCountry
         );
 
+      }  
+
+      if(sankeyModel!==undefined){
+      
+        const checked = store.getState().toggle;
+        const dimTarget = checked ? 'target' : 'source';
+        const dimSource = checked ? 'source' : 'target';
+
+        QlikService.applyPatches(
+          sankeyModel,
+          "replace",
+          "/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0",
+          dimTarget
+        );
+
+        QlikService.applyPatches(
+          sankeyModel,
+          "replace",
+          "/qHyperCubeDef/qDimensions/1/qDef/qFieldDefs/0",
+          dimSource
+        );
 
       }  
     });
@@ -55,16 +76,11 @@ class ArticleSecondaryInfo extends React.Component {
       const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable);
       qlikTable.model.on("changed", () => this.updateTable());
 
-      const eChartMap = await QlikService.createSessionObject(app, defMapChart);
-      eChartMap.model.on("changed", () => this.updateMap());
-
       const eChartSankey = await QlikService.createSessionObject(app, defSankeyChart);
       eChartSankey.model.on("changed", () => this.updateSankey());
       
 
       this.setState({
-        mapModel: eChartMap.model,
-        mapLayout: eChartMap.layout,
         sankeyModel: eChartSankey.model,
         sankeyLayout: eChartSankey.layout,
         tableModel: qlikTable.model,
@@ -95,14 +111,6 @@ class ArticleSecondaryInfo extends React.Component {
     });
   }
 
-  async updateMap() {
-    const { mapModel } = this.state;
-    const mapLayout = await mapModel.getLayout();
-    this.setState({
-      mapLayout
-    });
-  }
-
   async updateSankey() {
     const { sankeyModel } = this.state;
     const sankeyLayout = await sankeyModel.getLayout();
@@ -112,7 +120,7 @@ class ArticleSecondaryInfo extends React.Component {
   }
   
   render() {
-    const { kpiLayout, tableLayout, mapLayout, sankeyLayout, loaded } = this.state;
+    const { kpiLayout, tableLayout, sankeyLayout, loaded } = this.state;
     const { app } = this.props;
    
     const style = {
@@ -134,7 +142,6 @@ class ArticleSecondaryInfo extends React.Component {
       <article id="secondaryInfo">
         <section className="explore-data in" style={style.section}>
           <EChartSankey layout={sankeyLayout} />
-          <EChartMap layout={mapLayout} />
           <SecondaryInfoBoxMain layout={kpiLayout} />
           <SecondaryInfoBoxTable app={app} layout={tableLayout} />
         </section>
