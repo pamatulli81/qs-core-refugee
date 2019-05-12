@@ -2,7 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { defKpiMain, defRefugeeTable, defMapChart, defSankeyChart } from "../definitions"; // defSankeyChart
-import { defKpiMain, defRefugeeTable } from "../definitions";
 import store from '../store/store';
 import SecondaryInfoBoxMain from "../components/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/secondaryInfoBoxTable";
@@ -21,9 +20,6 @@ class ArticleSecondaryInfo extends React.Component {
 
   componentDidMount() {
     this.createModel();
-  }
-
-  componentDidMount(){
     this.unsubscribe = store.subscribe(() => {
       
       const { tableModel } = this.state;
@@ -59,8 +55,6 @@ class ArticleSecondaryInfo extends React.Component {
       const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable);
       qlikTable.model.on("changed", () => this.updateTable());
 
-      // const mapObj = await QlikService.createSessionObject(app, defMapChart);
-
       const eChartMap = await QlikService.createSessionObject(app, defMapChart);
       eChartMap.model.on("changed", () => this.updateMap());
 
@@ -69,10 +63,6 @@ class ArticleSecondaryInfo extends React.Component {
       
 
       this.setState({
-        tableModel: table.model,
-        tableLayout: table.layout,
-        kpiModel: kpi.model,
-        kpiLayout: kpi.layout,
         mapModel: eChartMap.model,
         mapLayout: eChartMap.layout,
         sankeyModel: eChartSankey.model,

@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './eChartMap.css';
-
 import * as echarts from 'echarts';
 import 'echarts/lib/chart/lines';
 import 'echarts-gl';
@@ -11,68 +9,76 @@ import 'echarts/map/js/world';
 
 class EChartMap extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      layout: props.layout
-    };
-
-    this.routes = null;
-    this.values = null;
-    this.markPoint = null;
-    this.obj = {
-      routes: null,
-      values: null,
-      markPoint: null
-    };
-  }
-
   componentDidMount() {
-    this.renderEChartMap();
+    this.createChart();
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    this.updateChart(nextProps);
   }
 
-  eCleanArray(item) {
-    this.data = item;
-    this.data = this.data.qText.replace('[','');
-    this.data = this.data.replace(']','');
-    this.data = this.data.split(',');
-    this.data = [parseFloat(this.data[0]), parseFloat(this.data[1])];
-
-    return this.data;
+  // eslint-disable-next-line no-unused-vars
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
   }
 
-  eCreateData(items) {
-    this.routes = [];
-    this.values = [];
-    this.markPoint = {
+  componentWillUnmount() {
+    this.mapChart.dispose();
+  }
+ 
+
+  eCleanArray = item => {
+    let data = item;
+    data = data.qText.replace('[','');
+    data = data.replace(']','');
+    data = data.split(',');
+    data = [parseFloat(data[0]), parseFloat(data[1])];
+
+    return data;
+  }
+
+  eCreateData = items => {
+    const obj = {
+      routes: [],
+      values: [],
+      markPoint: {
         from: [],
         to: []
-    };
+      }
+    }
 
     items.forEach(item => {
-      this.from = this.eCleanArray(item[1]);
-      this.to = this.eCleanArray(item[3]);
+      const from = this.eCleanArray(item[1]);
+      const to = this.eCleanArray(item[3]);
         
-      this.routes.push([this.from, this.to]);
-      this.markPoint.from.push(this.from);
-      this.markPoint.to.push(this.to);
-      this.values.push(item[4].qNum);
+      obj.routes.push([from, to]);
+      obj.markPoint.from.push(from);
+      obj.markPoint.to.push(to);
+      obj.values.push(item[4].qNum);
     })
 
-    this.obj.routes = this.routes;
-    this.obj.values = this.values; 
-    this.obj.markPoint = this.markPoint;
-
-    return this.obj;
+    return obj;
   }
 
-  renderEChartMap() {
-    const { layout } = this.state;
+  createChart = () => {
     const element = this.container;
-    // console.log(element);
+    this.mapChart = echarts.init(element);
+    this.updateChart(this.props);
+  };
 
+  updateChart = (props) => {
+    if (!props) {
+      return null;
+    }
+    const newChartOptions = this.makeChartOptions(props);
+    this.mapChart.setOption(newChartOptions);
+    return this.mapChart;
+  };
+
+  makeChartOptions = (props) => {
+    const { layout } = props;
     const data = this.eCreateData(layout.qHyperCube.qDataPages[0].qMatrix);
-    const myChart = echarts.init(element);
+    
     const option = {
       title: {
             text: '',
@@ -165,13 +171,7 @@ class EChartMap extends React.Component {
         }]
     };
 
-    if (option && typeof option === "object") {
-      myChart.setOption(option, true);
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('eChartMap options invalid');
-    }
-
+    return option;
   }
 
   render() {
@@ -185,9 +185,5 @@ class EChartMap extends React.Component {
     );
   }
 }
-
-EChartMap.propTypes = {
-  layout: PropTypes.object.isRequired
-};
 
 export default EChartMap;

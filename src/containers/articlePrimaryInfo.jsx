@@ -153,7 +153,7 @@ class ArticlePrimaryInfo extends React.Component {
       toggle
     } = this.state;
 
-    const {app} = this.props
+    const {app, onToggleCountry, tgl} = this.props
 
     if (!loaded) {
       return null;
@@ -163,8 +163,8 @@ class ArticlePrimaryInfo extends React.Component {
       <article id="primaryInfo">
         <div className="info-box stats">
           <ToggleButton
-            toggleValueCallback={this.props.onToggleCountry}
-            toggle={this.props.tgl !== undefined ? this.props.tgl : toggle}
+            toggleValueCallback={onToggleCountry}
+            toggle={tgl !== undefined ? tgl : toggle}
           />
           <HorizontalLine />
           <div className="info-box__form">

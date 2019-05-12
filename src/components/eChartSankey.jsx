@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './eChartSankey.css';
-
 import * as echarts from "echarts/lib/echarts";
 import "echarts/lib/chart/sankey";
 import "echarts/lib/component/tooltip";
@@ -10,7 +8,24 @@ import "echarts/lib/component/legend";
 
 class eChartSankey extends React.Component {
 
-  static eCreateNodes(items) {
+  componentDidMount() {
+    this.createChart();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateChart(nextProps);
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
+  }
+
+  componentWillUnmount() {
+    this.sankeyChart.dispose();
+  } 
+
+  eCreateNodes = (items) => {
     const result = [];
     const check = [];
   
@@ -26,11 +41,10 @@ class eChartSankey extends React.Component {
       }
     });
   
-    // check = null;
     return result;
   }
 
-  static eCreateData(items) {
+  eCreateData = (items) => {
     const obj = {};
     const result = [];
   
@@ -45,29 +59,30 @@ class eChartSankey extends React.Component {
     });
   
     obj.links = result;
-    obj.nodes = eChartSankey.eCreateNodes(items);
+    obj.nodes = this.eCreateNodes(items);
   
     return obj;
   }
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      layout: props.layout
-    };
-  }
 
-  componentDidMount() {
-    this.renderEChartSankey();
-  }
-
-  renderEChartSankey() {
-    const { layout } = this.state;
+  createChart = () => {
     const element = this.container;
+    this.sankeyChart = echarts.init(element);
+    this.updateChart(this.props);
+  };
 
-    const data = eChartSankey.eCreateData(layout.qHyperCube.qDataPages[0].qMatrix);
-    const myChart = echarts.init(element);
+  updateChart = (props) => {
+    if (!props) {
+      return null;
+    }
+    const newChartOptions = this.makeChartOptions(props);
+    this.sankeyChart.setOption(newChartOptions);
+    return this.sankeyChart;
+  }
 
+  makeChartOptions = (props) => {
+    const { layout } = props;
+    const data = this.eCreateData(layout.qHyperCube.qDataPages[0].qMatrix);
+    
     const params = {
       height: '90%',
       width: '80%',
@@ -130,12 +145,7 @@ class eChartSankey extends React.Component {
       ]
     };
 
-    if (option && typeof option === "object") {
-      myChart.setOption(option, true);
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('eChartSankey options invalid');
-    }
+    return option;
 
   };
 
@@ -151,7 +161,5 @@ class eChartSankey extends React.Component {
   }
 
 }
-eChartSankey.propTypes = {
-  layout: PropTypes.object.isRequired
-};
+
 export default eChartSankey;

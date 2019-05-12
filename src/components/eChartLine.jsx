@@ -146,7 +146,7 @@ class EchartLine extends React.Component {
     this.updateChart(this.props);
   };
 
-    /**
+  /**
    * Calculate & Update state of new dimensions
    */
   resizeChart() {
