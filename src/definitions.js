@@ -163,42 +163,44 @@ export const defSankeyChart = (value = "*") => {
   };
 };
 
-export const defRefugeeTable = {
-  qInfo: {
-    qType: "RefugeesTable"
-  },
-  qHyperCubeDef: {
-    qInterColumnSortOrder: [1, 2, 0],
-    qDimensions: [
-      {
-        qDef: {
-          qFieldDefs: ["[Asylum Country]"]
-        },
-        qNullSuppression: true
-      }
-    ],
-    qMeasures: [
-      {
-        qDef: {
-          qDef: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`,
-          qLabel: "Sales",
-          autoSort: false
-        },
-        qSortBy: {
-          qSortByNumeric: -1
+export const defRefugeeTable = field => {
+  return {
+    qInfo: {
+      qType: "RefugeesTable"
+    },
+    qHyperCubeDef: {
+      qInterColumnSortOrder: [1, 2, 0],
+      qDimensions: [
+        {
+          qDef: {
+            qFieldDefs: [field]
+          },
+          qNullSuppression: true
         }
-      },
-      {
-        qDef: {
-          qDef: `num(Sum([PersonCount])/Sum(TOTAL [PersonCount])*100,'#,##0.##' , '.' , ',')`,
-          qLabel: "#Orders"
+      ],
+      qMeasures: [
+        {
+          qDef: {
+            qDef: `num(Sum([PersonCount]), '#,##0' , '.' , ',')`,
+            qLabel: "Sales",
+            autoSort: false
+          },
+          qSortBy: {
+            qSortByNumeric: -1
+          }
+        },
+        {
+          qDef: {
+            qDef: `num(Sum([PersonCount])/Sum(TOTAL [PersonCount])*100,'#,##0.##' , '.' , ',')`,
+            qLabel: "#Orders"
+          }
         }
-      }
-    ],
-    qEffectiveInterColumnSortOrder: [1, 2, 0],
-    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 3, qHeight: 3333 }],
-    qSuppressZero: true
-  }
+      ],
+      qEffectiveInterColumnSortOrder: [1, 2, 0],
+      qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 3, qHeight: 3333 }],
+      qSuppressZero: true
+    }
+  };
 };
 
 export const defCurrentSelection = {
@@ -243,7 +245,7 @@ export const defCountryList = {
   },
   qListObjectDef: {
     qDef: {
-      qFieldDefs: ["[Asylum Country]"],
+      qFieldDefs: ["[Origin Country]"],
       autoSort: false,
       qSortCriterias: [
         {

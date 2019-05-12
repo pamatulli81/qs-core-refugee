@@ -27,6 +27,8 @@ class ToggleButton extends React.Component {
   };
 
   render() {
+
+    const{checkboxState} = this.state;
     
     const checkbox = (
       <input
@@ -35,7 +37,7 @@ class ToggleButton extends React.Component {
         className="countryswitch-checkbox"
         type="checkbox"
         onClick={this.selectToggleChangeHandler}
-        defaultChecked={!this.state.checkboxState}
+        defaultChecked={checkboxState}
       />
     );
 

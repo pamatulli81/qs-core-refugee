@@ -6,7 +6,7 @@ import SecondaryInfoBoxMain from "../components/ui/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/ui/secondaryInfoBoxTable";
 import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
-import {FIELD_ORIGIN, FIELD_ASYLUM} from "../constants";
+import {FIELD_ORIGIN_COUNTRY, FIELD_ASYLUM_COUNTRY} from "../constants";
 
 class ArticleSecondaryInfo extends React.Component {
 
@@ -28,7 +28,7 @@ class ArticleSecondaryInfo extends React.Component {
       if(tableModel!==undefined){
       
         const checked = store.getState().toggle;
-        const dimCountry = checked ? `${FIELD_ASYLUM}` : `${FIELD_ORIGIN}`;
+        const dimCountry = checked ? `${FIELD_ORIGIN_COUNTRY}` : `${FIELD_ASYLUM_COUNTRY}`;
       
         QlikService.applyPatches(
           tableModel,
@@ -36,7 +36,6 @@ class ArticleSecondaryInfo extends React.Component {
           "/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0",
           dimCountry
         );
-
 
       }  
     });
@@ -53,7 +52,8 @@ class ArticleSecondaryInfo extends React.Component {
       const qlikKpi = await QlikService.createSessionObject(app, defKpiMain);
       qlikKpi.model.on("changed", () => this.updateInfoBoxMainsKpi());
 
-      const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable);
+      const field = store.getState().toggle ? `${FIELD_ORIGIN_COUNTRY}` : `${FIELD_ASYLUM_COUNTRY}`;;
+      const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable(field));
       qlikTable.model.on("changed", () => this.updateTable());
 
       this.setState({

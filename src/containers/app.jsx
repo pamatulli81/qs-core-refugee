@@ -7,7 +7,7 @@ import enigmaConfig from "../enigma-config";
 import Map from "../components/ui/map";
 import "./app.css";
 import "./fonts.css";
-import {APP_NAME, ERROR_ENGINE, ERROR_UI_MESSAGE} from "../constants";
+import {APP_NAME, ERROR_ENGINE, ERROR_UI_MESSAGE, INITIAL_YEAR, INITIAL_TOGGLE_ORIGIN} from "../constants";
 
 class App extends Component {
   constructor(props) {
@@ -75,7 +75,7 @@ class App extends Component {
         <Map />
         <div className="info-grid">
           <div className="slide-in">
-            <ArticlePrimaryInfo app={app} show={show} />;
+            <ArticlePrimaryInfo app={app} show={show} defaultYear={INITIAL_YEAR} defaultToggleOrigin={INITIAL_TOGGLE_ORIGIN} />;
             {articleSecondaryInfo}
             <SideBar showMapCallback={map => this.showMap(map)} />
           </div>

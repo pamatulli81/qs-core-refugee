@@ -20,7 +20,7 @@ class Filterbox extends React.Component {
     const { model, selectedValueCallback, alwaysOneSelectedValue } = this.props;
 
     if (alwaysOneSelectedValue) {
-      QlikService.selectFromList(model, dim.qElemNumber, false);
+      QlikService.selectFromList(model, [dim.qElemNumber], false);
       selected.length = 0;
       selected.push(dim.qElemNumber);
     } else {
@@ -29,7 +29,7 @@ class Filterbox extends React.Component {
       } else {
         selected.splice(selected.indexOf(dim.qElemNumber), 1);
       }
-      QlikService.selectFromList(model, dim.qElemNumber, true);
+      QlikService.selectFromList(model, [dim.qElemNumber], true);
     }
 
     if (selectedValueCallback) {

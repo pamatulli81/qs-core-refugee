@@ -30,7 +30,7 @@ export default class QlikService {
     static async selectFromList (model, elemNumber, toggle=false){
         return model.selectListObjectValues(
             "/qListObjectDef",
-            [elemNumber],
+            elemNumber,
             toggle
           );
     }

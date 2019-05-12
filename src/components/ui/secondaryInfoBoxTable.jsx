@@ -86,7 +86,6 @@ function SecondaryInfoBoxTable(props) {
   );
 }
 
-/* PAM: Property Types validation using the Prop Types Plugin */
 SecondaryInfoBoxTable.propTypes = {
   app: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired

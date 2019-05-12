@@ -10,22 +10,29 @@ import {
   defCountryList
 } from "../definitions";
 import ToggleButton from "../components/button/toggleButton";
-import Filterbox from "../components/filter/filterbox";
-import Filterdropdown from "../components/filter/filterdropdown";
 import PrimaryInfoBoxStats from "../components/ui/primaryInfoBoxStats";
 import HorizontalLine from "../components/ui/horizontalLine";
 import PrimaryInfoBoxNewsSlider from "../components/ui/primaryInfoBoxNewsSlider";
 import PrimaryInfoBoxStories from "../components/ui/primaryInfoBoxStories";
 import PrimaryInfoBoxAbout from "../components/ui/primaryInfoBoxAbout";
 import EChartBar from "../components/chart/eChartBar";
+import SelectSingleValue from "../components/select/selectSingle";
+import SelectMultipleValue from "../components/select/selectMultiple";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
-import {ACTION_TOGGLE, FILTER_COUNTRY_NAME, FIELD_ASYLUM} from "../constants";
+import {
+  ACTION_TOGGLE,
+  FIELD_YEAR,
+  FIELD_ORIGIN_COUNTRY,
+  FIELD_PERSON_TYPE,
+  MSG_PERSON_LIST,
+  MSG_COUNTRY_LIST
+} from "../constants";
 
 class ArticlePrimaryInfo extends React.Component {
   constructor(...args) {
     super(...args);
-    this.state = { loaded: false, toggle: false };
+    this.state = { loaded: false };
   }
 
   componentDidMount() {
@@ -63,7 +70,7 @@ class ArticlePrimaryInfo extends React.Component {
         app,
         defPersonList
       );
-      
+
       const qlikCountry = await QlikService.createSessionObject(
         app,
         defCountryList
@@ -150,11 +157,16 @@ class ArticlePrimaryInfo extends React.Component {
       countryModel,
       countryLayout,
       newsFeedLayout,
-      loaded,
-      toggle
+      loaded
     } = this.state;
 
-    const { app, show, onToggleCountry, tgl } = this.props;
+    const {
+      show,
+      onToggleCountry,
+      tgl,
+      defaultYear,
+      defaultToggleOrigin
+    } = this.props;
 
     if (!loaded) {
       return null;
@@ -165,50 +177,41 @@ class ArticlePrimaryInfo extends React.Component {
         <div className="info-box stats">
           <ToggleButton
             toggleValueCallback={onToggleCountry}
-            toggle={tgl !== undefined ? tgl : toggle}
+            toggle={tgl !== undefined ? tgl : defaultToggleOrigin}
           />
           <HorizontalLine />
           <div className="info-box__form">
-            <Filterdropdown
+            <SelectSingleValue
               model={yearModel}
               layout={yearLayout}
-              selectedValueCallback={yearText => this.selectedYear(yearText)}
+              field={FIELD_YEAR}
+              defaultValue={defaultYear}
             />
-            <Filterdropdown
+            <SelectMultipleValue
               model={personModel}
               layout={personLayout}
-              selectedValueCallback={personText =>
-                this.selectedPerson(personText)
-              }
+              field={FIELD_PERSON_TYPE}
+              placeHolder={MSG_PERSON_LIST}
             />
+            <SelectMultipleValue
+              model={countryModel}
+              layout={countryLayout}
+              field={FIELD_ORIGIN_COUNTRY}
+              placeHolder={MSG_COUNTRY_LIST}
+            />
+            <HorizontalLine />
+            <PrimaryInfoBoxStats layout={kpiLayout} />
             <HorizontalLine />
           </div>
           {show ? (
             <div>
-              <PrimaryInfoBoxStats layout={kpiLayout} />
-              <HorizontalLine />
               <EChartBar layout={trendLayout} model={trendModel} />
               <HorizontalLine />
               <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
               <PrimaryInfoBoxStories layout={newsFeedLayout} />
               <PrimaryInfoBoxAbout />
-              <HorizontalLine />
             </div>
-          ) : (
-            <div>
-              <Filterbox
-                model={countryModel}
-                layout={countryLayout}
-                name={FILTER_COUNTRY_NAME}
-                selectedValueCallback={countryText =>
-                  this.selectCountry(countryText)
-                }
-                alwaysOneSelectedValue={false}
-                app={app}
-                field={FIELD_ASYLUM}
-              />
-            </div>
-          )}
+          ) : null}
         </div>
       </article>
     );
@@ -219,7 +222,9 @@ ArticlePrimaryInfo.propTypes = {
   app: PropTypes.object.isRequired,
   show: PropTypes.bool,
   tgl: PropTypes.bool.isRequired,
-  onToggleCountry: PropTypes.func.isRequired
+  onToggleCountry: PropTypes.func.isRequired,
+  defaultYear: PropTypes.string.isRequired,
+  defaultToggleOrigin: PropTypes.bool.isRequired
 };
 
 ArticlePrimaryInfo.defaultProps = {

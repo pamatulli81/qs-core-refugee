@@ -19,7 +19,7 @@ class FilterDropDown extends React.Component {
     const { model, layout, selectedValueCallback } = this.props;
     const { value } = e.target;
     // eslint-disable-next-line radix
-    QlikService.selectFromList(model, parseInt(value), false);
+    QlikService.selectFromList(model, [parseInt(value)], false);
 
     if (selectedValueCallback) {
       // eslint-disable-next-line radix
