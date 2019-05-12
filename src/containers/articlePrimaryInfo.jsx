@@ -1,13 +1,20 @@
 /* eslint-disable no-console */
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { defYearList, defPersonList, defKpiStats, defNewsFeed, defBarChart } from "../definitions";
+import {
+  defYearList,
+  defPersonList,
+  defKpiStats,
+  defNewsFeed,
+  defBarChart,
+  defCountryList
+} from "../definitions";
 import ToggleButton from "../components/toggleButton";
-// import Filterbox from "../components/filterbox";
+import Filterbox from "../components/filterbox";
 import Filterdropdown from "../components/filterdropdown";
 import InfoBoxStats from "../components/primaryInfoBoxStats";
 import HorizontalLine from "../components/horizontalLine";
-// import ClearButton from "../components/buttonClearSelection"
 import PrimaryInfoBoxNewsSlider from "../components/primaryInfoBoxNewsSlider";
 import PrimaryInfoBoxStories from "../components/primaryInfoBoxStories";
 import PrimaryInfoBoxAbout from "../components/primaryInfoBoxAbout";
@@ -15,18 +22,15 @@ import EChartBar from "../components/eChartBar";
 import QlikService from "../qlik/service";
 import "./articlePrimaryInfo.css";
 
-
 class ArticlePrimaryInfo extends React.Component {
   constructor(...args) {
     super(...args);
-    this.state = { loaded: false };
+    this.state = { loaded: false, toggle: false };
   }
-  
 
   componentDidMount() {
     this.createModel();
   }
-
 
   toggleButton = checked => {
     console.log(checked);
@@ -46,46 +50,51 @@ class ArticlePrimaryInfo extends React.Component {
 
   clearAll = r => {
     console.log(r);
-
   };
 
   async createModel() {
-    
     const { app } = this.props;
 
     try {
-   
-      const year = await QlikService.createSessionObject(app, defYearList);
-      year.model.on("changed", () => this.updateFilterboxYear());    
+      const qlikYear = await QlikService.createSessionObject(app, defYearList);
+      qlikYear.model.on("changed", () => this.updateFilterboxYear());
 
-      const person = await QlikService.createSessionObject(app, defPersonList);
-      // const country = await QlikService.createSessionObject(app, defCountryList);
+      const qlikPerson = await QlikService.createSessionObject(
+        app,
+        defPersonList
+      );
+      const qlikCountry = await QlikService.createSessionObject(
+        app,
+        defCountryList
+      );
 
-      const newsFeed = await QlikService.createSessionObject(app, defNewsFeed);
-      newsFeed.model.on("changed", () => this.updateNewsFeed());
-    
-      const kpi = await QlikService.createSessionObject(app, defKpiStats);
-      kpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
+      const qlikNewsFeed = await QlikService.createSessionObject(
+        app,
+        defNewsFeed
+      );
+      qlikNewsFeed.model.on("changed", () => this.updateNewsFeed());
 
-      const eChartBar = await QlikService.createSessionObject(app, defBarChart);
-      eChartBar.model.on("changed", () => this.updateBar());
-      
+      const qlikKpi = await QlikService.createSessionObject(app, defKpiStats);
+      qlikKpi.model.on("changed", () => this.updateInfoBoxStatsKpi());
+
+      const qlikTrend = await QlikService.createSessionObject(app, defBarChart);
+      qlikTrend.model.on("changed", () => this.updateEbarChart());
+
       this.setState({
-        yearLayout: year.layout,
-        yearModel: year.model,
-        personLayout: person.layout,
-        personModel: person.model,
-        // countryLayout: country.layout,
-        // countryModel: country.model,
-        kpiLayout: kpi.layout,
-        kpiModel: kpi.model,
-        newsFeedModel: newsFeed.model,
-        newsFeedLayout: newsFeed.layout,
-        barLayout: eChartBar.layout,
-        barModel: eChartBar.model,
+        yearLayout: qlikYear.layout,
+        yearModel: qlikYear.model,
+        personLayout: qlikPerson.layout,
+        personModel: qlikPerson.model,
+        trendModel: qlikTrend.model,
+        trendLayout: qlikTrend.layout,
+        countryLayout: qlikCountry.layout,
+        countryModel: qlikCountry.model,
+        kpiLayout: qlikKpi.layout,
+        kpiModel: qlikKpi.model,
+        newsFeedModel: qlikNewsFeed.model,
+        newsFeedLayout: qlikNewsFeed.layout,
         loaded: true
       });
-
     } catch (error) {
       console.log(error);
     }
@@ -117,29 +126,34 @@ class ArticlePrimaryInfo extends React.Component {
     });
   }
 
-  async updateBar() {
-    const { barModel } = this.state;
-    const barLayout = await barModel.getLayout();
+  async updateEbarChart() {
+    const { trendModel } = this.state;
+    const trendLayout = await trendModel.getLayout();
     this.setState({
-      barModel,
-      barLayout
+      trendModel,
+      trendLayout
     });
   }
 
   render() {
+    // eslint-disable-next-line react/prop-types
+    // eslint-disable-next-line react/destructuring-assignment
     const {
       kpiLayout,
       personModel,
       personLayout,
       yearModel,
       yearLayout,
-      barModel,
-      barLayout,
+      trendModel,
+      trendLayout,
+      countryModel,
+      countryLayout,
       newsFeedLayout,
-      loaded
+      loaded,
+      toggle
     } = this.state;
 
-    // const {app} = this.props
+    const {app} = this.props
 
     if (!loaded) {
       return null;
@@ -148,7 +162,10 @@ class ArticlePrimaryInfo extends React.Component {
     return (
       <article id="primaryInfo">
         <div className="info-box stats">
-          <ToggleButton toggleValueCallback={this.toggleButton} toggle />
+          <ToggleButton
+            toggleValueCallback={this.props.onToggleCountry}
+            toggle={this.props.tgl !== undefined ? this.props.tgl : toggle}
+          />
           <HorizontalLine />
           <div className="info-box__form">
             <Filterdropdown
@@ -166,24 +183,25 @@ class ArticlePrimaryInfo extends React.Component {
             />
             <HorizontalLine />
             <InfoBoxStats layout={kpiLayout} />
-            <EChartBar layout={barLayout} model={barModel} />
+            <EChartBar layout={trendLayout} model={trendModel} />
           </div>
           <HorizontalLine />
-          <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
-          <PrimaryInfoBoxStories layout={newsFeedLayout} />
-          <PrimaryInfoBoxAbout />
-          
-          {/* <HorizontalLine />
           <Filterbox
             model={countryModel}
             layout={countryLayout}
             name="Country"
-            selectedValueCallback={countryText => this.selectCountry(countryText)}
+            selectedValueCallback={countryText =>
+              this.selectCountry(countryText)
+            }
             alwaysOneSelectedValue={false}
             app={app}
-            field="[Origin Country]"
+            field="[Asylum Country]"
           />
-          <ClearButton app={app} title="Clear All" clearAllCallback={r => this.clearAll(r)} /> */}
+          <HorizontalLine />
+          <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
+          <PrimaryInfoBoxStories layout={newsFeedLayout} />
+          <PrimaryInfoBoxAbout />
+          <HorizontalLine />
         </div>
       </article>
     );
@@ -191,7 +209,22 @@ class ArticlePrimaryInfo extends React.Component {
 }
 
 ArticlePrimaryInfo.propTypes = {
-  app: PropTypes.object.isRequired
+  app: PropTypes.object.isRequired,
+  tgl: PropTypes.bool.isRequired
 };
 
-export default ArticlePrimaryInfo;
+const mapStateToProps = state => {
+  return {
+    tgl: state.toggle
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onToggleCountry: () => dispatch({ type: "TOGGLE" })
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ArticlePrimaryInfo);

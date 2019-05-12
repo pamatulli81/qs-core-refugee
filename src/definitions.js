@@ -76,6 +76,46 @@ export const defBarChart = {
   }
 };
 
+export const defLineChart = (field="[Origin Country]", value ="*") => {
+  return {
+    qInfo: {
+      qType: "LineChart"
+    },
+    qHyperCubeDef: {
+      qDimensions: [
+        {
+          qDef: {
+            qFieldDefs: ["[Year]"]
+          },
+          qNullSuppression: true
+        }
+      ],
+      qMeasures: [
+        {
+          qSortBy: {
+            qSortByState: 0,
+            qSortByFrequency: 0,
+            qSortByNumeric: 0,
+            qSortByAscii: 0,
+            qSortByLoadOrder: 0,
+            qSortByExpression: -1,
+            qExpression: {
+              qv: ""
+            }
+          },
+          qDef: {
+            qDef: `Sum({<Year=, ${field}={"${value}"}>}[PersonCount])`,
+            qLabel: "Person"
+          }
+        }
+      ],
+      qEffectiveInterColumnSortOrder: [1, 0],
+      qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 2, qHeight: 5000 }],
+      qSuppressZero: true
+    }
+  };
+};
+
 export const defRefugeeTable = {
   qInfo: {
     qType: "RefugeesTable"
@@ -85,7 +125,7 @@ export const defRefugeeTable = {
     qDimensions: [
       {
         qDef: {
-          qFieldDefs: ["[Origin Country]"]
+          qFieldDefs: ["[Asylum Country]"]
         },
         qNullSuppression: true
       }
@@ -109,7 +149,8 @@ export const defRefugeeTable = {
       }
     ],
     qEffectiveInterColumnSortOrder: [1, 2, 0],
-    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 3, qHeight: 3333 }]
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 3, qHeight: 3333 }],
+    qSuppressZero: true
   }
 };
 
@@ -155,11 +196,11 @@ export const defCountryList = {
   },
   qListObjectDef: {
     qDef: {
-      qFieldDefs: ["[Origin Country]"],
+      qFieldDefs: ["[Asylum Country]"],
       autoSort: false,
       qSortCriterias: [
         {
-          qSortByNumeric: -1
+          qSortByAscii: 1
         }
       ]
     },

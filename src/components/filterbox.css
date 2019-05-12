@@ -17,8 +17,10 @@
   flex: 1 1 auto;
   margin-bottom: 8px;
   padding: 5px 0;
+  height: 250px; 
   overflow-y: auto;
 }
+
 
 .list div {
   display: flex;

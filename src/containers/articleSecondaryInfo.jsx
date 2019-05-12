@@ -2,6 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { defKpiMain, defRefugeeTable, defMapChart, defSankeyChart } from "../definitions"; // defSankeyChart
+import { defKpiMain, defRefugeeTable } from "../definitions";
+import store from '../store/store';
 import SecondaryInfoBoxMain from "../components/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/secondaryInfoBoxTable";
 import EChartMap from '../components/eChartMap';
@@ -10,24 +12,52 @@ import QlikService from "../qlik/service";
 import "./articleSecondaryInfo.css";
 
 class ArticleSecondaryInfo extends React.Component {
+
   constructor(...args) {
     super(...args);
     this.state = { loaded: false };
+    this.unsubscribe = null;
   }
 
   componentDidMount() {
     this.createModel();
   }
 
+  componentDidMount(){
+    this.unsubscribe = store.subscribe(() => {
+      
+      const { tableModel } = this.state;
+
+      if(tableModel!==undefined){
+      
+        const checked = store.getState().toggle;
+        const dimCountry = checked ? '[Asylum Country]' : '[Origin Country]';
+      
+        QlikService.applyPatches(
+          tableModel,
+          "replace",
+          "/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0",
+          dimCountry
+        );
+
+
+      }  
+    });
+  }
+
+  componentWillUnmount(){
+    this.unsubscribe();
+  }
+
   async createModel() {
     const { app } = this.props;
 
     try {
-      const kpi = await QlikService.createSessionObject(app, defKpiMain);
-      kpi.model.on("changed", () => this.updateInfoBoxMainsKpi());
+      const qlikKpi = await QlikService.createSessionObject(app, defKpiMain);
+      qlikKpi.model.on("changed", () => this.updateInfoBoxMainsKpi());
 
-      const table = await QlikService.createSessionObject(app, defRefugeeTable);
-      table.model.on("changed", () => this.updateTable());
+      const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable);
+      qlikTable.model.on("changed", () => this.updateTable());
 
       // const mapObj = await QlikService.createSessionObject(app, defMapChart);
 
@@ -47,6 +77,10 @@ class ArticleSecondaryInfo extends React.Component {
         mapLayout: eChartMap.layout,
         sankeyModel: eChartSankey.model,
         sankeyLayout: eChartSankey.layout,
+        tableModel: qlikTable.model,
+        tableLayout: qlikTable.layout,
+        kpiModel: qlikKpi.model,
+        kpiLayout: qlikKpi.layout,
         loaded: true
       });
     } catch (error) {
@@ -86,10 +120,11 @@ class ArticleSecondaryInfo extends React.Component {
       sankeyLayout
     });
   }
-
+  
   render() {
     const { kpiLayout, tableLayout, mapLayout, sankeyLayout, loaded } = this.state;
-    
+    const { app } = this.props;
+   
     const style = {
       section: {
         transformOrigin: "center 50% 0px",
@@ -111,7 +146,7 @@ class ArticleSecondaryInfo extends React.Component {
           <EChartSankey layout={sankeyLayout} />
           <EChartMap layout={mapLayout} />
           <SecondaryInfoBoxMain layout={kpiLayout} />
-          <SecondaryInfoBoxTable layout={tableLayout} />
+          <SecondaryInfoBoxTable app={app} layout={tableLayout} />
         </section>
       </article>
     );

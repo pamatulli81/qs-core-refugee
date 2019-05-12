@@ -1,31 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './eChartBar.css';
-
-import * as echarts from "echarts/lib/echarts";
-import "echarts/lib/chart/sankey";
+import React from "react";
+// import PropTypes from "prop-types";
+import echarts from "echarts/lib/echarts";
+import "echarts/lib/chart/bar";
 import "echarts/lib/component/tooltip";
 import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
+import "./eChartBar.css";
 
-class eChartBar extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      layout: props.layout
-    };
-  }
+class eChartBar extends React.Component {    
 
   componentDidMount() {
-    this.renderEChartBar()
+    this.createChart();
   }
 
-  renderEChartBar() {
-    
-    const { layout } = this.state;
-    const items = layout.qHyperCube.qDataPages[0];
-    const dims = []; 
+  componentWillReceiveProps(nextProps) {
+    this.updateChart(nextProps);
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
+  }
+
+  componentWillUnmount() {
+    this.barChart.dispose();
+  } 
+
+  eCreateData = (items) => {
+    const dims = [];
     const values = [];
 
     for (let r = 0; r < items.qMatrix.length; r++) {
@@ -41,108 +43,117 @@ class eChartBar extends React.Component {
       }
     }
 
-    const data = {
+    return {
       dims,
       values
-    }
+    };
+  }
 
+  createChart = () => {
     const element = this.container;
-    const myChart = echarts.init(element);
+    this.barChart = echarts.init(element);
+    this.updateChart(this.props);
+  };
 
+  updateChart = (props) => {
+   
+    if (!props) {
+      return null;
+    }
+    const newChartOptions = this.makeChartOptions(props);
+    this.barChart.setOption(newChartOptions);
+    return this.barChart;
+  }
+
+  makeChartOptions = (props) => {
+
+    const {layout} = props;
+    const data = this.eCreateData(layout.qHyperCube.qDataPages[0]);
+   
     const option = {
       grid: {
-          left: 5,        
-          bottom:0,
-          top:40,
-          height:200,
-          containLabel: true
-          },
+        left: 5,
+        bottom: 0,
+        top: 40,
+        height: 200,
+        containLabel: true
+      },
       tooltip: {
-          trigger: "axis",
-          showDelay: 0,
-          hideDelay: 50,
-          transitionDuration: 0,
-          backgroundColor: "rgba(105,105,105,0.7)",
-          borderColor: "#000",
-          borderRadius: 8,
-          borderWidth: 1,
-          padding: 10, 
-          position(p) {
-            return [p[0] + 10, p[1] - 10];
-          },
-          textStyle: {
-              color: "#FFF",
-              decoration: "none",
-              fontFamily: "Verdana, sans-serif",
-              fontSize: 12
-          },
-          formatter(params, ticket, callback) {
-            let res = `Year : ${  params[0].name}`;
-            for (let i = 0, l = params.length; i < l; i++) {
-                res +=
-                    `${"<br/>" +
-                    "# of Person" +
-                    " : "}${ 
-                    parseInt(params[i].value, 10).toLocaleString()}`;
-            }
-            setTimeout(() => {
-                callback(ticket, res);
-            }, 200);
-            return "...loading";
-          } 
+        trigger: "axis",
+        showDelay: 0,
+        hideDelay: 50,
+        transitionDuration: 0,
+        backgroundColor: "rgba(105,105,105,0.7)",
+        borderColor: "#000",
+        borderRadius: 8,
+        borderWidth: 1,
+        padding: 10,
+        position(p) {
+          return [p[0] + 10, p[1] - 10];
+        },
+        textStyle: {
+          color: "#FFF",
+          decoration: "none",
+          fontFamily: "Verdana, sans-serif",
+          fontSize: 12
+        },
+        formatter(params, ticket, callback) {
+          let res = `Year : ${params[0].name}`;
+          for (let i = 0, l = params.length; i < l; i++) {
+            res += `${"<br/># of Person : "}${parseInt(
+              params[i].value,
+              10
+            ).toLocaleString()}`;
+          }
+          setTimeout(() => {
+            callback(ticket, res);
+          }, 200);
+          return "...loading";
+        }
       },
       xAxis: {
-          type: "category",
-          data: data.dims,
-          axisLabel: {
-              textStyle: {
-                  color: "#FFF"
-              }
-          },
+        type: "category",
+        data: data.dims,
+        axisLabel: {
+          textStyle: {
+            color: "#FFF"
+          }
+        }
       },
       yAxis: {
-          type: "value",
-          data: data.values,
-          show: true,
-          axisLabel: {
-              textStyle: {
-                  color: "#FFF",
-                  fontsize: 4,
-              }
-          },
-          
+        type: "value",
+        data: data.values,
+        show: true,
+        axisLabel: {
+          textStyle: {
+            color: "#FFF",
+            fontsize: 4
+          }
+        }
       },
-      series: [{
+      series: [
+        {
           itemStyle: {
-              normal: {
-                  color: "#8bc34a",
-                  label: {
-                      textStyle: {
-                          color: "#FFFFFF"
-                      }
-                  }
+            normal: {
+              color: "#8bc34a",
+              label: {
+                textStyle: {
+                  color: "#FFFFFF"
+                }
               }
+            }
           },
           data: data.values,
           type: "bar"
-      }]
-  };
+        }
+      ]
+    };
 
-    if (option && typeof option === "object") {
-      myChart.setOption(option, true);
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('eChartBar options invalid');
-    }
-
-    // eslint-disable-next-line no-console
-    console.log('data', data);
-    // eslint-disable-next-line no-console
-    console.log('layout', layout);
-
+    return option;
   }
 
-  render() { 
+  render() {
+   
     return (
       <div
         className="echart-bar"
@@ -152,9 +163,9 @@ class eChartBar extends React.Component {
       />
     );
   }
-
 }
-eChartBar.propTypes = {
-  layout: PropTypes.object.isRequired
-};
+
+// eChartBar.propTypes = {
+//   layout: PropTypes.object.isRequired
+// };
 export default eChartBar;
