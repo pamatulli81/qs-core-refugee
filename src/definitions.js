@@ -277,15 +277,15 @@ export const defSankeyChart = {
 	qHyperCubeDef: {
     qDimensions: [{
       qDef: {
-        qFieldDefs: ["source"],
-        qFieldLabels: ["Origin Country"]
+        qFieldDefs: ["target"],
+        qFieldLabels: ["Asylum Country"]
       },
       qNullSuppression: true
     },
     {
       qDef: {
-        qFieldDefs: ["target"],
-        qFieldLabels: ["Asylum Country"]
+        qFieldDefs: ["source"],
+        qFieldLabels: ["Origin Country"]
       },
       qNullSuppression: true
     }],
@@ -295,7 +295,7 @@ export const defSankeyChart = {
         qLabel: "No Of Refugees"
       }
     }],
-    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 3, qHeight: 1000 }]
+    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 3, qHeight: 3000 }]
   }
 }
 
