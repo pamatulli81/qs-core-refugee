@@ -9,12 +9,18 @@ import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "./eChartLine.css";
 import { defLineChart } from "../../definitions";
-import QlikService from "../../qlik/service";
+import QlikService from "../../service/qlik";
 
 class EchartLine extends React.Component {
+  constructor(props) {
+    super(props);
+    this.resizeChart = this.resizeChart.bind(this);
+  }
+
   componentDidMount() {
+    this.mounted = true;
     this.createChart();
-    window.addEventListener("resize", this.resizeChart.bind(this));
+    window.addEventListener("resize", this.resizeChart, false);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,8 +33,9 @@ class EchartLine extends React.Component {
   }
 
   componentWillUnmount() {
+    this.mounted = false;
+    window.removeEventListener("resize", this.resizeChart, false);
     this.lineChart.dispose();
-    window.removeEventListener("resize", this.resizeChart.bind(this));
   }
 
   transformData = items => {
@@ -133,21 +140,23 @@ class EchartLine extends React.Component {
   };
 
   async createChart() {
-    const { app, field, value } = this.props;
+    const { app, refField, value } = this.props;
     const element = this.container;
     this.lineChart = echarts.init(element);
     const qlikObject = await QlikService.createSessionObject(
       app,
-      defLineChart(field, value)
+      defLineChart(refField, value)
     );
-    this.setState({
-      lineChartLayout: qlikObject.layout
-    });
+    if (this.mounted) {
+      this.setState({
+        lineChartLayout: qlikObject.layout
+      });
+    }
     this.updateChart(this.props);
   }
 
   resizeChart() {
-    if (this.lineChart != null && this.lineChart !== undefined) {
+    if (this.lineChart !== null && this.lineChart !== undefined) {
       this.lineChart.resize();
     }
   }
@@ -166,7 +175,7 @@ class EchartLine extends React.Component {
 
 EchartLine.propTypes = {
   app: PropTypes.object.isRequired,
-  field: PropTypes.string.isRequired,
+  refField: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired
 };
 

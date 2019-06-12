@@ -7,7 +7,8 @@ import {
   defKpiStats,
   defNewsFeed,
   defBarChart,
-  defCountryList
+  defAsylumCountryList,
+  defOriginCountryList
 } from "../definitions";
 import ToggleButton from "../components/button/toggleButton";
 import PrimaryInfoBoxStats from "../components/ui/primaryInfoBoxStats";
@@ -18,15 +19,17 @@ import PrimaryInfoBoxAbout from "../components/ui/primaryInfoBoxAbout";
 import EChartBar from "../components/chart/eChartBar";
 import SelectSingleValue from "../components/select/selectSingle";
 import SelectMultipleValue from "../components/select/selectMultiple";
-import QlikService from "../qlik/service";
+import QlikService from "../service/qlik";
 import "./articlePrimaryInfo.css";
 import {
   ACTION_TOGGLE,
   FIELD_YEAR,
   FIELD_ORIGIN_COUNTRY,
+  FIELD_ASYLUM_COUNTRY,
   FIELD_PERSON_TYPE,
   MSG_PERSON_LIST,
-  MSG_COUNTRY_LIST
+  MSG_ORIGIN_COUNTRY_LIST,
+  MSG_ASYLUM_COUNTRY_LIST
 } from "../constants";
 
 class ArticlePrimaryInfo extends React.Component {
@@ -36,7 +39,12 @@ class ArticlePrimaryInfo extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.createModel();
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   toggleButton = checked => {
@@ -71,9 +79,14 @@ class ArticlePrimaryInfo extends React.Component {
         defPersonList
       );
 
-      const qlikCountry = await QlikService.createSessionObject(
+      const qlikOriginCountry = await QlikService.createSessionObject(
         app,
-        defCountryList
+        defOriginCountryList
+      );
+
+      const qlikAsylumCountry = await QlikService.createSessionObject(
+        app,
+        defAsylumCountryList
       );
 
       const qlikNewsFeed = await QlikService.createSessionObject(
@@ -88,21 +101,25 @@ class ArticlePrimaryInfo extends React.Component {
       const qlikTrend = await QlikService.createSessionObject(app, defBarChart);
       qlikTrend.model.on("changed", () => this.updateEbarChart());
 
-      this.setState({
-        yearLayout: qlikYear.layout,
-        yearModel: qlikYear.model,
-        personLayout: qlikPerson.layout,
-        personModel: qlikPerson.model,
-        trendModel: qlikTrend.model,
-        trendLayout: qlikTrend.layout,
-        countryLayout: qlikCountry.layout,
-        countryModel: qlikCountry.model,
-        kpiLayout: qlikKpi.layout,
-        kpiModel: qlikKpi.model,
-        newsFeedModel: qlikNewsFeed.model,
-        newsFeedLayout: qlikNewsFeed.layout,
-        loaded: true
-      });
+      if (this.mounted) {
+        this.setState({
+          yearLayout: qlikYear.layout,
+          yearModel: qlikYear.model,
+          personLayout: qlikPerson.layout,
+          personModel: qlikPerson.model,
+          trendModel: qlikTrend.model,
+          trendLayout: qlikTrend.layout,
+          countryOriginLayout: qlikOriginCountry.layout,
+          countryOriginModel: qlikOriginCountry.model,
+          countryAsylumLayout: qlikAsylumCountry.layout,
+          countryAsylumModel: qlikAsylumCountry.model,
+          kpiLayout: qlikKpi.layout,
+          kpiModel: qlikKpi.model,
+          newsFeedModel: qlikNewsFeed.model,
+          newsFeedLayout: qlikNewsFeed.layout,
+          loaded: true
+        });
+      }
     } catch (error) {
       // console.log(error);
     }
@@ -111,41 +128,47 @@ class ArticlePrimaryInfo extends React.Component {
   async updateInfoBoxStatsKpi() {
     const { kpiModel } = this.state;
     const kpiLayout = await kpiModel.getLayout();
-    this.setState({
-      kpiLayout
-    });
+    if (this.mounted) {
+      this.setState({
+        kpiLayout
+      });
+    }
   }
 
   async updateFilterboxYear() {
     const { yearModel } = this.state;
     const yearLayout = await yearModel.getLayout();
-    this.setState({
-      yearModel,
-      yearLayout
-    });
+    if (this.mounted) {
+      this.setState({
+        yearModel,
+        yearLayout
+      });
+    }
   }
 
   async updateNewsFeed() {
     const { newsFeedModel } = this.state;
     const newsFeedLayout = await newsFeedModel.getLayout();
-    this.setState({
-      newsFeedModel,
-      newsFeedLayout
-    });
+    if (this.mounted) {
+      this.setState({
+        newsFeedModel,
+        newsFeedLayout
+      });
+    }
   }
 
   async updateEbarChart() {
     const { trendModel } = this.state;
     const trendLayout = await trendModel.getLayout();
-    this.setState({
-      trendModel,
-      trendLayout
-    });
+    if (this.mounted) {
+      this.setState({
+        trendModel,
+        trendLayout
+      });
+    }
   }
 
   render() {
-    // eslint-disable-next-line react/prop-types
-    // eslint-disable-next-line react/destructuring-assignment
     const {
       kpiLayout,
       personModel,
@@ -154,8 +177,10 @@ class ArticlePrimaryInfo extends React.Component {
       yearLayout,
       trendModel,
       trendLayout,
-      countryModel,
-      countryLayout,
+      countryAsylumModel,
+      countryAsylumLayout,
+      countryOriginModel,
+      countryOriginLayout,
       newsFeedLayout,
       loaded
     } = this.state;
@@ -163,7 +188,7 @@ class ArticlePrimaryInfo extends React.Component {
     const {
       show,
       onToggleCountry,
-      tgl,
+      tglOrigin,
       defaultYear,
       defaultToggleOrigin
     } = this.props;
@@ -172,12 +197,19 @@ class ArticlePrimaryInfo extends React.Component {
       return null;
     }
 
+    const style = {
+      border: show ? "0px" : "1px solid rgba(255, 255, 255, 0.5)",
+      borderRadius: "10px",
+      WebkitBackgroundClip: "padding-box" /* for Safari */,
+      backgroundClip: "padding-box" /* for IE9+, Firefox 4+, Opera, Chrome */
+    };
+
     return (
       <article id="primaryInfo">
-        <div className="info-box stats">
+        <div className="info-box stats" style={style}>
           <ToggleButton
             toggleValueCallback={onToggleCountry}
-            toggle={tgl !== undefined ? tgl : defaultToggleOrigin}
+            toggle={tglOrigin !== undefined ? tglOrigin : defaultToggleOrigin}
           />
           <HorizontalLine />
           <div className="info-box__form">
@@ -194,14 +226,14 @@ class ArticlePrimaryInfo extends React.Component {
               placeHolder={MSG_PERSON_LIST}
             />
             <SelectMultipleValue
-              model={countryModel}
-              layout={countryLayout}
-              field={FIELD_ORIGIN_COUNTRY}
-              placeHolder={MSG_COUNTRY_LIST}
+              model={tglOrigin !== undefined && !tglOrigin ? countryAsylumModel : countryOriginModel}
+              layout={tglOrigin !== undefined && !tglOrigin ? countryAsylumLayout : countryOriginLayout}
+              field={tglOrigin !== undefined && !tglOrigin ? FIELD_ASYLUM_COUNTRY : FIELD_ORIGIN_COUNTRY}
+              placeHolder={tglOrigin !== undefined && !tglOrigin ? MSG_ASYLUM_COUNTRY_LIST : MSG_ORIGIN_COUNTRY_LIST}
             />
             <HorizontalLine />
-            <PrimaryInfoBoxStats layout={kpiLayout} />
-            <HorizontalLine />
+            <PrimaryInfoBoxStats layout={kpiLayout} toggle={tglOrigin !== undefined ? tglOrigin : defaultToggleOrigin} />
+            {show ? <HorizontalLine /> : null}
           </div>
           {show ? (
             <div>
@@ -221,7 +253,7 @@ class ArticlePrimaryInfo extends React.Component {
 ArticlePrimaryInfo.propTypes = {
   app: PropTypes.object.isRequired,
   show: PropTypes.bool,
-  tgl: PropTypes.bool.isRequired,
+  tglOrigin: PropTypes.bool.isRequired,
   onToggleCountry: PropTypes.func.isRequired,
   defaultYear: PropTypes.string.isRequired,
   defaultToggleOrigin: PropTypes.bool.isRequired
@@ -233,7 +265,7 @@ ArticlePrimaryInfo.defaultProps = {
 
 const mapStateToProps = state => {
   return {
-    tgl: state.toggle
+    tglOrigin: state.toggle
   };
 };
 

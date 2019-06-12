@@ -4,7 +4,7 @@ import ChartDialog from "../dialog/chartDialog";
 import "./secondaryInfoBoxTable.css";
 
 function SecondaryInfoBoxTable(props) {
-  const { app, layout } = props;
+  const { app, layout, refField } = props;
 
   const styleCell = {
     size: {
@@ -54,10 +54,13 @@ function SecondaryInfoBoxTable(props) {
               </a>
             </span>
             <span style={styleSpan.right}>
-              <ChartDialog app={app} type="LineChart" value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
+              <ChartDialog app={app} type="PieChart" refField={refField} value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
             </span>
             <span style={styleSpan.right}>
-              <ChartDialog app={app} type="SankeyChart" value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
+              <ChartDialog app={app} type="LineChart" refField={refField} value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
+            </span>
+            <span style={styleSpan.right}>
+              <ChartDialog app={app} type="SankeyChart" refField={refField} value={layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText} />
             </span>
           </td>
           <td className="font-weight--black color-by-typemode">
@@ -88,7 +91,8 @@ function SecondaryInfoBoxTable(props) {
 
 SecondaryInfoBoxTable.propTypes = {
   app: PropTypes.object.isRequired,
-  layout: PropTypes.object.isRequired
+  layout: PropTypes.object.isRequired,
+  refField: PropTypes.string.isRequired
 };
 
 SecondaryInfoBoxTable.defaultProps = {};

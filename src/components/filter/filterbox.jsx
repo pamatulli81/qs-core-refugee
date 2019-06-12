@@ -15,6 +15,14 @@ class Filterbox extends React.Component {
     props.model.on("changed", () => this.updateLayout());
   }
 
+  componentDidMount() {
+    this.mounted = true;
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   selectValueClickHandler = (dim, i) => {
     const { selected, layout, name } = this.state;
     const { model, selectedValueCallback, alwaysOneSelectedValue } = this.props;
@@ -41,15 +49,13 @@ class Filterbox extends React.Component {
       }
       selectedValueCallback(value);
     }
-
-    this.setState(selected);
+    if (this.mounted) {
+      this.setState(selected);
+    }
   };
 
   clearFilterClickHandler = () => {
-    const {
-      app,
-      field    
-    } = this.props;
+    const { app, field } = this.props;
 
     QlikService.clearField(app, field);
   };
@@ -57,7 +63,9 @@ class Filterbox extends React.Component {
   async updateLayout() {
     const { model } = this.props;
     const layout = await model.getLayout();
-    this.setState({ layout });
+    if (this.mounted) {
+      this.setState({ layout });
+    }
   }
 
   render() {
@@ -143,7 +151,7 @@ Filterbox.propTypes = {
   name: PropTypes.string,
   alwaysOneSelectedValue: PropTypes.bool,
   selectedValueCallback: PropTypes.func,
-  app:PropTypes.object.isRequired
+  app: PropTypes.object.isRequired
 };
 
 Filterbox.defaultProps = {

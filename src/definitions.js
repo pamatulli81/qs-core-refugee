@@ -116,24 +116,16 @@ export const defLineChart = (field = "[Origin Country]", value = "*") => {
   };
 };
 
-export const defSankeyChart = (value = "*") => {
+export const defPieChart = (field = "[Origin Country]", value = "*") => {
   return {
     qInfo: {
-      qType: "SankeyChart"
+      qType: "PieChart"
     },
     qHyperCubeDef: {
       qDimensions: [
         {
           qDef: {
-            qFieldDefs: ["[Origin Country]"],
-            qFieldLabels: ["Origin Country"]
-          },
-          qNullSuppression: true
-        },
-        {
-          qDef: {
-            qFieldDefs: ["[Asylum Country]"],
-            qFieldLabels: ["Asylum Country"]
+            qFieldDefs: ["PersonType"]
           },
           qNullSuppression: true
         }
@@ -152,8 +144,59 @@ export const defSankeyChart = (value = "*") => {
             }
           },
           qDef: {
-            qDef: `num(Sum({<[Origin Country]={"${value}"}>}[PersonCount]),'#,##0', '.' , ',')`,
-            qLabel: "No Of Refugees"
+            qDef: `Sum([PersonCount])`,
+            qLabel: "Person"
+          }
+        }
+      ],
+      qEffectiveInterColumnSortOrder: [1, 0],
+      qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 2, qHeight: 5000 }],
+      qSuppressZero: true
+    }
+  };
+};
+
+
+export const defSankeyChart = (refField, value = "*") => {
+  const source = refField;
+  const target = refField==="[Asylum Country]" ? "[Origin Country]" : "[Asylum Country]";
+  return {
+    qInfo: {
+      qType: "SankeyChart"
+    },
+    qHyperCubeDef: {
+      qDimensions: [
+        {
+          qDef: {
+            qFieldDefs: [source],
+            qFieldLabels: ["Source"]
+          },
+          qNullSuppression: true
+        },
+        {
+          qDef: {
+            qFieldDefs: [target],
+            qFieldLabels: ["Target"]
+          },
+          qNullSuppression: true
+        }
+      ],
+      qMeasures: [
+        {
+          qSortBy: {
+            qSortByState: 0,
+            qSortByFrequency: 0,
+            qSortByNumeric: 0,
+            qSortByAscii: 0,
+            qSortByLoadOrder: 0,
+            qSortByExpression: -1,
+            qExpression: {
+              qv: ""
+            }
+          },
+          qDef: {
+            qDef: `num(Sum({<${source}={"${value}"}>}[PersonCount]),'#,##0', '.' , ',')`,
+            qLabel: "Person Flow"
           }
         }
       ],
@@ -239,9 +282,27 @@ export const defPersonList = {
   }
 };
 
-export const defCountryList = {
+export const defAsylumCountryList = {
   qInfo: {
-    qType: "ListCountry"
+    qType: "ListAsylumCountry"
+  },
+  qListObjectDef: {
+    qDef: {
+      qFieldDefs: ["[Asylum Country]"],
+      autoSort: false,
+      qSortCriterias: [
+        {
+          qSortByAscii: 1
+        }
+      ]
+    },
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 1, qHeight: 500 }]
+  }
+};
+
+export const defOriginCountryList = {
+  qInfo: {
+    qType: "ListOriginCountry"
   },
   qListObjectDef: {
     qDef: {
@@ -253,10 +314,45 @@ export const defCountryList = {
         }
       ]
     },
-
-    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 1, qHeight: 100 }]
+    qInitialDataFetch: [{ qTop: 0, qLeft: 0, qWidth: 1, qHeight: 500 }]
   }
 };
+
+export const defMapChart = {
+  qInfo: {
+    qType: 'MapChart'
+  },
+  qHyperCubeDef: {
+    qDimensions: [{
+      qDef: {
+        qFieldDefs: ["[Origin Country]"],
+        qFieldLabels: ["Origin Country"]
+      }
+    },{
+      qDef: {
+        qFieldDefs: ["[OriginCountryPoints_Geometry]"],
+        qFieldLabels: ["Origin Country GeoPoint"]
+      }
+    },{
+      qDef: {
+        qFieldDefs: ["[Asylum Country]"],
+        qFieldLabels: ["Asylum Country"]
+      }
+    },{
+      qDef: {
+        qFieldDefs: ["[AsylumCountryPoints_Geometry]"],
+        qFieldLabels: ["Asylum Country GeoPoint"]
+      }
+    }],
+    qMeasures: [{
+      qDef: {
+        qDef: "sum(PersonCount)",
+        qLabel: "No Of Refugees"
+      }
+    }],
+    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 5, qHeight: 1000 }]
+  }
+}
 
 export const defNewsFeed = {
   qInfo: {

@@ -12,8 +12,8 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
-import QlikService from "../../qlik/service";
-import QlikUtil from "../../qlik/util";
+import QlikService from "../../service/qlik";
+import QlikUtil from "../../service/qlikUtil";
 
 const styles = theme => ({
   root: {
@@ -115,6 +115,9 @@ function inputComponent({ inputRef, ...props }) {
 
 function Control(props) {
   const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
     overrides: {
       MuiInput: {
         underline: {

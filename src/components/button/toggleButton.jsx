@@ -12,13 +12,23 @@ class ToggleButton extends React.Component {
     this.selectToggleChangeHandler = this.selectToggleChangeHandler.bind(this);
   }
 
+  componentDidMount() {
+    this.mounted = true;
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   selectToggleChangeHandler = e => {
     const { checked, value, type } = e.target;
     const { toggleValueCallback } = this.props;
-    const {checkboxState} = this.state;
-    this.setState({
-      checkboxState: !checkboxState
-    });
+    const { checkboxState } = this.state;
+    if (this.mounted) {
+      this.setState({
+        checkboxState: !checkboxState
+      });
+    }
     const valueToUpdate = type === "checkbox" ? checked : value;
 
     if (toggleValueCallback) {
@@ -27,14 +37,13 @@ class ToggleButton extends React.Component {
   };
 
   render() {
+    const { checkboxState } = this.state;
 
-    const{checkboxState} = this.state;
-    
     const checkbox = (
       <input
-        id="qcountryswitch"
-        name="countryswitch"
-        className="countryswitch-checkbox"
+        id="qtoggle"
+        name="toggle"
+        className="toggle-checkbox"
         type="checkbox"
         onClick={this.selectToggleChangeHandler}
         defaultChecked={checkboxState}
@@ -42,16 +51,16 @@ class ToggleButton extends React.Component {
     );
 
     return (
-      <div className="countryswitch-wrapper">
-        <div className="countryswitch">
+      <div className="toggle-wrapper">
+        <div className="toggle">
           <div className="ad-left">
             <img className="qlikCoreIcon" src={qlikCore} alt="Qlik Core" />
           </div>
           <div className="ad-right">
             {checkbox}
-            <label className="countryswitch-label" htmlFor="qcountryswitch">
-              <span className="countryswitch-inner" />
-              <span className="countryswitch-switch" />
+            <label className="toggle-label" htmlFor="qtoggle">
+              <span className="toggle-inner" />
+              <span className="toggle-switch" />
             </label>
           </div>
         </div>

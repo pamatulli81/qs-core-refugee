@@ -4,7 +4,7 @@ import refugee from "../../resources/icon_refugee.png";
 
 export default function PrimaryInfoBoxStats(props) {
   /* PAM: Render React Component */
-  const { layout } = props;
+  const { layout, toggle } = props;
 
   const styleFont = {
     fontSize: "25px"
@@ -52,13 +52,13 @@ export default function PrimaryInfoBoxStats(props) {
               <p>
                 <span style={styleColor}> persons from</span>
                 <span>
-                  <span> {layout.statsExpression[1]}</span>
+                  <span>  {layout.statsExpression[2]}</span>
                 </span>
                 <span style={styleColor}>
                   &nbsp;countries asked for reallocation to
                   <span />
                 </span>
-                <span> {layout.statsExpression[2]}</span>
+                <span> {layout.statsExpression[1]}</span>
                 <span style={styleColor}>&nbsp;countries</span>
               </p>
             </div>
@@ -71,5 +71,6 @@ export default function PrimaryInfoBoxStats(props) {
 
 /* PAM: Property Types validation using the Prop Types Plugin */
 PrimaryInfoBoxStats.propTypes = {
-  layout: PropTypes.object.isRequired
+  layout: PropTypes.object.isRequired,
+  toggle: PropTypes.bool.isRequired
 };

@@ -5,9 +5,17 @@ import ArticleSecondaryInfo from "./articleSecondaryInfo";
 import SideBar from "../components/ui/sideBar";
 import enigmaConfig from "../enigma-config";
 import Map from "../components/ui/map";
+import EChartMap from "../components/chart/eChartMap";
+import QlikService from "../service/qlik";
+import { defMapChart } from "../definitions";
 import "./app.css";
 import "./fonts.css";
-import {APP_NAME, ERROR_ENGINE, ERROR_UI_MESSAGE, INITIAL_YEAR, INITIAL_TOGGLE_ORIGIN} from "../constants";
+import {
+  ERROR_ENGINE,
+  ERROR_UI_MESSAGE,
+  INITIAL_YEAR,
+  INITIAL_TOGGLE_ORIGIN
+} from "../constants";
 
 class App extends Component {
   constructor(props) {
@@ -17,25 +25,10 @@ class App extends Component {
       error: null,
       show: true
     };
-    this.getApp();
   }
 
-  async getApp() {
-    const session = enigma.create(enigmaConfig);
-    try {
-      const global = await session.open();
-      
-      const app =
-        process.env.NODE_ENV === "production"
-          ? await global.getActiveDoc()
-          : await global.openDoc(`${APP_NAME}`);
-
-      this.setState({
-        app
-      });
-    } catch (error) {
-      this.setState({ error });
-    }
+  componentDidMount() {
+    this.initApp();
   }
 
   showMap = map => {
@@ -44,16 +37,44 @@ class App extends Component {
     });
   };
 
+  async initApp() {
+    const session = enigma.create(enigmaConfig);
+    try {
+      const global = await session.open();
+
+      const app =
+        process.env.NODE_ENV === "production"
+          ? await global.getActiveDoc()
+          : await global.openDoc("Refugees.qvf");
+
+      const eChartMap = await QlikService.createSessionObject(app, defMapChart);
+      eChartMap.model.on("changed", () => this.updateMap());
+
+      this.setState({
+        app,
+        mapModel: eChartMap.model,
+        mapLayout: eChartMap.layout
+      });
+    } catch (error) {
+      this.setState({ error });
+    }
+  }
+
+  async updateMap() {
+    const { mapModel } = this.state;
+    const mapLayout = await mapModel.getLayout();
+    this.setState({
+      mapModel,
+      mapLayout
+    });
+  }
+
   render() {
-    const { error, app, show } = this.state;
-    
+    const { error, app, show, mapModel, mapLayout } = this.state;
     let articleSecondaryInfo;
 
     if (error) {
-      const msg =
-        error instanceof Event
-          ? `${ERROR_ENGINE}`
-          : error.message;
+      const msg = error instanceof Event ? `${ERROR_ENGINE}` : error.message;
       return (
         <div className="errorWrapper">
           <span className="errorText">{ERROR_UI_MESSAGE}</span>
@@ -66,17 +87,24 @@ class App extends Component {
       return null;
     }
 
-    if (show){
+    if (show) {
       articleSecondaryInfo = <ArticleSecondaryInfo app={app} />;
     }
 
+    const mapView = show ? <Map /> : <EChartMap model={mapModel} layout={mapLayout} />;
+
     return (
       <main id="map-page">
-        <Map />
+        {mapView}
         <div className="info-grid">
           <div className="slide-in">
-            <ArticlePrimaryInfo app={app} show={show} defaultYear={INITIAL_YEAR} defaultToggleOrigin={INITIAL_TOGGLE_ORIGIN} />;
-            {articleSecondaryInfo}
+            <ArticlePrimaryInfo
+              app={app}
+              show={show}
+              defaultYear={INITIAL_YEAR}
+              defaultToggleOrigin={INITIAL_TOGGLE_ORIGIN}
+            />
+            ;{articleSecondaryInfo}
             <SideBar showMapCallback={map => this.showMap(map)} />
           </div>
         </div>

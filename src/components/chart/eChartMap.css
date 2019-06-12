@@ -1,0 +1,27 @@
+.echart-wrapper {
+  position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0 auto;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    visibility: inherit;
+    overflow-y: scroll;
+}
+
+.echart-map {
+    position: absolute;
+    top: 0px;
+    left: 0%;
+    margin: 0 auto;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    visibility: inherit;
+    overflow-y: none;
+    opacity: 0.5;
+    background: linear-gradient(90deg, rgb(3, 32, 30) 0%, rgba(29, 35, 46, 1) 100%);
+    transition: background 0.3s;
+
+  }

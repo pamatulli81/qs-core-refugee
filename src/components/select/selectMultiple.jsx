@@ -16,7 +16,7 @@ import Chip from "@material-ui/core/Chip";
 import MenuItem from "@material-ui/core/MenuItem";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
-import QlikService from "../../qlik/service";
+import QlikService from "../../service/qlik";
 
 const styles = theme => ({
   root: {
@@ -90,6 +90,9 @@ function inputComponent({ inputRef, ...props }) {
 
 function Control(props) {
   const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
     overrides: {
       MuiInput: {
         underline: {

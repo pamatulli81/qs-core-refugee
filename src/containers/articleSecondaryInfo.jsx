@@ -1,15 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { defKpiMain, defRefugeeTable } from "../definitions";
-import store from '../store/store';
+import store from "../store/store";
 import SecondaryInfoBoxMain from "../components/ui/secondaryInfoBoxMain";
 import SecondaryInfoBoxTable from "../components/ui/secondaryInfoBoxTable";
-import QlikService from "../qlik/service";
+import QlikService from "../service/qlik";
 import "./articleSecondaryInfo.css";
-import {FIELD_ORIGIN_COUNTRY, FIELD_ASYLUM_COUNTRY} from "../constants";
+import { FIELD_ORIGIN_COUNTRY, FIELD_ASYLUM_COUNTRY } from "../constants";
 
 class ArticleSecondaryInfo extends React.Component {
-
   constructor(...args) {
     super(...args);
     this.state = { loaded: false };
@@ -20,29 +19,37 @@ class ArticleSecondaryInfo extends React.Component {
     this.createModel();
   }
 
-  componentDidMount(){
+  componentDidMount() {
+    this.mounted = true;
     this.unsubscribe = store.subscribe(() => {
-      
       const { tableModel } = this.state;
+      const refField = this.getCountryField();
+      
+      this.setState({
+        refField
+      })
 
-      if(tableModel!==undefined){
-      
-        const checked = store.getState().toggle;
-        const dimCountry = checked ? `${FIELD_ORIGIN_COUNTRY}` : `${FIELD_ASYLUM_COUNTRY}`;
-      
-        QlikService.applyPatches(
+      if (tableModel !== undefined) {       
+        QlikService.applyPatch(
           tableModel,
           "replace",
           "/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0",
-          dimCountry
+          refField
         );
-
-      }  
+      }
     });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
+    this.mounted = false;
     this.unsubscribe();
+  }
+
+  getCountryField = () => {
+    const checked = store.getState().toggle;
+    return checked
+        ? `${FIELD_ORIGIN_COUNTRY}`
+        : `${FIELD_ASYLUM_COUNTRY}`;
   }
 
   async createModel() {
@@ -52,17 +59,24 @@ class ArticleSecondaryInfo extends React.Component {
       const qlikKpi = await QlikService.createSessionObject(app, defKpiMain);
       qlikKpi.model.on("changed", () => this.updateInfoBoxMainsKpi());
 
-      const field = store.getState().toggle ? `${FIELD_ORIGIN_COUNTRY}` : `${FIELD_ASYLUM_COUNTRY}`;;
-      const qlikTable = await QlikService.createSessionObject(app, defRefugeeTable(field));
+      const refField = this.getCountryField();
+
+      const qlikTable = await QlikService.createSessionObject(
+        app,
+        defRefugeeTable(refField)
+      );
       qlikTable.model.on("changed", () => this.updateTable());
 
-      this.setState({
-        tableModel: qlikTable.model,
-        tableLayout: qlikTable.layout,
-        kpiModel: qlikKpi.model,
-        kpiLayout: qlikKpi.layout,
-        loaded: true
-      });
+      if (this.mounted) {
+        this.setState({
+          tableModel: qlikTable.model,
+          tableLayout: qlikTable.layout,
+          kpiModel: qlikKpi.model,
+          kpiLayout: qlikKpi.layout,
+          loaded: true,
+          refField
+        });
+      }
     } catch (error) {
       // console.log(error);
     }
@@ -71,23 +85,27 @@ class ArticleSecondaryInfo extends React.Component {
   async updateInfoBoxMainsKpi() {
     const { kpiModel } = this.state;
     const kpiLayout = await kpiModel.getLayout();
-    this.setState({
-      kpiLayout
-    });
+    if (this.mounted) {
+      this.setState({
+        kpiLayout
+      });
+    }
   }
 
   async updateTable() {
     const { tableModel } = this.state;
     const tableLayout = await tableModel.getLayout();
-    this.setState({
-      tableLayout
-    });
+    if (this.mounted) {
+      this.setState({
+        tableLayout
+      });
+    }
   }
-  
+
   render() {
-    const { kpiLayout, tableLayout, loaded } = this.state;
+    const { kpiLayout, tableLayout, loaded, refField } = this.state;
     const { app } = this.props;
-   
+
     const style = {
       section: {
         transformOrigin: "center 50% 0px",
@@ -108,7 +126,7 @@ class ArticleSecondaryInfo extends React.Component {
       <article id="secondaryInfo">
         <section className="explore-data in" style={style.section}>
           <SecondaryInfoBoxMain layout={kpiLayout} />
-          <SecondaryInfoBoxTable app={app} layout={tableLayout} />
+          <SecondaryInfoBoxTable app={app} layout={tableLayout} refField={refField} />
         </section>
       </article>
     );
