@@ -20,7 +20,7 @@ The Qlik Core Refugee Project is an open source learning project, which was crea
   ```bash
   npm install
   ```
-* Start the Qlik Associative Engine in a Docker container:
+* Start the Qlik Associative Engine in a Docker container by accepting the EULA license:
   ```bash
   docker-compose up -d
   ```
@@ -31,7 +31,7 @@ The Qlik Core Refugee Project is an open source learning project, which was crea
 * Open a browser and navigate to [http://localhost:3000](http://localhost:3000) to view the webapp.
 
 ## Qlik and Data files
-The data folder is containing the .qvf file including the data used for the project provided by the Qlik Master Summit team. The data folder is mounted in the Container 
+The data folder is containing the .qvf file including the data used for the project provided by the Qlik Master Summit team
 
 ## Credits
 * UI Web Design template
