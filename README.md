@@ -4,8 +4,7 @@ The Qlik Core Refugee Project is an open source learning project, which was crea
 
 ## Instructions
 
-* Start the Qlik Associative Engine in a Docker container.
-  
+* Start the Qlik Associative Engine in a Docker container:
   ```bash
   docker-compose up -d
   ```
