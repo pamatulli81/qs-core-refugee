@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import IconRefugee from "../icon/iconRefugee";
 import IconPopulation from "../icon/iconPopulation";
-import "./secondaryInfoBoxMain.css";
+import "./secondaryNewsBoxMain.css";
 import {LABEL_TOTAL_POPULATION} from "../../constants";
 
-function SecondaryInfoBoxMain(props) {
+function SecondaryNewsBoxMain(props) {
   const { layout } = props;  
 
   return (
@@ -32,8 +32,8 @@ function SecondaryInfoBoxMain(props) {
   );
 }
 
-SecondaryInfoBoxMain.propTypes = {
+SecondaryNewsBoxMain.propTypes = {
   layout: PropTypes.object.isRequired
 };
 
-export default SecondaryInfoBoxMain;
+export default SecondaryNewsBoxMain;

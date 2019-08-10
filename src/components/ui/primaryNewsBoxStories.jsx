@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./primaryInfoBoxStories.css";
+import "./primaryNewsBoxStories.css";
 import {LABEL_LEARN_WHY, LABEL_READ_MORE} from "../../constants";
 
-function PrimaryInfoBoxStories(props) {
+function PrimaryNewsBoxStories(props) {
   const { nbrOfStories, layout } = props;
 
   const styleContent = {
@@ -55,13 +55,13 @@ function PrimaryInfoBoxStories(props) {
   );
 }
 
-PrimaryInfoBoxStories.propTypes = {
+PrimaryNewsBoxStories.propTypes = {
   layout: PropTypes.object.isRequired,
   nbrOfStories: PropTypes.number
 };
 
-PrimaryInfoBoxStories.defaultProps = {
+PrimaryNewsBoxStories.defaultProps = {
   nbrOfStories: 3
 };
 
-export default PrimaryInfoBoxStories;
+export default PrimaryNewsBoxStories;

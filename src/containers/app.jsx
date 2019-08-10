@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import enigma from "enigma.js";
-import ArticlePrimaryInfo from "./articlePrimaryInfo";
-import ArticleSecondaryInfo from "./articleSecondaryInfo";
+import PrimaryNewsInfo from "./primaryNewsInfo";
+import SecondaryNewsInfo from "./secondaryNewsInfo";
 import SideBar from "../components/ui/sideBar";
 import enigmaConfig from "../enigma-config";
 import Map from "../components/ui/map";
@@ -87,7 +87,7 @@ class App extends Component {
     }
 
     if (show) {
-      articleSecondaryInfo = <ArticleSecondaryInfo app={app} />;
+      articleSecondaryInfo = <SecondaryNewsInfo app={app} />;
     }
 
     const mapView = show ? <Map /> : <EChartMap model={mapModel} layout={mapLayout} />;
@@ -97,7 +97,7 @@ class App extends Component {
         {mapView}
         <div className="info-grid">
           <div className="slide-in">
-            <ArticlePrimaryInfo
+            <PrimaryNewsInfo
               app={app}
               show={show}
               defaultYear={INITIAL_YEAR}

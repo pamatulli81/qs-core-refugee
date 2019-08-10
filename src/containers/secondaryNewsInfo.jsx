@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { defKpiMain, defRefugeeTable } from "../definitions";
 import store from "../store/store";
-import SecondaryInfoBoxMain from "../components/ui/secondaryInfoBoxMain";
-import SecondaryInfoBoxTable from "../components/ui/secondaryInfoBoxTable";
+import SecondaryNewsoxMain from "../components/ui/secondaryNewsBoxMain";
+import SecondaryNewsBoxTable from "../components/ui/secondaryNewsBoxTable";
 import QlikService from "../service/qlik";
-import "./articleSecondaryInfo.css";
+import "./secondaryNewsInfo.css";
 import { FIELD_ORIGIN_COUNTRY, FIELD_ASYLUM_COUNTRY } from "../constants";
 
 class ArticleSecondaryInfo extends React.Component {
@@ -123,10 +123,10 @@ class ArticleSecondaryInfo extends React.Component {
     }
 
     return (
-      <article id="secondaryInfo">
+      <article id="secondaryNews">
         <section className="explore-data in" style={style.section}>
-          <SecondaryInfoBoxMain layout={kpiLayout} />
-          <SecondaryInfoBoxTable app={app} layout={tableLayout} refField={refField} />
+          <SecondaryNewsoxMain layout={kpiLayout} />
+          <SecondaryNewsBoxTable app={app} layout={tableLayout} refField={refField} />
         </section>
       </article>
     );

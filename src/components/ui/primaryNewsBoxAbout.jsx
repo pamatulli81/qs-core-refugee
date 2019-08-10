@@ -1,8 +1,8 @@
 import React from "react";
-import "./primaryInfoBoxAbout.css";
+import "./primaryNewsBoxAbout.css";
 import {LABEL_ABOUT} from "../../constants";
 
-export default function PrimaryInfoBoxAbout() {
+export default function PrimaryNewsBoxAbout() {
  
   const styleContent = {
     transform: {

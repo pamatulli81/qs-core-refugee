@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ChartDialog from "../dialog/chartDialog";
-import "./secondaryInfoBoxTable.css";
+import "./secondaryNewsBoxTable.css";
 
-function SecondaryInfoBoxTable(props) {
+function SecondaryNewsBoxTable(props) {
   const { app, layout, refField } = props;
 
   const styleCell = {
@@ -89,12 +89,12 @@ function SecondaryInfoBoxTable(props) {
   );
 }
 
-SecondaryInfoBoxTable.propTypes = {
+SecondaryNewsBoxTable.propTypes = {
   app: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,
   refField: PropTypes.string.isRequired
 };
 
-SecondaryInfoBoxTable.defaultProps = {};
+SecondaryNewsBoxTable.defaultProps = {};
 
-export default SecondaryInfoBoxTable;
+export default SecondaryNewsBoxTable;

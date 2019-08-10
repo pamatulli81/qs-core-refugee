@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import refugee from "../../resources/icon_refugee.png";
 
-export default function PrimaryInfoBoxStats(props) {
+export default function PrimaryNewsBoxStats(props) {
   /* PAM: Render React Component */
   const { layout, toggle } = props;
 
@@ -69,7 +69,7 @@ export default function PrimaryInfoBoxStats(props) {
   );
 }
 
-PrimaryInfoBoxStats.propTypes = {
+PrimaryNewsBoxStats.propTypes = {
   layout: PropTypes.object.isRequired,
   toggle: PropTypes.bool.isRequired
 };

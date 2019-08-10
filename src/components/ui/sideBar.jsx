@@ -31,7 +31,7 @@ class SideBar extends Component {
       <div className="map-config">
         <div className="spin-icon">
           <span onClick={this.showMapClickHandler}>
-            <IconGear tooltip={TOOLTIP_MAP}/>
+            <IconGear tooltip={TOOLTIP_MAP} />
           </span>
         </div>
       </div>

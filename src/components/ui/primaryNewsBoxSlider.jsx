@@ -1,10 +1,10 @@
 import React from "react";
 import Flickity from "react-flickity-component";
 import PropTypes from "prop-types";
-import "./primaryInfoBoxNewsSlider.css";
+import "./primaryNewsBoxSlider.css";
 import {LABEL_STORIES} from "../../constants";
 
-function PrimaryInfoBoxNewsSlider(props) {
+function PrimaryNewsBoxSlider(props) {
   const { nbrOfNews, layout } = props;
 
   const styleContent = {
@@ -64,13 +64,13 @@ function PrimaryInfoBoxNewsSlider(props) {
   );
 }
 
-PrimaryInfoBoxNewsSlider.propTypes = {
+PrimaryNewsBoxSlider.propTypes = {
   layout: PropTypes.object.isRequired,
   nbrOfNews: PropTypes.number
 };
 
-PrimaryInfoBoxNewsSlider.defaultProps = {
+PrimaryNewsBoxSlider.defaultProps = {
   nbrOfNews: 10
 };
 
-export default PrimaryInfoBoxNewsSlider;
+export default PrimaryNewsBoxSlider;

@@ -11,16 +11,16 @@ import {
   defOriginCountryList
 } from "../definitions";
 import ToggleButton from "../components/button/toggleButton";
-import PrimaryInfoBoxStats from "../components/ui/primaryInfoBoxStats";
+import PrimaryInfoBoxStats from "../components/ui/primaryNewsBoxStats";
 import HorizontalLine from "../components/ui/horizontalLine";
-import PrimaryInfoBoxNewsSlider from "../components/ui/primaryInfoBoxNewsSlider";
-import PrimaryInfoBoxStories from "../components/ui/primaryInfoBoxStories";
-import PrimaryInfoBoxAbout from "../components/ui/primaryInfoBoxAbout";
+import PrimaryNewsBoxSlider from "../components/ui/primaryNewsBoxSlider";
+import PrimaryNewsBoxStories from "../components/ui/primaryNewsBoxStories";
+import PrimaryNewsBoxAbout from "../components/ui/primaryNewsBoxAbout";
 import EChartBar from "../components/chart/eChartBar";
 import SelectSingleValue from "../components/select/selectSingle";
 import SelectMultipleValue from "../components/select/selectMultiple";
 import QlikService from "../service/qlik";
-import "./articlePrimaryInfo.css";
+import "./primaryNewsInfo.css";
 import {
   ACTION_TOGGLE,
   FIELD_YEAR,
@@ -205,7 +205,7 @@ class ArticlePrimaryInfo extends React.Component {
     };
 
     return (
-      <article id="primaryInfo" className="primaryInfo_fadeIn">
+      <article id="newsInfo" className="newsInfo_fadeIn">
         <div className="info-box stats" style={style}>
           <ToggleButton
             toggleValueCallback={onToggleCountry}
@@ -239,9 +239,9 @@ class ArticlePrimaryInfo extends React.Component {
             <div>
               <EChartBar layout={trendLayout} model={trendModel} />
               <HorizontalLine />
-              <PrimaryInfoBoxNewsSlider layout={newsFeedLayout} />
-              <PrimaryInfoBoxStories layout={newsFeedLayout} />
-              <PrimaryInfoBoxAbout />
+              <PrimaryNewsBoxSlider layout={newsFeedLayout} />
+              <PrimaryNewsBoxStories layout={newsFeedLayout} />
+              <PrimaryNewsBoxAbout />
             </div>
           ) : null}
         </div>
