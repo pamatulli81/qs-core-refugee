@@ -55,7 +55,6 @@ function PrimaryInfoBoxStories(props) {
   );
 }
 
-/* PAM: Property Types validation using the Prop Types Plugin */
 PrimaryInfoBoxStories.propTypes = {
   layout: PropTypes.object.isRequired,
   nbrOfStories: PropTypes.number

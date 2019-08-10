@@ -6,6 +6,7 @@ import "echarts-gl";
 import "echarts-stat";
 import "echarts/extension/dataTool";
 import "echarts/map/js/world";
+import { ListItemText } from "@material-ui/core";
 
 class EChartMap extends React.Component {
   constructor(props) {
@@ -45,22 +46,31 @@ class EChartMap extends React.Component {
 
   eCreateData = items => {
     const obj = {
+      refCountries: [],
       routes: [],
       values: [],
       markPoint: {
         from: [],
-        to: []
-      }
+        to: [],
+      },
     };
 
     items.forEach(item => {
-      const from = this.eCleanArray(item[1]);
-      const to = this.eCleanArray(item[3]);
+      const geomFrom = this.eCleanArray(item[1]);
+      const countryFrom = item[0].qText;
+      const countryTo = item[2].qText;
+      const geomTo = this.eCleanArray(item[3]);
+      const value = item[4].qNum;
+      
 
-      obj.routes.push([from, to]);
-      obj.markPoint.from.push(from);
-      obj.markPoint.to.push(to);
-      obj.values.push(item[4].qNum);
+      if(obj.refCountries.indexOf(item[0].qText) === -1) {
+        obj.refCountries.push(item[0].qText);
+      }
+
+      obj.routes.push([geomFrom, geomTo, countryFrom, countryTo, value,]);
+      obj.markPoint.from.push(geomFrom);
+      obj.markPoint.to.push(geomTo);
+      obj.values.push(value);
     });
 
     return obj;
@@ -84,7 +94,8 @@ class EChartMap extends React.Component {
   makeChartOptions = props => {
     const { layout } = props;
     const data = this.eCreateData(layout.qHyperCube.qDataPages[0].qMatrix);
-
+    console.log(data);
+  
     const option = {
       title: {
         text: "",
@@ -93,42 +104,61 @@ class EChartMap extends React.Component {
           color: "#eee"
         }
       },
-      tooltip: {},
-      legend: {
-        orient: "vertical",
-        left: "top",
-        data: ["Origin Country", "Asylum Country"]
-      },
+      tooltip : {
+        trigger: 'item',
+        // eslint-disable-next-line object-shorthand
+        formatter : function (params) {
+            if (params.seriesId !== 'route')
+              return;
+            console.log(params);
+            return `From: <b>${params.data[2]}</b><br/>
+                    To: <b>${params.data[3]}</b><br/>
+                    # <b>${params.data[4].toLocaleString()}</b><br/>`;
+        }
+    },
       geo: {
         map: "world",
         left: 0,
         right: 0,
         silent: false,
         roam: true,
+        data: [],
         itemStyle: {
           normal: {
             borderColor: "#ccc",
             color: "rgba(50, 62, 83, 0.4)"
-          }
+          },
+          emphasis:{label:{show:true}}
         }
       },
       series: [
         {
+          id: "route",
           type: "lines",
           coordinateSystem: "geo",
           data: data.routes,
-          large: true,
-          largeThreshold: 100,
-          lineStyle: {
-            normal: {
-              color: "#9c5",
-              type: "solid",
+          smooth:true,
+          effect : {
+              show: data.refCountries.length === 1,
+              scaleSize: 100,
+              period:5,
+              color: '#fff',
+              shadowBlur: 10,
               opacity: 1,
-              width: 1.0,
-              curveness: 0.2
-            }
           },
-          blendMode: "lighter"
+          itemStyle : {
+              normal: {
+                  borderWidth:1,
+                  lineStyle: {
+                      type: 'solid',
+                      shadowBlur: 100,
+                      color: "#9c5",
+                      opacity: 1,
+                      width: 1.5,
+                      curveness: 0.3
+                  }
+              }
+          },
         },
         {
           type: "scatter",
@@ -154,27 +184,25 @@ class EChartMap extends React.Component {
           }
         },
         {
+          id: "target",
           type: "scatter",
           coordinateSystem: "geo",
           data: data.markPoint.to,
+          symbol:'emptyCircle',
           symbolSize: 5,
-          symbol: "arrow",
-          symbolRotate: 0,
-          label: {
-            normal: {
-              formatter: "{b}",
-              position: "right",
-              show: false
-            },
-            emphasis: {
-              show: true
-            }
+          effect : {
+              show: true,
+              shadowBlur : 0
           },
-          itemStyle: {
-            normal: {
-              color: "#97D651"
-            }
-          }
+          itemStyle:{
+              normal:{
+                  label:{show:false},
+                  color: "#97D651"
+              },
+              emphasis: {
+                  label:{position:'top'}
+              }
+          },
         }
       ]
     };

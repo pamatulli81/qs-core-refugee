@@ -327,22 +327,26 @@ export const defMapChart = {
       qDef: {
         qFieldDefs: ["[Origin Country]"],
         qFieldLabels: ["Origin Country"]
-      }
+      },
+      qNullSuppression: true
     },{
       qDef: {
         qFieldDefs: ["[OriginCountryPoints_Geometry]"],
         qFieldLabels: ["Origin Country GeoPoint"]
-      }
+      },
+      qNullSuppression: true
     },{
       qDef: {
         qFieldDefs: ["[Asylum Country]"],
         qFieldLabels: ["Asylum Country"]
-      }
+      },
+      qNullSuppression: true
     },{
       qDef: {
         qFieldDefs: ["[AsylumCountryPoints_Geometry]"],
         qFieldLabels: ["Asylum Country GeoPoint"]
-      }
+      },
+      qNullSuppression: true
     }],
     qMeasures: [{
       qDef: {
@@ -350,7 +354,8 @@ export const defMapChart = {
         qLabel: "No Of Refugees"
       }
     }],
-    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 5, qHeight: 1000 }]
+    qInitialDataFetch: [{ qLeft: 0, qTop: 0, qWidth: 5, qHeight: 1000 }],
+    qSuppressZero: true
   }
 }
 

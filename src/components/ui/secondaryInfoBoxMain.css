@@ -1,6 +1,6 @@
 .explore-data {
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     display: flex;
     flex-wrap: wrap;
@@ -50,7 +50,7 @@
         padding-right: 1em; } }
     @media screen and (min-width: 992px) {
       .explore-data {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.3);
         margin-left: 0;
         width: calc(100% - 27.5em); }
         .explore-data h2 {

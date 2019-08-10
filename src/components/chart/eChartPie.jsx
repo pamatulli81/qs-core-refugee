@@ -38,26 +38,14 @@ class EchartPie extends React.Component {
   }
 
   transformData = items => {
-    const values = [];
+    const data = [];
     const names = [];
 
     for (let r = 0; r < items.qMatrix.length; r++) {
-      for (let c = 0; c < items.qMatrix[r].length; c++) {
-        const item = {};
-        switch (c) {
-          case 0:
-            item.name = items.qMatrix[r][c].qText;
-            names.push(items.qMatrix[r][c].qText);
-            break;
-          default:
-            item.value = items.qMatrix[r][c].qText;
-            break;
-        }
-        values.push(item);
-      }
+      names.push(items.qMatrix[r][0].qText);
+      data.push({value: items.qMatrix[r][1].qNum, name: items.qMatrix[r][0].qText});
     }
-
-    return [names, values];
+    return [names, data];
   };
 
   updateChart = props => {
@@ -83,7 +71,7 @@ class EchartPie extends React.Component {
       },
       tooltip: {
         trigger: "item",
-        formatter: "{c} ({d}%)"
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
       },
       legend: {
         orient: "vertical",
@@ -107,12 +95,12 @@ class EchartPie extends React.Component {
           label: {
             normal: {
               show: false,
-              position: "center"
+              position: "top"
             },
             emphasis: {
               show: true,
               textStyle: {
-                fontSize: "30",
+                fontSize: "20",
                 fontWeight: "bold"
               }
             }
@@ -122,7 +110,7 @@ class EchartPie extends React.Component {
               show: false
             }
           },
-          data: qData[1]
+          data: qData[1],
         }
       ]
     };

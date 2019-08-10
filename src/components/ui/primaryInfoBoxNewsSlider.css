@@ -1,7 +1,10 @@
 .info-label-slider {
     color: #6D7988;
     display: block;
-    font-family: "Gotham XNarrow SSm A", "Gotham XNarrow SSm B", "GothamXNarrow-Book", sans-serif;
+    font-family: "Gotham XNarrow SSm A", "Gotham XNarrow SSm B",
+    "GothamXNarrow-Book", sans-serif;
+    font-weight: 800;
+    font-style: normal;
     font-size: 13px;
     margin-bottom: 1em;
     margin-top: 10px;

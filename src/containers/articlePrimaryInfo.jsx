@@ -205,7 +205,7 @@ class ArticlePrimaryInfo extends React.Component {
     };
 
     return (
-      <article id="primaryInfo">
+      <article id="primaryInfo" className="primaryInfo_fadeIn">
         <div className="info-box stats" style={style}>
           <ToggleButton
             toggleValueCallback={onToggleCountry}

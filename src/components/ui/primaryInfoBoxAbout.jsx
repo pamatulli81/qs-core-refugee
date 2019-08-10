@@ -20,18 +20,9 @@ export default function PrimaryInfoBoxAbout() {
 
       <div className="info-about-body">
         <p>
-          Lorem opossum solitary what consumed nomadic scratchy big then call
-          tlacuache tail. Consumed ears tlacuache didelphimorph marsupial fur
-          hunted white beast nomadic big marsupial one. Fur and opossum beast
-          what tail then one dangle one pelt bitey. Didelphimorph snout pelt fur
-          prehensile where big consumed fur solitary scratchy. Call how fur what
-          oil white prehensile solitary is hunted manicou. Didelphimorph one
-          tlacuache and bitey scratchy tlacuache tail dangle fur call nomadic
-          tail. Prehensile white scratchy prehensile opossum one prehensile oil
-          tail prehensile and omnivore beast hunted. Hunted dangle oil the fur
-          solitary consumed snout. Prehensile opossum prehensile white a tail
-          trees prehensile bitey beast pelt how. Prehensile tail nomadic tail
-          manicou is nomadic trees hunted.
+        The Qlik Core Refugee Project is an open source learning project, which was created together with my Qlik buddy <a href="https://se.linkedin.com/in/alexander-torngren" target="_new"><span className="about-link">Alex Torngren</span></a> using Qlik Core, React and Container (Docker). The journey started at the Qlik Master Summit 2019 in Sweden during the hackathon with the goal to provide a valuable user experience using the Qlik Core Associative Engine and open source visualization libraries to provide insights to the refugees and migration topic around the world.
+        The design is inspired to <a href="https://studioijeoma.com/" target="_new"><span className="about-link">Ekene Ijeoma</span></a> and <a href="https://studioijeoma.com/" target="_new"><span className="about-link">Hyperakt</span></a> Refugees project and was re-factored and extended during our learning experience. So special thanks goes to him and his team for the inspiring UI!
+        The refugee data was provided by the <a href="https://masterssummit.com/" target="_new"><span className="about-link">Qlik Master Summit</span> </a> Team, as for the news and stories we used the <a href="https://www.newsdeeply.com/" target="_new"><span className="about-link">News Deeply</span></a> feed.
         </p>
       </div>
     </div>

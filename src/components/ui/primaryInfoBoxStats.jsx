@@ -69,7 +69,6 @@ export default function PrimaryInfoBoxStats(props) {
   );
 }
 
-/* PAM: Property Types validation using the Prop Types Plugin */
 PrimaryInfoBoxStats.propTypes = {
   layout: PropTypes.object.isRequired,
   toggle: PropTypes.bool.isRequired

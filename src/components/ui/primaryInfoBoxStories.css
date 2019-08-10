@@ -1,9 +1,7 @@
 .story-headlines {
     color: #fff;
     padding: 1em; }
-    [data-country-selected="true"] ~ #primaryInfo .story-headlines, .story-headlines.inactive {
-      display: none; }
-  
+    
   .story-preview {
     padding: 15px 0; }
     .story-preview a {
