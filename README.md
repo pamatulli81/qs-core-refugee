@@ -47,3 +47,10 @@ The data folder is containing the .qvf file including the data used for the proj
 ## Authors
 * Patric Amatulli 
 * Alexander Torngren
+
+## Possible Improvements
+* Enhancement of the EChart Maps with line thickness reflecting the number of persons (e.g. refugees)
+* Number Fromating
+* Qlik Selections on ECharts object
+* Webapp performance and response time (React rendering strategy)
+* ...
