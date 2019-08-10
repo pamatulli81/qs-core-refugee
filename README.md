@@ -6,13 +6,16 @@ The Qlik Core Refugee Project is an open source learning project, which was crea
 
 * Download and run Qlik Core in a container using for instance Docker Desktop for Windows https://hub.docker.com/r/qlikcore/engine/tags 
 * Pull the latest Qlik Core version 
-  ``` $ docker run -d qlikcore/engine:$LAST_VERSION
+  ``` 
+  $ docker run -d qlikcore/engine:$LAST_VERSION
   ```
 * Run Core (you MUST accept the EULA) 
-  ```$ docker run -d qlikcore/engine:$LAST_VERSION -S AcceptEULA=yes 
+  ```
+  $ docker run -d qlikcore/engine:$LAST_VERSION -S AcceptEULA=yes 
   ```
 * Run shell in the container 
-  ```$ docker exec -it <id-prefix> /bin/s
+  ```
+  $ docker exec -it <id-prefix> /bin/s
   ```
 ## Run Webapp
 
