@@ -55,7 +55,8 @@ The data folder is containing the .qvf file including the data used for the proj
 
 ## Possible Improvements
 * Enhancement of the EChart Maps with line thickness reflecting the number of persons (e.g. refugees)
-* Number Fromating
+* Number Fromating in Echarts
+* Dynamic Year Filter in the PrimaryNews Panel (see 7 years)
 * Qlik Selections on ECharts object
 * Webapp performance and response time (React rendering strategy)
 * ...
