@@ -9,7 +9,6 @@ import EChartMap from "../components/chart/eChartMap";
 import QlikService from "../service/qlik";
 import { defMapChart } from "../definitions";
 import "./app.css";
-import "./fonts.css";
 import {
   ERROR_ENGINE,
   ERROR_UI_MESSAGE,

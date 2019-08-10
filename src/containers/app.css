@@ -121,8 +121,7 @@ body {
 
 body {
   position: relative;
-  font-family: "Gotham XNarrow SSm A", "Gotham XNarrow SSm B",
-    "GothamXNarrow-Book", sans-serif;
+  font-family: "Roboto";
   font-style: normal;
   background-color: #000;
 }
