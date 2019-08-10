@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./primaryNewsBoxStories.css";
-import {LABEL_LEARN_WHY, LABEL_READ_MORE} from "../../constants";
+import {LABEL_NEWS_HEADER, LABEL_READ_MORE} from "../../constants";
 
 function PrimaryNewsBoxStories(props) {
   const { nbrOfStories, layout } = props;
@@ -47,7 +47,7 @@ function PrimaryNewsBoxStories(props) {
       data-3dhover=""
       style={styleContent.transform}
     >
-      <aside className="info-label-slider">{LABEL_LEARN_WHY}</aside>
+      <aside className="info-label-slider">{LABEL_NEWS_HEADER}</aside>
       <ul id="story-head" className="list-reset">
         {createStoriesItem()}
       </ul>

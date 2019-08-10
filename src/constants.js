@@ -39,10 +39,10 @@ export const LABEL_TOTAL_POPULATION = 'Total Population';
 
 // PrimaryInfoBoxStory
 export const LABEL_READ_MORE = 'Read more';
-export const LABEL_LEARN_WHY = 'Learn why'
+export const LABEL_NEWS_HEADER = 'News'
 
 // PrimaryInfoBoxSlider
-export const LABEL_STORIES = 'Refugee Stories';
+export const LABEL_STORIES = 'Stories';
 
 // PrimaryInfoBoxAbout
 export const LABEL_ABOUT = 'About';
