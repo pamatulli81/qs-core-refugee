@@ -1,0 +1,90 @@
+.explore-data {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 1em 4vw 4vw;
+    position: fixed;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+    z-index: 3;
+    -webkit-overflow-scrolling: touch;
+    /* Lets it scroll lazy */ }
+    .explore-data h2 {
+      font-size: 2.5em;
+      margin: 0; }
+    .explore-data p {
+      margin: 0; }
+    .explore-data .asylum-countries {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0 auto;
+      width: 100%; }
+      .explore-data .asylum-countries + .explore-data-copy {
+        margin-top: 1em; }
+      @media screen and (min-width: 992px) {
+        .explore-data .asylum-countries {
+          flex-wrap: nowrap;
+          justify-content: space-between; } }
+    .explore-data .asylum-country {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 5px 0;
+      width: 50%; }
+      @media screen and (min-width: 992px) {
+        .explore-data .asylum-country {
+          margin: 0;
+          width: 33.33%; } }
+    @media screen and (min-width: 480px) {
+      .explore-data {
+        padding-right: 1em; } }
+    @media screen and (min-width: 992px) {
+      .explore-data {
+        background-color: rgba(0, 0, 0, 0.3);
+        margin-left: 0;
+        width: calc(100% - 27.5em); }
+        .explore-data h2 {
+          font-size: 4em; } }
+  
+  .asylum-country__country {
+    font-size: 1.5em;
+    font-weight: 200;
+    margin: 0;
+    text-align: center;
+    padding: .5em; }
+    @media screen and (min-width: 992px) {
+      .asylum-country__country {
+        font-size: 2.2em; } }
+  
+  .explore-data__head {
+    font-size: 2.5em;
+    margin: 0; }
+    @media screen and (min-width: 992px) {
+      .explore-data__head {
+        font-size: 4em; } }
+  
+  .explore-data__wrap {
+    text-align: center;
+    width: 100%;
+    padding: 2em 4vw 2em 1em; }
+  
+  .explore-data-copy {
+    font-size: 1em; }
+    @media screen and (min-width: 992px) {
+      .explore-data-copy {
+        font-size: 1.25em; } }
+  
+  .population-data a, .population-data span {
+    color: #9aabbc;
+    line-height: 1.25em;
+    margin: 0; }

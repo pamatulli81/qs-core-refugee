@@ -1,0 +1,49 @@
+.machine {
+  width: 60vmin;
+  fill: white; }
+
+.small-shadow, .medium-shadow, .large-shadow {
+  fill: rgba(0, 0, 0, 0.05); }
+
+.small {
+  -webkit-animation: counter-rotation 2.5s infinite linear;
+	   -moz-animation: counter-rotation 2.5s infinite linear;
+	     -o-animation: counter-rotation 2.5s infinite linear;
+	        animation: counter-rotation 2.5s infinite linear;
+  -webkit-transform-origin: 100.136px 225.345px;
+      -ms-transform-origin: 100.136px 225.345px;
+          transform-origin: 100.136px 225.345px; }
+
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-moz-keyframes rotation {
+    from {-moz-transform: rotate(0deg);}
+    to   {-moz-transform: rotate(359deg);}
+}
+@-o-keyframes rotation {
+    from {-o-transform: rotate(0deg);}
+    to   {-o-transform: rotate(359deg);}
+}
+@keyframes rotation {
+    from {transform: rotate(0deg);}
+    to   {transform: rotate(359deg);}
+}
+
+@-webkit-keyframes counter-rotation {
+    from {-webkit-transform: rotate(359deg);}
+    to   {-webkit-transform: rotate(0deg);}
+}
+@-moz-keyframes counter-rotation {
+    from {-moz-transform: rotate(359deg);}
+    to   {-moz-transform: rotate(0deg);}
+}
+@-o-keyframes counter-rotation {
+    from {-o-transform: rotate(359deg);}
+    to   {-o-transform: rotate(0deg);}
+}
+@keyframes counter-rotation {
+    from {transform: rotate(359deg);}
+    to   {transform: rotate(0deg);}
+}

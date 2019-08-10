@@ -1,0 +1,60 @@
+/* Toggle BEGIN */
+.ad-right {
+    float: right;
+    width: 130px;
+  }
+  .ad-left {
+    float: left;
+    width:50%
+  }
+  .toggle {
+    position: relative; width: 100%; 
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    display: inline-block;}
+  .toggle-wrapper{
+    width:100%;
+  }
+  .toggle-checkbox {
+    display: none;
+  }
+  .toggle-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 1px solid #FFF; border-radius: 50px;
+  }
+  .toggle-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+  }
+  .toggle-inner:before, .toggle-inner:after {
+    display: block; float: left; width: 50%; height: 18px; padding: 0; line-height: 18px;
+    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+    text-align: left;
+  }
+  .toggle-inner:before {
+    content: "ORIGIN";
+    padding-left: 12px;
+    background-color: #8BC449; color: #FFFFFF;
+  }
+  .toggle-inner:after {
+    content: "ASYLUM";
+    padding-right: 12px;
+    background-color: #8BC449; color: #FFFFFF;
+    text-align: right;
+  }
+  .toggle-switch {
+    display: block; width: 32px; height:30px; margin: -6px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 108px;
+    border: 1px solid #FFF; border-radius: 50px;
+    transition: all 0.3s ease-in 0s; 
+  }
+  .toggle-checkbox:checked + .toggle-label .toggle-inner {
+    margin-left: 0;
+  }
+  .toggle-checkbox:checked + .toggle-label .toggle-switch {
+    right: 0px; 
+  }
+  
+  /* TOGGLE END */

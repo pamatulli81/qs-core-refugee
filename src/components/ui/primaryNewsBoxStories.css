@@ -1,0 +1,66 @@
+.story-headlines {
+    color: #fff;
+    padding: 1em; }
+    
+  .story-preview {
+    padding: 15px 0; }
+    .story-preview a {
+      display: block; }
+      .story-preview a:hover .story-headline-link {
+        color: #fff; }
+    .story-preview p, .story-preview span {
+      color: #9aabbc;
+      line-height: 1.25em;
+      margin: 0; }
+    .story-preview span.story-headline-link {
+      text-decoration: underline;
+      transition: color 0.2s; }
+  
+  .story-preview-data {
+    color: #fff;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    z-index: 0; }
+  
+  .story-preview-title {
+    color: #fff;
+    font-size: 1.8rem;
+    line-height: 2rem;
+    margin: 0 0 10px;
+    max-width: 350px; }
+  
+  .story-preview-link {
+    text-decoration: underline;
+    transition: color 0.2s; }
+    .story-preview-link:hover {
+      color: #fff;
+      cursor: pointer; }
+  
+  .story-headline-link {
+    color: #9aabbc;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1.25;
+    text-decoration: none; }
+    .story-headline-link span {
+      color: #9aabbc; }
+    .story-headline-link:after {
+      content: '\A';
+      white-space: pre; }
+    .story-headline-link.hover, .story-headline-link:hover {
+      color: #fff; }
+      .story-headline-link.hover span, .story-headline-link:hover span {
+        color: #fff; }
+    .story-headline-link aside {
+      font-size: 50%;
+      text-transform: uppercase; }
+    .story-headline-link span {
+      text-decoration: underline; }
+    .story-headline-link.disabled {
+      opacity: 0.5;
+      pointer-events: none; }
+  
+  .story-button {
+    display: none; }
+  
+  
