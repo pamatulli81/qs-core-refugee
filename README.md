@@ -2,6 +2,9 @@
 
 The Qlik Core Refugee Project is an open source learning project, which was created by using Qlik Core, React and Docker Container. The journey started at the Qlik Master Summit 2019 in Sweden during the hackathon with the goal to provide a valuable user experience using the Qlik Core Associative Engine and open source visualization libraries to provide insights to the refugees and migration topic around the world. 
 
+![](qcore_refugees.jpg)
+![](qcore_refugee_map.jpg)
+
 ## Qlik Core Installation
 
 * Download and run Qlik Core in a container using for instance Docker Desktop for Windows https://hub.docker.com/r/qlikcore/engine/tags 
