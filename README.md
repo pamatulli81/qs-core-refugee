@@ -40,7 +40,7 @@ The Qlik Core Refugee Project is an open source learning project, which was crea
 The data folder is containing the .qvf file including the data used for the project provided by the Qlik Master Summit team
 
 ## Credits
-* UI Web Design template
+* UI Web Design inspirated by
     - Ekene Ijeoma
     - Hyperakt
 
