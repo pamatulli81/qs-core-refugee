@@ -23,7 +23,7 @@ function PrimaryInfoBoxNewsSlider(props) {
       items.push(
         <a
           key={`${r}`}
-          className="link-reset feed-item carousel-cell unhcr-feed-item"
+          className="link-reset feed-item carousel-cell news-feed-item"
           href={`${layout.qHyperCube.qDataPages[0].qMatrix[r][4].qText}`}
           style={styleContent.link}
         >
@@ -54,8 +54,6 @@ function PrimaryInfoBoxNewsSlider(props) {
 
   return (
     <div
-      className="info-box info-box-selected feed has-content"
-      data-3dhover=""
       style={styleContent.transform}
     >
       <aside className="info-label-slider">{LABEL_STORIES}</aside>
@@ -66,7 +64,6 @@ function PrimaryInfoBoxNewsSlider(props) {
   );
 }
 
-/* PAM: Property Types validation using the Prop Types Plugin */
 PrimaryInfoBoxNewsSlider.propTypes = {
   layout: PropTypes.object.isRequired,
   nbrOfNews: PropTypes.number
