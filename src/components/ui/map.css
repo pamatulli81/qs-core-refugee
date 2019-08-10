@@ -52,7 +52,7 @@
     top: 0; }
 
 #map--desktop:before {
-  background: linear-gradient(90deg, rgba(1, 18, 8, 0.85) 0%, rgba(1, 18, 8, 0.25) 100%);
+  background: linear-gradient(90deg, rgba(1, 16, 8, 0.85) 0%, rgba(1, 16, 8, 0.25) 100%);
   transition: background 0.3s; }
 
 #map--mobile:before {
@@ -60,7 +60,7 @@
   pointer-events: auto; }
 
 .info-collapse #map--desktop:before {
-  background: linear-gradient(90deg, rgba(1, 18, 8, 0.25) 0%, rgba(1, 18, 8, 0.25) 100%); }
+  background: linear-gradient(90deg, rgba(1, 16, 8, 0.25) 0%, rgba(1, 16, 8, 0.25) 100%); }
 
 .water {
   fill: #323e53;
