@@ -59,4 +59,6 @@ The data folder is containing the .qvf file including the data used for the proj
 * Dynamic Year Filter in the PrimaryNews Panel (see 7 years)
 * Qlik Selections on ECharts object
 * Webapp performance and response time (React rendering strategy)
+* On Demand Qlik Data Load
+* Animated Time Series Analysis
 * ...
