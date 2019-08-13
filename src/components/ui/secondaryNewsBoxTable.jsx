@@ -35,7 +35,7 @@ function SecondaryNewsBoxTable(props) {
               data-attribute={`${
                 layout.qHyperCube.qDataPages[0].qMatrix[r][0].qElemNumber
               }`}
-              href="https://"
+              href
               className="font-weight--book table__link"
             >
               {r + 1}
@@ -47,7 +47,7 @@ function SecondaryNewsBoxTable(props) {
                 data-attribute={`${
                   layout.qHyperCube.qDataPages[0].qMatrix[r][0].qElemNumber
                 }`}
-                href="https://"
+                href
                 className="font-weight--book table__link"
               >
                 {layout.qHyperCube.qDataPages[0].qMatrix[r][0].qText}
