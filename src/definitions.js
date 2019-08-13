@@ -144,7 +144,7 @@ export const defPieChart = (field = "[Origin Country]", value = "*") => {
             }
           },
           qDef: {
-            qDef: `Sum([PersonCount])`,
+            qDef: `Sum({<${field}={"${value}"}>}[PersonCount])`,
             qLabel: "Person"
           }
         }
