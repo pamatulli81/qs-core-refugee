@@ -157,7 +157,7 @@ class eChartBar extends React.Component {
     return (
       <div>
         <a
-          href
+          href="true"
           className="story-headline-link js-explore"
         >
           <span>{LABEL_TREND_YEARS}</span>
